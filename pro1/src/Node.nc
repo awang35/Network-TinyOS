@@ -153,26 +153,29 @@ implementation{
 				return msg;
 			}
 			else//store it in the seen list
-				if(arrListPushBack(&Received,receivedPacket)){
-					dbg("Project1F", "added to seen list.\n");
-				}//do nothing for now
-				else{
+			if(arrListPushBack(&Received,receivedPacket)){
+				dbg("Project1F", "added to seen list.\n");
+			}//do nothing for now
+			else{
 					dbg("Project1F", "filled list\n");
-				}
+			}
 			/*
 			 * Checking if this packet was intended for this node
 			 */
 	
 			if(TOS_NODE_ID!=myMsg->dest){
 				//dbg("Project1F", "Broadcasting to Neighbors\n");
-				makePack(&sendPackage, myMsg->src,myMsg->dest, myMsg->TTL--, myMsg->protocol, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));
-				sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, AM_BROADCAST_ADDR);
-				post sendBufferTask();
+	
 				if(myMsg->dest==AM_BROADCAST_ADDR){//should be a broadcast packet
 					dbg("Project1N", "I have been discovered, sending reply.\n");
 					makePack(&sendPackage, TOS_NODE_ID,myMsg->src, 1, PROTOCOL_PINGREPLY, sequenceNum++, (uint8_t *) broadcastMessage, sizeof(broadcastMessage));
 					//sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, sendPackage.dest);
 					sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, myMsg->src);
+					post sendBufferTask();
+				}
+				else{
+					makePack(&sendPackage, myMsg->src,myMsg->dest, myMsg->TTL, myMsg->protocol, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));
+					sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, AM_BROADCAST_ADDR);
 					post sendBufferTask();
 				}
 			}
@@ -200,8 +203,8 @@ implementation{
 					dbg("genDebug", "Received a Ping Reply from %d with message: %s!\n", myMsg->src, myMsg->payload);
 					//should add the node to the map
 					if(!strcmp(myMsg->payload,broadcastMessage)){
-					hashmapInsert(&Neighbors,hash3(myMsg->src,1),myMsg->src);
-					printNeighbors(&Neighbors);
+						hashmapInsert(&Neighbors,hash3(myMsg->src,1),myMsg->src);
+						printNeighbors(&Neighbors);
 					}
 					//dbg("genDebug", "WENT PAST");
 					break;
