@@ -38,7 +38,7 @@ print "--------------------------------------"
 print "Setting Debug Channels"
 t.addChannel("genDebug", sys.stdout)
 t.addChannel("cmdDebug", sys.stdout);
-t.addChannel("Project1F", sys.stdout);
+#t.addChannel("Project1F", sys.stdout);
 t.addChannel("Project1N", sys.stdout);
 
 print "Setting noise model"

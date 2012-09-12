@@ -106,7 +106,7 @@ implementation{
 		pack sendNeighbor;
 		dbg("Project1N", "Intializing Neighbors.\n");
 		hashmapInit(&Neighbors);
-		makePack(&sendNeighbor,TOS_NODE_ID,AM_BROADCAST_ADDR, 1, PROTOCOL_PING, sequenceNum++,(uint8_t *) broadcastMessage, sizeof(broadcastMessage));
+		makePack(&sendNeighbor,TOS_NODE_ID,AM_BROADCAST_ADDR, 1, PROTOCOL_PING, sequenceNum++,NULL,0);
 		sendBufferPushBack(&packBuffer, sendNeighbor, sendNeighbor.src, AM_BROADCAST_ADDR);
 		post sendBufferTask();
 	}
@@ -149,11 +149,16 @@ implementation{
 			 * Check if this node have seen this packet
 			 */
 			if( arrListContains(&Received,myMsg->src,myMsg->seq)){
-				dbg("Project1F", "A Packet has been dropped.\n");
+				dbg("Project1F", "I have seen this packet, dropping it.\n");
 				return msg;
 			}
 			else//store it in the seen list
-				if(arrListPushBack(&Received,receivedPacket));//do nothing for now
+				if(arrListPushBack(&Received,receivedPacket)){
+					dbg("Project1F", "added to seen list.\n");
+				}//do nothing for now
+				else{
+					dbg("Project1F", "filled list\n");
+				}
 			/*
 			 * Checking if this packet was intended for this node
 			 */
@@ -161,9 +166,9 @@ implementation{
 			if(TOS_NODE_ID!=myMsg->dest){
 				//dbg("Project1F", "Broadcasting to Neighbors\n");
 				makePack(&sendPackage, myMsg->src,myMsg->dest, myMsg->TTL--, myMsg->protocol, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));
-				sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, sendPackage.dest);
+				sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, AM_BROADCAST_ADDR);
 				post sendBufferTask();
-				if(myMsg->dest==AM_BROADCAST_ADDR&&!strcmp(myMsg->payload,broadcastMessage)){//should be a broadcast packet
+				if(myMsg->dest==AM_BROADCAST_ADDR){//should be a broadcast packet
 					dbg("Project1N", "I have been discovered, sending reply.\n");
 					makePack(&sendPackage, TOS_NODE_ID,myMsg->src, 1, PROTOCOL_PINGREPLY, sequenceNum++, (uint8_t *) broadcastMessage, sizeof(broadcastMessage));
 					//sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, sendPackage.dest);
@@ -229,7 +234,7 @@ implementation{
 					break;
 				}
 			}
-			dbg("Project1F", "A Packet has been dropped.\n");
+			//dbg("Project1F", "A Packet has been dropped.\n");
 			return msg;
 		}
 
