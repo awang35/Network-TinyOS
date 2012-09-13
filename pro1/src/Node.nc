@@ -144,20 +144,20 @@ implementation{
 		if(len==sizeof(pack)){
 			pack* myMsg=(pack*) payload;
 			pair receivedPacket = {myMsg->src,myMsg->seq};
-			dbg("Project1F", "*IP Header* Src: %d, Dest: %d Seq:%d TTL: %d\n", myMsg->src, myMsg->dest, myMsg->seq, myMsg->TTL);
+			dbg("genDebug", "*IP Header* Src: %d, Dest: %d Seq:%d TTL: %d\n", myMsg->src, myMsg->dest, myMsg->seq, myMsg->TTL);
 			/*
 			 * Check if this node have seen this packet
 			 */
 			if( arrListContains(&Received,myMsg->src,myMsg->seq)){
-				dbg("Project1F", "I have seen this packet, dropping it.\n");
+				dbg("genDebug", "I have seen this packet, dropping it.\n");
 				return msg;
 			}
 			else//store it in the seen list
 			if(arrListPushBack(&Received,receivedPacket)){
-				dbg("Project1F", "added to seen list.\n");
+				dbg("genDebug", "added to seen list.\n");
 			}//do nothing for now
 			else{
-					dbg("Project1F", "filled list\n");
+					dbg("genDebug", "filled list\n");
 			}
 			/*
 			 * Checking if this packet was intended for this node
