@@ -158,7 +158,7 @@ implementation{
 				//dbg("Project1F", "added to seen list.\n");
 			}//do nothing for now
 			else{
-				//	dbg("Project1F", "filled list\n");
+					dbg("Project1F", "filled list\n");
 			}
 			/*
 			 * Checking if this packet was intended for this node
@@ -305,13 +305,6 @@ implementation{
 		memcpy(Package->payload, payload, length);
 	}
 }
-
-	
-//	}
-//else//update current list of neighbors
-//isOnline(neighbors);
-	
-
 
 
 
