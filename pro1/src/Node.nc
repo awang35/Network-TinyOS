@@ -88,7 +88,7 @@ implementation{
 	event void AMSend.sendDone(message_t* msg, error_t error){
 		//Clear Flag, we can send again.
 		if(&pkt == msg){
-			dbg("genDebug", "Packet Sent\n");
+			dbg("Project1F", "Packet Sent\n");
 			busy = FALSE;
 			post sendBufferTask();
 		}
@@ -144,20 +144,21 @@ implementation{
 		if(len==sizeof(pack)){
 			pack* myMsg=(pack*) payload;
 			pair receivedPacket = {myMsg->src,myMsg->seq};
-			dbg("genDebug", "*IP Header* Src: %d, Dest: %d Seq:%d TTL: %d\n", myMsg->src, myMsg->dest, myMsg->seq, myMsg->TTL);
+			//dbg("Project1F", "Recieved a message with the following info:\n");
+			//dbg("Project1F", "*IP Header* Src: %d, Dest: %d Seq:%d TTL: %d\n", myMsg->src, myMsg->dest, myMsg->seq, myMsg->TTL);
 			/*
 			 * Check if this node have seen this packet
 			 */
 			if( arrListContains(&Received,myMsg->src,myMsg->seq)){
-				dbg("genDebug", "I have seen this packet, dropping it.\n");
+				dbg("Project1F", "Packet has been seen before, dropping it.\n");
 				return msg;
 			}
 			else//store it in the seen list
 			if(arrListPushBack(&Received,receivedPacket)){
-				dbg("genDebug", "added to seen list.\n");
+				//dbg("Project1F", "added to seen list.\n");
 			}//do nothing for now
 			else{
-					dbg("genDebug", "filled list\n");
+				//	dbg("Project1F", "filled list\n");
 			}
 			/*
 			 * Checking if this packet was intended for this node
@@ -174,17 +175,18 @@ implementation{
 					post sendBufferTask();
 				}
 				else{
+					dbg("Project1F", "Packet is not meant for me, broadcasting it.\n");
 					makePack(&sendPackage, myMsg->src,myMsg->dest, myMsg->TTL, myMsg->protocol, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));
 					sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, AM_BROADCAST_ADDR);
 					post sendBufferTask();
 				}
 			}
 			if(TOS_NODE_ID==myMsg->src){
-				dbg("cmdDebug", "Source is this node: %s\n", myMsg->payload);
+				dbg("Project1F", "Source is this node: %s\n", myMsg->payload);
 				return msg;
 			}
 			if(TOS_NODE_ID==myMsg->dest){
-				dbg("genDebug", "Packet from %d has arrived! Msg: %s\n", myMsg->src, myMsg->payload);
+				dbg("Project1F", "Packet from %d has arrived! Msg: %s\n", myMsg->src, myMsg->payload);
 				switch(myMsg->protocol){
 					uint8_t createMsg[PACKET_MAX_PAYLOAD_SIZE];
 					uint16_t dest;
@@ -192,7 +194,7 @@ implementation{
 					//if())
 					dest =AM_BROADCAST_ADDR;
 					//else dest = myMsg->src;
-					dbg("genDebug", "Sending Ping Reply to %d! \n", myMsg->src);
+					dbg("Project1F", "Sending Ping Reply to %d! \n", myMsg->src);
 					makePack(&sendPackage, TOS_NODE_ID,myMsg->src, MAX_TTL, PROTOCOL_PINGREPLY, sequenceNum++, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));
 					//sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, sendPackage.dest);
 					sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, AM_BROADCAST_ADDR);
@@ -200,7 +202,7 @@ implementation{
 					break;
 
 					case PROTOCOL_PINGREPLY:
-					dbg("genDebug", "Received a Ping Reply from %d with message: %s!\n", myMsg->src, myMsg->payload);
+					dbg("Project1F", "Received a Ping Reply from %d with message: %s!\n", myMsg->src, myMsg->payload);
 					//should add the node to the map
 					if(!strcmp(myMsg->payload,broadcastMessage)){
 						hashmapInsert(&Neighbors,hash3(myMsg->src,1),myMsg->src);
