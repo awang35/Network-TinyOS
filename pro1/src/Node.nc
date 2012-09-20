@@ -158,7 +158,11 @@ implementation{
 				//dbg("Project1F", "added to seen list.\n");
 			}//do nothing for now
 			else{
-					dbg("Project1F", "filled list\n");
+				dbg("Project1F", "filled list\n");
+				//only keep track of recent packets
+				pop_front(&Received);
+				arrListPushBack(&Received,receivedPacket);
+					
 			}
 			/*
 			 * Checking if this packet was intended for this node
