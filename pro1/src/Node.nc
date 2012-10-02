@@ -15,6 +15,7 @@
 #include "dataStructures/hashmap.h"
 #include "message.h"
 #include "string.h"
+//#include "routingtable.h"
 //Ping Includes
 #include "dataStructures/pingList.h"
 #include "ping.h"
@@ -26,6 +27,7 @@ module Node{
 	uses interface Boot;
 	uses interface Timer<TMilli> as pingTimeoutTimer;
 	uses interface Timer<TMilli> as neighborDiscovey;
+	uses interface Timer<TMilli> as neighborMap;
 	uses interface Random as Random;
 	
 	uses interface Packet;
@@ -76,6 +78,7 @@ implementation{
 		if(err == SUCCESS){
 			call pingTimeoutTimer.startPeriodic(PING_TIMER_PERIOD + (uint16_t) ((call Random.rand16())%200));
 			call neighborDiscovey.startPeriodic(30000 + (uint16_t) ((call Random.rand16())%200));
+			call neighborMap.startPeriodic(60000 + (uint16_t) ((call Random.rand16())%200));
 		}else{
 			//Retry until successful
 			call AMControl.start();
@@ -128,6 +131,15 @@ implementation{
 		intializeNeighbors(neighbors);
 	
 	}
+	event void neighborMap.fired(){
+		//Generating neighbor map
+		pack lsp;
+		dbg("Project2", "Sending out LSP\n");
+		makePack(&lsp,TOS_NODE_ID,AM_BROADCAST_ADDR, MAX_TTL, PROTOCOL_LINKEDSTATE, sequenceNum++,NULL,0);
+		sendBufferPushBack(&packBuffer, lsp, lsp.src, AM_BROADCAST_ADDR);
+		post sendBufferTask();
+	
+	}
 	event void neighborDiscovey.fired(){
 		// TODO Auto-generated method stub
 		dbg("Project1N","Looking up neighbors\n");
@@ -158,11 +170,11 @@ implementation{
 				//dbg("Project1F", "added to seen list.\n");
 			}//do nothing for now
 			else{
-				dbg("Project1F", "filled list\n");
+					dbg("Project1F", "filled list\n");
 				//only keep track of recent packets
 				pop_front(&Received);
 				arrListPushBack(&Received,receivedPacket);
-					
+	
 			}
 			/*
 			 * Checking if this packet was intended for this node
@@ -172,14 +184,23 @@ implementation{
 				//dbg("Project1F", "Broadcasting to Neighbors\n");
 	
 				if(myMsg->dest==AM_BROADCAST_ADDR){//should be a broadcast packet
-					dbg("Project1N", "I have been discovered, sending reply.\n");
-					makePack(&sendPackage, TOS_NODE_ID,myMsg->src, 1, PROTOCOL_PINGREPLY, sequenceNum++, (uint8_t *) broadcastMessage, sizeof(broadcastMessage));
-					//sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, sendPackage.dest);
-					sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, myMsg->src);
-					post sendBufferTask();
+					switch(myMsg->protocol){
+						case PROTOCOL_PING:
+						dbg("Project1N", "I have been discovered, sending reply.\n");
+						makePack(&sendPackage, TOS_NODE_ID,myMsg->src, 1, PROTOCOL_PINGREPLY, sequenceNum++, (uint8_t *) broadcastMessage, sizeof(broadcastMessage));
+						//sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, sendPackage.dest);
+						sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, myMsg->src);
+						post sendBufferTask();
+						break;
+						case PROTOCOL_LINKEDSTATE:
+						break;
+						default:
+						break;
+					}
+	
 				}
 				else{
-					dbg("Project1F", "Packet is not meant for me, broadcasting it.\n");
+						dbg("Project1F", "Packet is not meant for me, broadcasting it.\n");
 					makePack(&sendPackage, myMsg->src,myMsg->dest, myMsg->TTL, myMsg->protocol, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));
 					sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, AM_BROADCAST_ADDR);
 					post sendBufferTask();
@@ -238,6 +259,8 @@ implementation{
 						default:
 						break;
 					}
+					break;
+					case(PROTOCOL_LINKEDSTATE ):
 					break;
 					default:
 					break;
@@ -308,6 +331,8 @@ implementation{
 		Package->protocol = protocol;
 		memcpy(Package->payload, payload, length);
 	}
+
+	
 }
 
 

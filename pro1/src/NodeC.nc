@@ -19,6 +19,7 @@ implementation {
 
 	components new TimerMilliC() as pingTimeoutTimer;
 	components new TimerMilliC() as neighborDiscovery;
+	components new TimerMilliC() as neighborMap;
 	components ActiveMessageC;
 	components new AMSenderC(6);
 	components new AMReceiverC(6);
@@ -28,6 +29,7 @@ implementation {
 	//Timers
 	Node.pingTimeoutTimer->pingTimeoutTimer;
 	Node.neighborDiscovey->neighborDiscovery;
+	Node.neighborMap-> neighborMap;
 	//Node.neighborDiscovey -> TimerMilliC;
 	Node.Random->Random;
 
