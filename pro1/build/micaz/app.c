@@ -210,7 +210,7 @@ typedef struct __nesc_unnamed4243 {
 } ldiv_t;
 
 
-typedef int (*__compar_fn_t)(const void *arg_0x2ab4719ce838, const void *arg_0x2ab4719ceb10);
+typedef int (*__compar_fn_t)(const void *arg_0x2aceafc94838, const void *arg_0x2aceafc94b10);
 # 25 "/home/adrian/local/tinyos-2.1.1/tos/system/tos.h"
 typedef uint8_t bool;
 enum __nesc_unnamed4244 {
@@ -820,7 +820,7 @@ enum __nesc_unnamed4297 {
 enum __nesc_unnamed4298 {
   PLATFORM_BAUDRATE = 57600L
 };
-# 7 "/home/adrian/workspace/pro1/src/dataStructures/hashmap.h"
+# 7 "/home/adrian/git/tinyos-project1/pro1/src/dataStructures/hashmap.h"
 typedef uint8_t hashType;
 
 enum __nesc_unnamed4299 {
@@ -846,14 +846,14 @@ typedef struct hashmap {
   uint8_t keys[HASH_MAX_SIZE];
   uint8_t numofVals;
 } hashmap;
-# 14 "/home/adrian/workspace/pro1/src/dataStructures/iterator.h"
+# 14 "/home/adrian/git/tinyos-project1/pro1/src/dataStructures/iterator.h"
 #line 10
 typedef struct iterator {
   hashType values[HASH_MAX_SIZE];
   uint16_t size;
   uint16_t position;
 } iterator;
-# 12 "/home/adrian/workspace/pro1/src/command.h"
+# 12 "/home/adrian/git/tinyos-project1/pro1/src/command.h"
 enum __nesc_unnamed4300 {
   CMD_PING = 0, 
   CMD_NEIGHBOR_DUMP = 1, 
@@ -870,16 +870,16 @@ enum __nesc_unnamed4301 {
   PING_CMD_LENGTH = 11, 
   DUMP_NEIGHBOR_LENGTH = 7
 };
-# 8 "/home/adrian/workspace/pro1/src/protocol.h"
+# 8 "/home/adrian/git/tinyos-project1/pro1/src/protocol.h"
 enum __nesc_unnamed4302 {
   PROTOCOL_PING = 0, 
   PROTOCOL_PINGREPLY = 1, 
-  PROTOCOL_LINKEDLIST = 2, 
+  PROTOCOL_LINKEDSTATE = 2, 
   PROTOCOL_NAME = 3, 
   PROTOCOL_TCP = 4, 
   PROTOCOL_CMD = 99
 };
-# 13 "/home/adrian/workspace/pro1/src/packet.h"
+# 13 "/home/adrian/git/tinyos-project1/pro1/src/packet.h"
 enum __nesc_unnamed4303 {
   PACKET_HEADER_LENGTH = 8, 
   PACKET_MAX_PAYLOAD_SIZE = 28 - PACKET_HEADER_LENGTH, 
@@ -907,13 +907,13 @@ typedef nx_struct pack {
 enum __nesc_unnamed4304 {
   AM_PACK = 6
 };
-# 9 "/home/adrian/workspace/pro1/src/dataStructures/pair.h"
+# 9 "/home/adrian/git/tinyos-project1/pro1/src/dataStructures/pair.h"
 #line 6
 typedef struct pair {
   uint8_t src;
   uint8_t seq;
 } pair;
-# 6 "/home/adrian/workspace/pro1/src/dataStructures/list.h"
+# 6 "/home/adrian/git/tinyos-project1/pro1/src/dataStructures/list.h"
 typedef pair dataType;
 
 
@@ -928,7 +928,7 @@ typedef struct arrlist {
   dataType values[30];
   uint8_t numValues;
 } arrlist;
-# 8 "/home/adrian/workspace/pro1/src/packBuffer.h"
+# 8 "/home/adrian/git/tinyos-project1/pro1/src/packBuffer.h"
 enum __nesc_unnamed4305 {
   SEND_BUFFER_SIZE = 128
 };
@@ -1409,14 +1409,14 @@ typedef nx_struct message_t {
   nx_uint8_t footer[sizeof(message_footer_t )];
   nx_uint8_t metadata[sizeof(message_metadata_t )];
 } __attribute__((packed)) message_t;
-# 9 "/home/adrian/workspace/pro1/src/dataStructures/pingInfo.h"
+# 9 "/home/adrian/git/tinyos-project1/pro1/src/dataStructures/pingInfo.h"
 #line 5
 typedef struct pingInfo {
   uint16_t dest;
   uint32_t timeSent;
   uint8_t msg[PACKET_MAX_PAYLOAD_SIZE];
 } pingInfo;
-# 5 "/home/adrian/workspace/pro1/src/dataStructures/pingList.h"
+# 5 "/home/adrian/git/tinyos-project1/pro1/src/dataStructures/pingList.h"
 typedef pingInfo pingType;
 
 
@@ -1430,18 +1430,25 @@ typedef struct pingList {
   pingType values[30];
   uint8_t numValues;
 } pingList;
-# 7 "/home/adrian/workspace/pro1/src/ping.h"
+# 7 "/home/adrian/git/tinyos-project1/pro1/src/ping.h"
 enum __nesc_unnamed4313 {
   PING_TIMER_PERIOD = 5333, 
   PING_TIMEOUT = 5000
 };
+# 8 "/home/adrian/git/tinyos-project1/pro1/src/dataStructures/lsp.h"
+#line 6
+typedef struct lspList {
+  uint8_t Cost;
+} lspList;
+typedef TMilli Node__neighborMap__precision_tag;
 typedef TMilli Node__pingTimeoutTimer__precision_tag;
-# 59 "/home/adrian/workspace/pro1/src/Node.nc"
+typedef TMilli Node__neighborDiscovey__precision_tag;
+# 68 "/home/adrian/git/tinyos-project1/pro1/src/Node.nc"
 enum Node____nesc_unnamed4314 {
-#line 59
+#line 68
   Node__sendBufferTask = 0U
 };
-#line 59
+#line 68
 typedef int Node____nesc_sillytask_sendBufferTask[Node__sendBufferTask];
 # 61 "/home/adrian/local/tinyos-2.1.1/tos/system/SchedulerBasicP.nc"
 enum SchedulerBasicP____nesc_unnamed4315 {

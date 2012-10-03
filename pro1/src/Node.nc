@@ -19,7 +19,8 @@
 //Ping Includes
 #include "dataStructures/pingList.h"
 #include "ping.h"
-
+//adds the lsp payload
+#include "dataStructures/lsp.h"
 
 
 
@@ -45,7 +46,8 @@ implementation{
 	uint16_t sequenceNum = 0;
 
 	bool busy = FALSE;
-	
+	lspList sendLsp[20];
+	uint8_t lspPointer;
 	message_t pkt;
 	pack sendPackage;
 	uint8_t broadcastMessage[PACKET_MAX_PAYLOAD_SIZE] = {"broadc@st"};
@@ -61,13 +63,34 @@ implementation{
 	
 	error_t send(uint16_t src, uint16_t dest, pack *message);
 	void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t Protocol, uint16_t seq, uint8_t *payload, uint8_t length);
+	
+	
 	task void sendBufferTask();
 	
+	void printLsp(){
+		uint8_t i=0;
+		for(i; i<20;i++)
+			dbg("Project2", "Node %d have cost %d.\n",i+1,sendLsp[i].Cost);
+	}
+	/**
+	 * Initialize LSP payload. Set all cost to inf (in this case 21 is infinity)
+	 * When it is infinity that means the node is not connected
+	 */
+	void intializeList(){
+		uint8_t i=0;
+		uint8_t inf = 21;
+		for(i; i<20;i++)
+			sendLsp[i].Cost = inf;
+		//printLsp();
+	}
 	
 	event void Boot.booted(){
 		call AMControl.start();
 		arrListInit(&Received);
 		hashmapInit(&Neighbors);
+		intializeList();
+		//lspPointer = sendLsp
+		
 		//dbg("genDebug", "Booted\n");
 	}
 	event void pingTimeoutTimer.fired(){
@@ -96,7 +119,7 @@ implementation{
 			post sendBufferTask();
 		}
 	}
-	
+
 	void isOnline(hashmap *neighbors){
 		uint8_t i=0;
 		pair temp;
@@ -135,7 +158,8 @@ implementation{
 		//Generating neighbor map
 		pack lsp;
 		dbg("Project2", "Sending out LSP\n");
-		makePack(&lsp,TOS_NODE_ID,AM_BROADCAST_ADDR, MAX_TTL, PROTOCOL_LINKEDSTATE, sequenceNum++,NULL,0);
+		//dbg("Project2", "Size of list is %d\n",sizeof(sendLsp));
+		makePack(&lsp,TOS_NODE_ID,AM_BROADCAST_ADDR, MAX_TTL, PROTOCOL_LINKEDSTATE, sequenceNum++,&sendLsp,sizeof(sendLsp));
 		sendBufferPushBack(&packBuffer, lsp, lsp.src, AM_BROADCAST_ADDR);
 		post sendBufferTask();
 	
@@ -144,6 +168,13 @@ implementation{
 		// TODO Auto-generated method stub
 		dbg("Project1N","Looking up neighbors\n");
 		checkNeighbors(&Neighbors);
+	}
+	void printPayload(lspList *payload){
+		uint8_t i=0;
+		uint8_t inf = 21;
+		for(i; i<20;i++)
+			if(payload[i].Cost<21)
+				dbg("Project2","Recieved %d with cost %d\n",i+1,payload[i].Cost);
 	}
 	
 	//event void checkNeighbors(){}
@@ -193,6 +224,9 @@ implementation{
 						post sendBufferTask();
 						break;
 						case PROTOCOL_LINKEDSTATE:
+						dbg("Project2", "I have recieved the list, updating table and fowarding.\n");
+						//logPack(myMsg);
+						printPayload(myMsg->payload);
 						break;
 						default:
 						break;
@@ -214,6 +248,7 @@ implementation{
 				dbg("Project1F", "Packet from %d has arrived! Msg: %s\n", myMsg->src, myMsg->payload);
 				switch(myMsg->protocol){
 					uint8_t createMsg[PACKET_MAX_PAYLOAD_SIZE];
+					uint8_t zero = 0;
 					uint16_t dest;
 					case PROTOCOL_PING:
 					//if())
@@ -232,6 +267,9 @@ implementation{
 					if(!strcmp(myMsg->payload,broadcastMessage)){
 						hashmapInsert(&Neighbors,hash3(myMsg->src,1),myMsg->src);
 						printNeighbors(&Neighbors);
+						sendLsp[myMsg->src-1].Cost = zero;
+						dbg("Project2", "Updated List. Setting %d cost to 0.\n",myMsg->src);
+						//printLsp();
 					}
 					//dbg("genDebug", "WENT PAST");
 					break;
