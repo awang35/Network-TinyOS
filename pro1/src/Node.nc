@@ -40,27 +40,29 @@ module Node{
 }
 
 implementation{
-	//need to create a data structure to create a seen list
-	//hashmap receivedList;
-	
 	uint16_t sequenceNum = 0;
-
 	bool busy = FALSE;
-	lspList sendLsp[20];
-	uint8_t lspPointer;
 	message_t pkt;
 	pack sendPackage;
-	uint8_t broadcastMessage[PACKET_MAX_PAYLOAD_SIZE] = {"broadc@st"};
-	//broadcastMessage = {"test"};
 	sendBuffer packBuffer;	
 	arrlist Received;
-	hashmap Neighbors;
-
 	bool isActive = TRUE;
-
 	//Ping/PingReply Variables	
 	pingList pings;
-	
+	/**
+	 * Adrian's Variable
+	 */
+	 uint8_t neighborCount;
+	 hashmap Neighbors;
+	 uint8_t broadcastMessage[PACKET_MAX_PAYLOAD_SIZE] = {"broadc@st"};
+	 lspList sendLsp[20];
+	 lspList *lsplist;
+
+	/**
+	 * End
+	 */ 
+	 
+	 
 	error_t send(uint16_t src, uint16_t dest, pack *message);
 	void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t Protocol, uint16_t seq, uint8_t *payload, uint8_t length);
 	
@@ -87,7 +89,9 @@ implementation{
 	event void Boot.booted(){
 		call AMControl.start();
 		arrListInit(&Received);
+		neighborCount = 0;
 		hashmapInit(&Neighbors);
+		//lsplist = sendLsp;
 		intializeList();
 		//lspPointer = sendLsp
 		
@@ -100,6 +104,7 @@ implementation{
 	event void AMControl.startDone(error_t err){
 		if(err == SUCCESS){
 			call pingTimeoutTimer.startPeriodic(PING_TIMER_PERIOD + (uint16_t) ((call Random.rand16())%200));
+			call neighborDiscovey.startOneShot(300 + (uint16_t) ((call Random.rand16())%200));
 			call neighborDiscovey.startPeriodic(30000 + (uint16_t) ((call Random.rand16())%200));
 			call neighborMap.startPeriodic(60000 + (uint16_t) ((call Random.rand16())%200));
 		}else{
@@ -154,15 +159,17 @@ implementation{
 		intializeNeighbors(neighbors);
 	
 	}
-	event void neighborMap.fired(){
-		//Generating neighbor map
+	void makeLSP(){
 		pack lsp;
 		dbg("Project2", "Sending out LSP\n");
 		//dbg("Project2", "Size of list is %d\n",sizeof(sendLsp));
 		makePack(&lsp,TOS_NODE_ID,AM_BROADCAST_ADDR, MAX_TTL, PROTOCOL_LINKEDSTATE, sequenceNum++,&sendLsp,sizeof(sendLsp));
 		sendBufferPushBack(&packBuffer, lsp, lsp.src, AM_BROADCAST_ADDR);
 		post sendBufferTask();
-	
+	}
+	event void neighborMap.fired(){
+		//Generating neighbor map
+		makeLSP();
 	}
 	event void neighborDiscovey.fired(){
 		// TODO Auto-generated method stub
@@ -174,7 +181,7 @@ implementation{
 		uint8_t inf = 21;
 		for(i; i<20;i++)
 			if(payload[i].Cost<21)
-				dbg("Project2","Recieved %d with cost %d\n",i+1,payload[i].Cost);
+				dbg("Project2","Recieved Node %d with cost %d\n",i+1,payload[i].Cost);
 	}
 	
 	//event void checkNeighbors(){}
@@ -265,6 +272,7 @@ implementation{
 					dbg("Project1F", "Received a Ping Reply from %d with message: %s!\n", myMsg->src, myMsg->payload);
 					//should add the node to the map
 					if(!strcmp(myMsg->payload,broadcastMessage)){
+						neighborCount++;
 						hashmapInsert(&Neighbors,hash3(myMsg->src,1),myMsg->src);
 						printNeighbors(&Neighbors);
 						sendLsp[myMsg->src-1].Cost = zero;
@@ -331,7 +339,7 @@ implementation{
 	 *	src - source address
 	 *	dest - destination address
 	 *	msg - payload to be sent
-	 *
+	 *neighborMap
 	 *@return
 	 *	error_t - Returns SUCCESS, EBUSY when the system is too busy using the radio, or FAIL.
 	 */
