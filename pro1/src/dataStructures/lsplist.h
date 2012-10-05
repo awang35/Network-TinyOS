@@ -3,6 +3,7 @@
 #define LSPLIST_H
 
 #include "lsp.h"
+#include "routingtable.h"
 typedef nodeID datatype2;
 #define ARRAYSIZE 30
 #define MAXNUMVALS ARRAYSIZE

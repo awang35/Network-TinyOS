@@ -134,14 +134,18 @@ implementation{
 	}
 	
 	void dijkstra(uint8_t dest){
-		lsparrlist seenList, evaluatedList, remainingNodes, neighNodes;
-		int curr,distance[numNodes],perm[numNodes], precede[numNodes];
+		lsparrlist confirmList, evaluatedList, remainingNodes, neighNodes;
 		nodeID current,hold;
-		uint8_t i = 0, oldDistance, newDistance,j=0,k=0,dc=0, infinity = 21;
+		Route table[numNodes];
+		uint8_t i = 0, j=0, infinity = 21, curr = TOS_NODE_ID;
 		iterator it;
-		
+		current.nodeid = TOS_NODE_ID-1;
+		lsparrlistPushBack(&confirmList,current);
+		table[TOS_NODE_ID-1].Cost = 0;
+		table[TOS_NODE_ID-1].NextHop = TOS_NODE_ID;
+		table[TOS_NODE_ID-1].Dest = TOS_NODE_ID;
 		iteratorInit(&it,&Neighbors);
-		lsparrlistInit(&seenList);
+		lsparrlistInit(&confirmList);
 		lsparrlistInit(&evaluatedList);
 	  	lsparrlistInit(&remainingNodes);
 		lsparrlistInit(&neighNodes);
@@ -152,43 +156,17 @@ implementation{
 			lsparrlistPushBack(&neighNodes,buffer);
 		}
 	
-		
-		
-		
 		for(i = 0; i < numNodes;i++){
-			distance[i] = infinity;
-			perm[i] = 0;
-			 //percede[i] = 21;
 			if(i!=TOS_NODE_ID){
 			hold.nodeid = i+1;
 			lsparrlistPushBack(&remainingNodes,hold);
 			}
 		}
-		perm[TOS_NODE_ID-1]=1;
-		distance[TOS_NODE_ID-1]=0;
-		curr = TOS_NODE_ID-1;
-		current.nodeid = TOS_NODE_ID-1;
-		lsparrlistPushBack(&seenList,current);
-		while(curr!=dest){
-			oldDistance = infinity;
-			dc = distance[curr];
-			for(i=0;i<numNodes;i++){
-				if(perm[i]==0){
-					newDistance = dc + recieveLsp[curr][i].Cost;
-					if( newDistance  < distance[i]) {
-      	 				distance[i]=newDistance;
-      					precede[i]=curr;
-      					}
-      				if(distance[i]<oldDistance) {
-      	 				oldDistance = distance[i];
-      					k=i;
-      					}
-					}
-					curr=k;
-					perm[curr] = 1;
-				}
-			
-		}
+		
+		
+		
+		
+
 		//int shortestCost = distance[dest];
 	}
 	event void Boot.booted(){
