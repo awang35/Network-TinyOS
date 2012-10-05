@@ -29,7 +29,9 @@ module Node{
 	uses interface Timer<TMilli> as pingTimeoutTimer;
 	uses interface Timer<TMilli> as neighborDiscovey;
 	uses interface Timer<TMilli> as neighborMap;
+	uses interface Timer<TMilli> as waitTimer;
 	uses interface Random as Random;
+	uses interface Timer<TMilli> as helloProtocol; 
 	
 	uses interface Packet;
 	uses interface AMPacket;
@@ -40,6 +42,7 @@ module Node{
 }
 
 implementation{
+	uint16_t numNodes;
 	uint16_t sequenceNum = 0;
 	bool busy = FALSE;
 	message_t pkt;
@@ -53,11 +56,15 @@ implementation{
 	 * Adrian's Variable
 	 */
 	 uint8_t neighborCount;
+	 uint8_t helloCount;
 	 hashmap Neighbors;
 	 uint8_t broadcastMessage[PACKET_MAX_PAYLOAD_SIZE] = {"broadc@st"};
+	 uint8_t helloMessage[PACKET_MAX_PAYLOAD_SIZE] = {"he!!o"};
 	 lspList sendLsp[20];
-	 lspList *lsplist;
-
+	 lspList recieveLsp[20][20];
+	 int8_t recieveSeq[20];
+	 rLspList test;
+	 uint8_t lspSeq = 0;
 	/**
 	 * End
 	 */ 
@@ -68,31 +75,60 @@ implementation{
 	
 	
 	task void sendBufferTask();
-	
+
 	void printLsp(){
-		uint8_t i=0;
-		for(i; i<20;i++)
-			dbg("Project2", "Node %d have cost %d.\n",i+1,sendLsp[i].Cost);
+	 uint8_t p = 0;
+	//	dbg("Project2", "------------------------------------\n");
+	//	dbg("Project2","------------------------------------\n");
+	//	dbg("Project2","Printing LSP Payload that is going to be sent\n");
+		
+		for( p = 0; p<numNodes;p++)
+			dbg("Project2", "Node %d have cost %d.\n",p+1,sendLsp[p].Cost);
 	}
 	/**
 	 * Initialize LSP payload. Set all cost to inf (in this case 21 is infinity)
 	 * When it is infinity that means the node is not connected
 	 */
-	void intializeList(){
-		uint8_t i=0;
-		uint8_t inf = 21;
-		for(i; i<20;i++)
-			sendLsp[i].Cost = inf;
-		//printLsp();
+	void printTest(){
+		 uint8_t o=0,i=0, j = 0;
+		dbg("Project2","------------------------------------\n");
+		dbg("Project2","Intial Print\n");
+		
+		dbg("Project2","LSP packet\n");
+		for(o=0; o<numNodes;o++){
+			dbg("Project2", "Node %d have cost %d.\n",o+1,sendLsp[o].Cost);
+			}
+		dbg("Project2","Recieve List\n");
+		for(i=0; i<numNodes;i++){
+			for(j=0;j<numNodes;j++){
+				dbg("Project2", "Node %d have cost %d.\n",i+1,sendLsp[i].Cost);
+				}
+			}
+		dbg("Project2","------------------------------------\n");
 	}
+	void intializeList(){
+		uint8_t i=0, j = 0;
+		uint8_t inf = 21;
+		lspList nothing;
+		for(i; i<numNodes;i++){
+			sendLsp[i].Cost = inf;
+			recieveSeq[i] = -1;
+			for(j=0; j<numNodes; j++)
+				recieveLsp[i][j].Cost = inf;
+			}
+			//printTest();
+	}
+	
 	
 	event void Boot.booted(){
 		call AMControl.start();
+		numNodes = 5;
 		arrListInit(&Received);
 		neighborCount = 0;
 		hashmapInit(&Neighbors);
 		//lsplist = sendLsp;
 		intializeList();
+		
 		//lspPointer = sendLsp
 		
 		//dbg("genDebug", "Booted\n");
@@ -100,12 +136,21 @@ implementation{
 	event void pingTimeoutTimer.fired(){
 		checkTimes(&pings, call pingTimeoutTimer.getNow());
 	}
-
+	event void waitTimer.fired(){
+		//checkTimes(&pings, call pingTimeoutTimer.getNow());
+		dbg("Project2","Wait is over! Checking if Neighbor is the same. Current Neighbors: %d. Past Neighbors: %d.\n",helloCount, neighborCount);
+		if(helloCount == neighborCount)
+			dbg("Project2","Same neighbors, nothing to do.\n");
+		else{
+			dbg("Project2","Different neighbors! Time to update everyone.\n");
+		}
+	}
 	event void AMControl.startDone(error_t err){
 		if(err == SUCCESS){
 			call pingTimeoutTimer.startPeriodic(PING_TIMER_PERIOD + (uint16_t) ((call Random.rand16())%200));
-			call neighborDiscovey.startOneShot(300 + (uint16_t) ((call Random.rand16())%200));
+			//call neighborDiscovey.startOneShot(30000 + (uint16_t) ((call Random.rand16())%200));
 			call neighborDiscovey.startPeriodic(30000 + (uint16_t) ((call Random.rand16())%200));
+			//call helloProtocol.startPeriodic(45000 + (uint16_t) ((call Random.rand16())%200));
 			call neighborMap.startPeriodic(60000 + (uint16_t) ((call Random.rand16())%200));
 		}else{
 			//Retry until successful
@@ -163,8 +208,20 @@ implementation{
 		pack lsp;
 		dbg("Project2", "Sending out LSP\n");
 		//dbg("Project2", "Size of list is %d\n",sizeof(sendLsp));
-		makePack(&lsp,TOS_NODE_ID,AM_BROADCAST_ADDR, MAX_TTL, PROTOCOL_LINKEDSTATE, sequenceNum++,&sendLsp,sizeof(sendLsp));
+		makePack(&lsp,TOS_NODE_ID,AM_BROADCAST_ADDR, MAX_TTL, PROTOCOL_LINKEDSTATE, lspSeq++,&sendLsp,sizeof(sendLsp));
 		sendBufferPushBack(&packBuffer, lsp, lsp.src, AM_BROADCAST_ADDR);
+		post sendBufferTask();
+	}
+	event void helloProtocol.fired(){
+		
+		pack helloPacket;
+		helloCount = 0;
+		if(call neighborDiscovey.isRunning());
+		else{
+			dbg("Project2","NEIGHBOR DISCOVERY TIMER STARTED\n");
+			call neighborDiscovey.startPeriodic(90000 + (uint16_t) ((call Random.rand16())%200));}
+		makePack(&helloPacket,TOS_NODE_ID,AM_BROADCAST_ADDR, 1, PROTOCOL_PING, sequenceNum++,(uint8_t *) helloMessage,sizeof(helloMessage));
+		sendBufferPushBack(&packBuffer, helloPacket, helloPacket.src, AM_BROADCAST_ADDR);
 		post sendBufferTask();
 	}
 	event void neighborMap.fired(){
@@ -176,12 +233,41 @@ implementation{
 		dbg("Project1N","Looking up neighbors\n");
 		checkNeighbors(&Neighbors);
 	}
-	void printPayload(lspList *payload){
+	void printRecieveLsp(){
+		uint8_t i=0,j=0;
+		dbg("Project2","------------------------------------\n");
+		dbg("Project2","Printing Recieved LSP List for Node %d\n",TOS_NODE_ID);
+		while(i<numNodes){
+			dbg("Project2","Node %d LSP list: ",i+1);
+			for(j=0;j<numNodes;j++){
+				dbg("Project2","%d",recieveLsp[i][j].Cost);
+				}
+				dbg("Project2","\n");
+				i++;
+			}
+		
+		dbg("Project2","------------------------------------\n");
+		
+	}
+	void storePayload(lspList *payload, uint16_t src ){
 		uint8_t i=0;
 		uint8_t inf = 21;
-		for(i; i<20;i++)
+		dbg("Project2"," Going to store in slot %d\n",src);
+		for(i; i<numNodes;i++){
+			recieveLsp[src][i].Cost= payload[i].Cost;
+			}
+		printRecieveLsp();
+	}
+	void printPayload(lspList *payload,uint16_t src){
+		uint8_t i=0;
+		uint8_t inf = 21;
+		dbg("Project2","*************************************\n");
+		dbg("Project2","Printing PAYLOAD from Node %d\n",src+1);
+		dbg("Project2","\tNode\tCost\n");
+		for(i; i<numNodes;i++)
 			if(payload[i].Cost<21)
-				dbg("Project2","Recieved Node %d with cost %d\n",i+1,payload[i].Cost);
+				dbg("Project2","\t%d\t%d\n",i+1,payload[i].Cost);
+		dbg("Project2","*************************************\n");
 	}
 	
 	//event void checkNeighbors(){}
@@ -224,16 +310,35 @@ implementation{
 				if(myMsg->dest==AM_BROADCAST_ADDR){//should be a broadcast packet
 					switch(myMsg->protocol){
 						case PROTOCOL_PING:
-						dbg("Project1N", "I have been discovered, sending reply.\n");
-						makePack(&sendPackage, TOS_NODE_ID,myMsg->src, 1, PROTOCOL_PINGREPLY, sequenceNum++, (uint8_t *) broadcastMessage, sizeof(broadcastMessage));
+						if(!strcmp(myMsg->payload,helloMessage)){
+							dbg("Project2", "Node %d said hello, sending reply.\n",myMsg->src);
+							makePack(&sendPackage, TOS_NODE_ID,myMsg->src, 1, PROTOCOL_PINGREPLY, sequenceNum++, (uint8_t *) helloMessage, sizeof(helloMessage));
+							//sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, sendPackage.dest);
+							sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, myMsg->src);
+							post sendBufferTask();
+						}
+						else{
+							dbg("Project1N", "I have been discovered, sending reply.\n");
+							makePack(&sendPackage, TOS_NODE_ID,myMsg->src, 1, PROTOCOL_PINGREPLY, sequenceNum++, (uint8_t *) broadcastMessage, sizeof(broadcastMessage));
+							//sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, sendPackage.dest);
+							sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, myMsg->src);
+							post sendBufferTask();
+						}
+						break;
+						case PROTOCOL_LINKEDSTATE:
+						dbg("Project2", "I have recieved the list from Node %d, updating table and fowarding.\n", myMsg->src);
+						//logPack(myMsg);
+						//printPayload(myMsg->payload,myMsg->src-1);
+						dbg("Project2", "Compare Seq. Old %d from New %d\n",recieveSeq[myMsg->src-1] ,myMsg->seq);
+						if(recieveSeq[myMsg->src-1]> myMsg->seq){
+							storePayload(myMsg->payload,myMsg->src-1);
+							recieveSeq[myMsg->src-1]= myMsg->seq;
+						}
+						
+						makePack(&sendPackage, myMsg->dest,myMsg->src, myMsg->TTL, myMsg->protocol, myMsg->seq, myMsg->payload, sizeof(myMsg->payload));
 						//sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, sendPackage.dest);
 						sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, myMsg->src);
 						post sendBufferTask();
-						break;
-						case PROTOCOL_LINKEDSTATE:
-						dbg("Project2", "I have recieved the list, updating table and fowarding.\n");
-						//logPack(myMsg);
-						printPayload(myMsg->payload);
 						break;
 						default:
 						break;
@@ -255,7 +360,7 @@ implementation{
 				dbg("Project1F", "Packet from %d has arrived! Msg: %s\n", myMsg->src, myMsg->payload);
 				switch(myMsg->protocol){
 					uint8_t createMsg[PACKET_MAX_PAYLOAD_SIZE];
-					uint8_t zero = 0;
+					uint8_t zero = 1;
 					uint16_t dest;
 					case PROTOCOL_PING:
 					//if())
@@ -271,13 +376,19 @@ implementation{
 					case PROTOCOL_PINGREPLY:
 					dbg("Project1F", "Received a Ping Reply from %d with message: %s!\n", myMsg->src, myMsg->payload);
 					//should add the node to the map
+					if(!strcmp(myMsg->payload,helloMessage)){
+						helloCount++;
+						dbg("Project2","Timer for neighbor check intiated.\n");
+						//call waitTimer.startOneShot(30);
+					}
 					if(!strcmp(myMsg->payload,broadcastMessage)){
 						neighborCount++;
 						hashmapInsert(&Neighbors,hash3(myMsg->src,1),myMsg->src);
 						printNeighbors(&Neighbors);
-						sendLsp[myMsg->src-1].Cost = zero;
-						dbg("Project2", "Updated List. Setting %d cost to 0.\n",myMsg->src);
+						sendLsp[myMsg->src-1].Cost = 1;
+						dbg("Project2", "Updating List. Setting %d cost to 1.\n",myMsg->src);
 						//printLsp();
+					
 					}
 					//dbg("genDebug", "WENT PAST");
 					break;
@@ -306,7 +417,8 @@ implementation{
 						break;
 					}
 					break;
-					case(PROTOCOL_LINKEDSTATE ):
+					case PROTOCOL_LINKEDSTATE:
+					printLsp();
 					break;
 					default:
 					break;

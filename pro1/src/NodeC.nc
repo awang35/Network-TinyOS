@@ -20,6 +20,8 @@ implementation {
 	components new TimerMilliC() as pingTimeoutTimer;
 	components new TimerMilliC() as neighborDiscovery;
 	components new TimerMilliC() as neighborMap;
+	components new TimerMilliC() as helloProtocol;
+	components new TimerMilliC() as waitTimer;
 	components ActiveMessageC;
 	components new AMSenderC(6);
 	components new AMReceiverC(6);
@@ -30,6 +32,8 @@ implementation {
 	Node.pingTimeoutTimer->pingTimeoutTimer;
 	Node.neighborDiscovey->neighborDiscovery;
 	Node.neighborMap-> neighborMap;
+	Node.helloProtocol -> helloProtocol;
+	Node.waitTimer -> waitTimer;
 	//Node.neighborDiscovey -> TimerMilliC;
 	Node.Random->Random;
 

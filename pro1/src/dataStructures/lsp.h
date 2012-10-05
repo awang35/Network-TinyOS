@@ -6,9 +6,10 @@
 typedef struct lspList{                           
 	uint8_t Cost;                                       /* distance metric */
 }lspList;
-
-typedef struct lspRecord{
+typedef struct recieveLspList{
+	uint8_t Cost;
 	lspList container[MAX_ROUTES][MAX_ROUTES];
-}lspRecord;
+}rLspList;
+
 
 #endif /* LSP_H */
