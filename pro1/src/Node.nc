@@ -21,7 +21,7 @@
 #include "ping.h"
 //adds the lsp payload
 #include "dataStructures/lsp.h"
-
+#include "dataStructures/lsplist.h"
 
 
 module Node{
@@ -64,8 +64,9 @@ implementation{
 	 lspList recieveLsp[20][20];
 	 int8_t recieveSeq[20];
 	 rLspList test;
-	 uint8_t lspSeq = 0;
+	// uint8_t lspSeq = 0;
 	 pack lspCache;
+
 	/**
 	 * End
 	 */ 
@@ -119,9 +120,76 @@ implementation{
 			}
 			//printTest();
 	}
+	void bubbleSort(int numbers[], int array_size){
+  		int i, j, temp;
+  		for (i = (array_size - 1); i > 0; i--){
+    		for (j = 1; j <= i; j++){
+      			if (numbers[j-1] > numbers[j]){
+        			temp = numbers[j-1];
+        			numbers[j-1] = numbers[j];
+        			numbers[j] = temp;
+      			}
+    		}
+  		}
+	}
 	
-	void dijkstra(){
+	void dijkstra(uint8_t dest){
+		lsparrlist seenList, evaluatedList, remainingNodes, neighNodes;
+		int curr,distance[numNodes],perm[numNodes], precede[numNodes];
+		nodeID current,hold;
+		uint8_t i = 0, oldDistance, newDistance,j=0,k=0,dc=0, infinity = 21;
+		iterator it;
 		
+		iteratorInit(&it,&Neighbors);
+		lsparrlistInit(&seenList);
+		lsparrlistInit(&evaluatedList);
+	  	lsparrlistInit(&remainingNodes);
+		lsparrlistInit(&neighNodes);
+		//filling out my neighbor node list
+		while(iteratorHasNext(&it)){
+			nodeID buffer; 
+			buffer.nodeid = iteratorNext(&it);
+			lsparrlistPushBack(&neighNodes,buffer);
+		}
+	
+		
+		
+		
+		for(i = 0; i < numNodes;i++){
+			distance[i] = infinity;
+			perm[i] = 0;
+			 //percede[i] = 21;
+			if(i!=TOS_NODE_ID){
+			hold.nodeid = i+1;
+			lsparrlistPushBack(&remainingNodes,hold);
+			}
+		}
+		perm[TOS_NODE_ID-1]=1;
+		distance[TOS_NODE_ID-1]=0;
+		curr = TOS_NODE_ID-1;
+		current.nodeid = TOS_NODE_ID-1;
+		lsparrlistPushBack(&seenList,current);
+		while(curr!=dest){
+			oldDistance = infinity;
+			dc = distance[curr];
+			for(i=0;i<numNodes;i++){
+				if(perm[i]==0){
+					newDistance = dc + recieveLsp[curr][i].Cost;
+					if( newDistance  < distance[i]) {
+      	 				distance[i]=newDistance;
+      					precede[i]=curr;
+      					}
+      				if(distance[i]<oldDistance) {
+      	 				oldDistance = distance[i];
+      					k=i;
+      					}
+					}
+					curr=k;
+					perm[curr] = 1;
+				}
+			
+		}
+		int shortestCost = distance[dest];
 	}
 	event void Boot.booted(){
 		call AMControl.start();
@@ -212,7 +280,7 @@ implementation{
 		pack lsp;
 		dbg("Project2", "Sending out LSP\n");
 		//dbg("Project2", "Size of list is %d\n",sizeof(sendLsp));
-		makePack(&lsp,TOS_NODE_ID,AM_BROADCAST_ADDR, MAX_TTL, PROTOCOL_LINKEDSTATE, lspSeq++,&sendLsp,sizeof(sendLsp));
+		makePack(&lsp,TOS_NODE_ID,AM_BROADCAST_ADDR, MAX_TTL, PROTOCOL_LINKEDSTATE, sequenceNum++,&sendLsp,sizeof(sendLsp));
 		sendBufferPushBack(&packBuffer, lsp, lsp.src, AM_BROADCAST_ADDR);
 		post sendBufferTask();
 	}
@@ -264,7 +332,7 @@ implementation{
 	}
 	void storePayload(lspList *payload, uint16_t src ){
 		uint8_t i=0;
-		uint8_t inf = 21;
+		//uint8_t inf = 21;
 		dbg("Project2"," Going to store in slot %d\n",src);
 		for(i; i<numNodes;i++){
 			recieveLsp[src][i].Cost= payload[i].Cost;
@@ -349,16 +417,16 @@ implementation{
 							storePayload(myMsg->payload,myMsg->src-1);
 							recieveSeq[myMsg->src-1]= myMsg->seq;
 						}
-						makePack(&sendPackage, myMsg->dest,myMsg->src, myMsg->TTL, myMsg->protocol, myMsg->seq, myMsg->payload, sizeof(myMsg->payload));
-						iteratorInit(&it,&Neighbors);
-						while(iteratorHasNext(&it)){
-							int8_t buffer = iteratorNext(&it);
-							if(buffer != myMsg->src){
-								dbg("Project2", "LSP fowarded to %d\n", buffer);
-								sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, buffer);
-								}
+						makePack(&sendPackage, myMsg->dest,myMsg->src, myMsg->TTL--, myMsg->protocol, myMsg->seq, myMsg->payload, sizeof(myMsg->payload));
+						//iteratorInit(&it,&Neighbors);
+						//while(iteratorHasNext(&it)){
+						//	int8_t buffer = iteratorNext(&it);
+						//	if(buffer != myMsg->src){
+							//	dbg("Project2", "LSP fowarded to %d\n", buffer);
+								sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, AM_BROADCAST_ADDR);
+						//		}
 							//dbg("Project1N", "Node: %d\n", iteratorNext(&it));
-						}
+						//}
 						post sendBufferTask();
 						break;
 						default:
@@ -448,16 +516,16 @@ implementation{
 						storePayload(myMsg->payload,myMsg->src-1);
 						recieveSeq[myMsg->src-1]= myMsg->seq;
 					}
-					makePack(&sendPackage, myMsg->dest,myMsg->src, myMsg->TTL, myMsg->protocol, myMsg->seq, myMsg->payload, sizeof(myMsg->payload));
+					makePack(&sendPackage, myMsg->dest,myMsg->src, myMsg->TTL--, myMsg->protocol, myMsg->seq, myMsg->payload, sizeof(myMsg->payload));
 					iteratorInit(&it,&Neighbors);
-					while(iteratorHasNext(&it)){
-						int8_t buffer = iteratorNext(&it);
-						if(buffer != myMsg->src){
-							dbg("Project2", "LSP fowarded to %d\n", buffer);
-							sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, buffer);
-							}
+					//while(iteratorHasNext(&it)){
+						//int8_t buffer = iteratorNext(&it);
+						//if(buffer != myMsg->src){
+						//	dbg("Project2", "LSP fowarded to %d\n", buffer);
+							sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, AM_BROADCAST_ADDR);
+						//	}
 						//dbg("Project1N", "Node: %d\n", iteratorNext(&it));
-					}
+					//}
 					post sendBufferTask();
 					break;
 					default:
