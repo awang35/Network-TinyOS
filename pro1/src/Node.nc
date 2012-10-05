@@ -65,6 +65,7 @@ implementation{
 	 int8_t recieveSeq[20];
 	 rLspList test;
 	 uint8_t lspSeq = 0;
+	 pack lspCache;
 	/**
 	 * End
 	 */ 
@@ -119,7 +120,9 @@ implementation{
 			//printTest();
 	}
 	
-	
+	void dijkstra(){
+		
+	}
 	event void Boot.booted(){
 		call AMControl.start();
 		numNodes = 5;
@@ -148,10 +151,11 @@ implementation{
 	event void AMControl.startDone(error_t err){
 		if(err == SUCCESS){
 			call pingTimeoutTimer.startPeriodic(PING_TIMER_PERIOD + (uint16_t) ((call Random.rand16())%200));
-			//call neighborDiscovey.startOneShot(30000 + (uint16_t) ((call Random.rand16())%200));
-			call neighborDiscovey.startPeriodic(30000 + (uint16_t) ((call Random.rand16())%200));
+			call neighborDiscovey.startOneShot(30000 + (uint16_t) ((call Random.rand16())%200));
+			//call neighborDiscovey.startPeriodic(30000 + (uint16_t) ((call Random.rand16())%200));
 			//call helloProtocol.startPeriodic(45000 + (uint16_t) ((call Random.rand16())%200));
-			call neighborMap.startPeriodic(60000 + (uint16_t) ((call Random.rand16())%200));
+			call neighborMap.startOneShot(35632 + (uint16_t) ((call Random.rand16())%200));
+			//call neighborMap.startPeriodic(60000 + (uint16_t) ((call Random.rand16())%200));
 		}else{
 			//Retry until successful
 			call AMControl.start();
@@ -226,10 +230,19 @@ implementation{
 	}
 	event void neighborMap.fired(){
 		//Generating neighbor map
+		iterator it;
+		iteratorInit(&it,&Neighbors);
+		while(iteratorHasNext(&it)){
+			int8_t buffer = iteratorNext(&it);
+			sendLsp[buffer-1].Cost = 1;
+		}
 		makeLSP();
+		call neighborMap.startPeriodic(600000 + (uint16_t) ((call Random.rand16())%200));
+		
 	}
 	event void neighborDiscovey.fired(){
 		// TODO Auto-generated method stub
+		call neighborDiscovey.startPeriodic(300000 + (uint16_t) ((call Random.rand16())%200));
 		dbg("Project1N","Looking up neighbors\n");
 		checkNeighbors(&Neighbors);
 	}
@@ -280,6 +293,7 @@ implementation{
 		if(len==sizeof(pack)){
 			pack* myMsg=(pack*) payload;
 			pair receivedPacket = {myMsg->src,myMsg->seq};
+			iterator it;
 			//dbg("Project1F", "Recieved a message with the following info:\n");
 			//dbg("Project1F", "*IP Header* Src: %d, Dest: %d Seq:%d TTL: %d\n", myMsg->src, myMsg->dest, myMsg->seq, myMsg->TTL);
 			/*
@@ -328,16 +342,23 @@ implementation{
 						case PROTOCOL_LINKEDSTATE:
 						dbg("Project2", "I have recieved the list from Node %d, updating table and fowarding.\n", myMsg->src);
 						//logPack(myMsg);
-						//printPayload(myMsg->payload,myMsg->src-1);
+						printPayload(myMsg->payload,myMsg->src-1);
 						dbg("Project2", "Compare Seq. Old %d from New %d\n",recieveSeq[myMsg->src-1] ,myMsg->seq);
+						
 						if(recieveSeq[myMsg->src-1]> myMsg->seq){
 							storePayload(myMsg->payload,myMsg->src-1);
 							recieveSeq[myMsg->src-1]= myMsg->seq;
 						}
-						
 						makePack(&sendPackage, myMsg->dest,myMsg->src, myMsg->TTL, myMsg->protocol, myMsg->seq, myMsg->payload, sizeof(myMsg->payload));
-						//sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, sendPackage.dest);
-						sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, myMsg->src);
+						iteratorInit(&it,&Neighbors);
+						while(iteratorHasNext(&it)){
+							int8_t buffer = iteratorNext(&it);
+							if(buffer != myMsg->src){
+								dbg("Project2", "LSP fowarded to %d\n", buffer);
+								sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, buffer);
+								}
+							//dbg("Project1N", "Node: %d\n", iteratorNext(&it));
+						}
 						post sendBufferTask();
 						break;
 						default:
@@ -347,7 +368,7 @@ implementation{
 				}
 				else{
 						dbg("Project1F", "Packet is not meant for me, broadcasting it.\n");
-					makePack(&sendPackage, myMsg->src,myMsg->dest, myMsg->TTL, myMsg->protocol, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));
+					makePack(&sendPackage, myMsg->src,myMsg->dest, myMsg->TTL, myMsg->protocol, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));					
 					sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, AM_BROADCAST_ADDR);
 					post sendBufferTask();
 				}
@@ -385,8 +406,8 @@ implementation{
 						neighborCount++;
 						hashmapInsert(&Neighbors,hash3(myMsg->src,1),myMsg->src);
 						printNeighbors(&Neighbors);
-						sendLsp[myMsg->src-1].Cost = 1;
-						dbg("Project2", "Updating List. Setting %d cost to 1.\n",myMsg->src);
+						//sendLsp[myMsg->src-1].Cost = 1;
+						//dbg("Project2", "Updating List. Setting %d cost to 1.\n",myMsg->src);
 						//printLsp();
 					
 					}
@@ -418,13 +439,32 @@ implementation{
 					}
 					break;
 					case PROTOCOL_LINKEDSTATE:
-					printLsp();
+					dbg("Project2", "I have recieved the list from Node %d, updating table and fowarding.\n", myMsg->src);
+						
+					printPayload(myMsg->payload,myMsg->src-1);
+					dbg("Project2", "Compare Seq. Old %d from New %d\n",recieveSeq[myMsg->src-1] ,myMsg->seq);
+						
+					if(recieveSeq[myMsg->src-1]> myMsg->seq){
+						storePayload(myMsg->payload,myMsg->src-1);
+						recieveSeq[myMsg->src-1]= myMsg->seq;
+					}
+					makePack(&sendPackage, myMsg->dest,myMsg->src, myMsg->TTL, myMsg->protocol, myMsg->seq, myMsg->payload, sizeof(myMsg->payload));
+					iteratorInit(&it,&Neighbors);
+					while(iteratorHasNext(&it)){
+						int8_t buffer = iteratorNext(&it);
+						if(buffer != myMsg->src){
+							dbg("Project2", "LSP fowarded to %d\n", buffer);
+							sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, buffer);
+							}
+						//dbg("Project1N", "Node: %d\n", iteratorNext(&it));
+					}
+					post sendBufferTask();
 					break;
 					default:
 					break;
 				}
 			}
-			//dbg("Project1F", "A Packet has been dropped.\n");
+			//dbg("Project2", "A Packet has been dropped.\n");
 			return msg;
 		}
 
