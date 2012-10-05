@@ -8,13 +8,17 @@ typedef struct routingEntry{
 	int Cost;                                       /* distance metric */
 	uint8_t TTL; /* time to live */
 } Route;
-
+typedef struct lspEntry{
+	uint8_t node;                                     /* distance metric */
+	uint8_t cost; /* time to live */
+} lspEntry;
 typedef struct routingTable{
 	int numRoutes ;
 	uint8_t keys[MAX_ROUTES];
 	Route table[MAX_ROUTES];
 	
 }routingTable;
+
 
 void tableInit(routingTable *input){
 	uint16_t i;

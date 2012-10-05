@@ -22,6 +22,7 @@
 //adds the lsp payload
 #include "dataStructures/lsp.h"
 #include "dataStructures/lsplist.h"
+#include "dataStructures/routingList.h"
 
 
 module Node{
@@ -133,22 +134,42 @@ implementation{
   		}
 	}
 	
+	void selectLSP(uint8_t key){
+	uint8_t i = 0;
+	
+	for(i=0;i<numNodes;i++){
+		lspEntry entry;
+		entry.cost =recieveLsp[key][i].Cost ;
+		entry.node = key+1;
+	}
+		
+	}
+	
 	void dijkstra(uint8_t dest){
-		lsparrlist confirmList, evaluatedList, remainingNodes, neighNodes;
-		nodeID current,hold;
-		Route table[numNodes];
-		uint8_t i = 0, j=0, infinity = 21, curr = TOS_NODE_ID;
+		Route confirmList[numNodes], evaluatedList, remainingNodes, neighNodes;
+		nodeID next,hold;
+		
+		//Route table[numNodes];
+		uint8_t i = 0, j=0, infinity = 21;
 		iterator it;
-		current.nodeid = TOS_NODE_ID-1;
-		lsparrlistPushBack(&confirmList,current);
-		table[TOS_NODE_ID-1].Cost = 0;
-		table[TOS_NODE_ID-1].NextHop = TOS_NODE_ID;
-		table[TOS_NODE_ID-1].Dest = TOS_NODE_ID;
 		iteratorInit(&it,&Neighbors);
-		lsparrlistInit(&confirmList);
-		lsparrlistInit(&evaluatedList);
-	  	lsparrlistInit(&remainingNodes);
-		lsparrlistInit(&neighNodes);
+		/**
+		 * Initialized the confirmed entry with the current node
+		 * Set the cost to zero.
+		 */
+		uint8_t curr = TOS_NODE_ID - 1;
+		confirmList[curr].Cost = 0;
+		confirmList[curr].NextHop = TOS_NODE_ID;
+		confirmList[curr].Dest = TOS_NODE_ID;
+		/**
+		 * Select the LSP Packet relating to this node 
+		 */
+		
+		recieveLsp[curr][1];
+		//lsparrlistInit(&confirmList);
+	//	lsparrlistInit(&evaluatedList);
+	  	//lsparrlistInit(&remainingNodes);
+		//lsparrlistInit(&neighNodes);
 		//filling out my neighbor node list
 		while(iteratorHasNext(&it)){
 			nodeID buffer; 
