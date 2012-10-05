@@ -189,7 +189,7 @@ implementation{
 				}
 			
 		}
-		int shortestCost = distance[dest];
+		//int shortestCost = distance[dest];
 	}
 	event void Boot.booted(){
 		call AMControl.start();
@@ -408,16 +408,20 @@ implementation{
 						}
 						break;
 						case PROTOCOL_LINKEDSTATE:
-						dbg("Project2", "I have recieved the list from Node %d, updating table and fowarding.\n", myMsg->src);
+						dbg("Project2", "I have recieved the list from Node %d, checking if its old.\n", myMsg->src);
 						//logPack(myMsg);
 						printPayload(myMsg->payload,myMsg->src-1);
 						dbg("Project2", "Compare Seq. Old %d from New %d\n",recieveSeq[myMsg->src-1] ,myMsg->seq);
 						
-						if(recieveSeq[myMsg->src-1]> myMsg->seq){
+						if(recieveSeq[myMsg->src-1]< myMsg->seq){
+							dbg("Project2", "New LSP. Updating!");
 							storePayload(myMsg->payload,myMsg->src-1);
 							recieveSeq[myMsg->src-1]= myMsg->seq;
 						}
-						makePack(&sendPackage, myMsg->dest,myMsg->src, myMsg->TTL--, myMsg->protocol, myMsg->seq, myMsg->payload, sizeof(myMsg->payload));
+						else{
+							return msg;
+						}
+						makePack(&sendPackage, myMsg->src,myMsg->dest, myMsg->TTL--, myMsg->protocol, myMsg->seq, myMsg->payload, sizeof(myMsg->payload));
 						//iteratorInit(&it,&Neighbors);
 						//while(iteratorHasNext(&it)){
 						//	int8_t buffer = iteratorNext(&it);
@@ -512,11 +516,15 @@ implementation{
 					printPayload(myMsg->payload,myMsg->src-1);
 					dbg("Project2", "Compare Seq. Old %d from New %d\n",recieveSeq[myMsg->src-1] ,myMsg->seq);
 						
-					if(recieveSeq[myMsg->src-1]> myMsg->seq){
+					if(recieveSeq[myMsg->src-1]< myMsg->seq){
+						dbg("Project2", "New LSP. Updating!");
 						storePayload(myMsg->payload,myMsg->src-1);
 						recieveSeq[myMsg->src-1]= myMsg->seq;
 					}
-					makePack(&sendPackage, myMsg->dest,myMsg->src, myMsg->TTL--, myMsg->protocol, myMsg->seq, myMsg->payload, sizeof(myMsg->payload));
+					else{
+						return msg;
+					}
+					makePack(&sendPackage, myMsg->src,myMsg->dest, myMsg->TTL--, myMsg->protocol, myMsg->seq, myMsg->payload, sizeof(myMsg->payload));
 					iteratorInit(&it,&Neighbors);
 					//while(iteratorHasNext(&it)){
 						//int8_t buffer = iteratorNext(&it);
