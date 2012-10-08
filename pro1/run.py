@@ -41,6 +41,7 @@ print "Setting Debug Channels"
 #t.addChannel("Project1F", sys.stdout);
 #t.addChannel("Project1N", sys.stdout);
 t.addChannel("Project2", sys.stdout);
+t.addChannel("disAlg", sys.stdout);
 
 print "Setting noise model"
 for i in range(1, numNodes+1):
