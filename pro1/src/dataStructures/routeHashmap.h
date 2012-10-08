@@ -3,35 +3,39 @@
 //Description: A simple hashtable. Change the HASHMAP_TYPE to change the type being stored.
 #ifndef ROUTEHASHMAP_H
 #define ROUTEHASHMAP_H
+
+
 	
 
-
 enum{
-	rHASH_MAX_SIZE = 20
+	rHASH_MAX_SIZE = 20,
+	NUMNODES = 5
 };
-
-
-
 typedef struct routingEntry2{
 	//uint16_t nodeid;
 	uint16_t Dest;   /* address of destination */
 	uint16_t NextHop;                                               /* address of next hop */
-	int Cost;                                       /* distance metric */
+	int Cost; 
+	bool isValid;                                      /* distance metric */
 	uint8_t TTL; /* time to live */
 } Route;
 typedef Route hashType2;
-
-typedef struct hashmapEntry2{
+typedef struct rhashmapEntry{
 	uint16_t key;
 	hashType2 value;
-}hEntry;
+}rhashmapEntry;
 
-typedef struct hashmap2{
-	hEntry map[rHASH_MAX_SIZE];
+typedef struct rhashmap{
+	rhashmapEntry map[rHASH_MAX_SIZE];
 	uint8_t keys[rHASH_MAX_SIZE];
 	uint8_t numofVals;
 }rhashmap;
 
+/*
+ * Hash, Hash2
+ * @param int k = key
+ * @return int - uses a hashing function to create a position.
+ */
 uint16_t rhash(uint16_t k){
 	return k%13;
 }
@@ -46,15 +50,16 @@ uint16_t rhash2(uint16_t k){
  * @return 	uint16_t a function that return as position based on hash and hash2.
  */
 uint16_t rhash3(uint16_t k, uint16_t i){
- 	return k;
+ 	return (rhash(k)+ i*rhash2(k))%rHASH_MAX_SIZE;
  }
+
 /*
  * hashmapInit - initialize by setting all keys to 0 and the number of values to 0.
  * @param	hashmap *input = the value to be initialized
  */
 void rhashmapInit(rhashmap *input){
 	uint16_t i;
-		for(i=0; i<rHASH_MAX_SIZE; i++){
+	for(i=0; i<rHASH_MAX_SIZE; i++){
 		input->map[i].key=0; 		
 	}
 	input->numofVals=0;
@@ -87,10 +92,9 @@ hashType2 rhashmapGet(rhashmap *input, uint8_t key){
  */
 bool rhashmapContains(rhashmap *input, uint8_t key){
 	uint16_t i=0;	uint16_t j=0;
-	dbg("rhashmap", "Checking to see if values exist");
+	dbg("hashmap", "Checking to see if values exist");
 	do{
-		j = key;
-		//j=rhash3(key, i);
+		j=rhash3(key, i);
 		if(input->map[j].key == key){	return TRUE;}
 		i++;
 	}while(i<rHASH_MAX_SIZE);	
@@ -108,7 +112,7 @@ void rhashmapInsert(rhashmap *input, uint8_t key, hashType2 value){
 	uint16_t i=0;	uint16_t j=0;
 	dbg("hashmap", "Attempting to place Entry: %hhu\n", key);
 	do{
-		j=key;
+		j=rhash3(key, i);
 		if(input->map[j].key==0 || input->map[j].key==key){
 			if(input->map[j].key==0){
 				input->keys[input->numofVals]=key;
@@ -116,7 +120,7 @@ void rhashmapInsert(rhashmap *input, uint8_t key, hashType2 value){
 			}
 			input->map[j].value=value;
 			input->map[j].key = key;
-			dbg("rhashmap","------------------Entry: %hhu was placed in %hhu\n", key, j);
+			dbg("hashmap","------------------Entry: %hhu was placed in %hhu\n", key, j);
 			return;
 		}
 		i++;
@@ -133,7 +137,9 @@ void rhashmapRemove(rhashmap *input, uint8_t key){
 	uint16_t i=0;	uint16_t j=0;
 	do{
 		j=rhash3(key, i);
-		if(input->map[j].key == key){	input->map[j].key=0; return;}
+		if(input->map[j].key == key){	
+		dbg("Project2", "Going to delete key: %d\n", key);
+		input->map[j].key=0; return;}
 		i++;
 	}while(i<rHASH_MAX_SIZE);
 	

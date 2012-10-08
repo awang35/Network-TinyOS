@@ -5,7 +5,7 @@
  * Description: A simple method of converting the hashmap class I created into an iterator.
  */
 #ifndef RITERATOR_H
-#define RITERATOR_H
+#define ITERATOR_H
 
 #include "routeHashmap.h"
 

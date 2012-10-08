@@ -46,7 +46,7 @@ module Node{
 }
 
 implementation{
-	uint16_t numNodes;
+	//uint16_t NUMNODES = 5;
 	uint16_t sequenceNum = 0;
 	bool busy = FALSE;
 	message_t pkt;
@@ -57,17 +57,19 @@ implementation{
 	//Ping/PingReply Variables	
 	pingList pings;
 	/**
-	 * Adrian's Variable
-	 */
-	 uint8_t neighborCount;
-	 uint8_t helloCount;
-	 hashmap Neighbors;
-	 uint8_t broadcastMessage[PACKET_MAX_PAYLOAD_SIZE] = {"broadc@st"};
-	 uint8_t helloMessage[PACKET_MAX_PAYLOAD_SIZE] = {"he!!o"};
-	 lspList sendLsp[20];
-	 lspList recieveLsp[20][20];
-	 int8_t recieveSeq[20];
-	 rLspList test;
+	* Adrian's Variable
+	*/
+	uint8_t neighborCount;
+	uint8_t helloCount;
+	hashmap Neighbors;
+	uint8_t broadcastMessage[PACKET_MAX_PAYLOAD_SIZE] = {"broadc@st"};
+	uint8_t helloMessage[PACKET_MAX_PAYLOAD_SIZE] = {"he!!o"};
+	lspList sendLsp[NUMNODES];
+	lspList recieveLsp[NUMNODES][NUMNODES];
+	int8_t recieveSeq[NUMNODES];
+	rLspList test;
+	Route confirmList[NUMNODES], tentList[NUMNODES];
+	//rhashmap confirmList, tentList;
 	// uint8_t lspSeq = 0;
 	 pack lspCache;
 
@@ -88,7 +90,7 @@ implementation{
 	//	dbg("Project2","------------------------------------\n");
 	//	dbg("Project2","Printing LSP Payload that is going to be sent\n");
 		
-		for( p = 0; p<numNodes;p++)
+		for( p = 0; p<NUMNODES;p++)
 			dbg("Project2", "Node %d have cost %d.\n",p+1,sendLsp[p].Cost);
 	}
 	/**
@@ -101,12 +103,12 @@ implementation{
 		dbg("Project2","Intial Print\n");
 		
 		dbg("Project2","LSP packet\n");
-		for(o=0; o<numNodes;o++){
+		for(o=0; o<NUMNODES;o++){
 			dbg("Project2", "Node %d have cost %d.\n",o+1,sendLsp[o].Cost);
 			}
 		dbg("Project2","Recieve List\n");
-		for(i=0; i<numNodes;i++){
-			for(j=0;j<numNodes;j++){
+		for(i=0; i<NUMNODES;i++){
+			for(j=0;j<NUMNODES;j++){
 				dbg("Project2", "Node %d have cost %d.\n",i+1,sendLsp[i].Cost);
 				}
 			}
@@ -116,10 +118,10 @@ implementation{
 		uint8_t i=0, j = 0;
 		uint8_t inf = 21;
 		lspList nothing;
-		for(i; i<numNodes;i++){
+		for(i; i<NUMNODES;i++){
 			sendLsp[i].Cost = inf;
 			recieveSeq[i] = -1;
-			for(j=0; j<numNodes; j++)
+			for(j=0; j<NUMNODES; j++)
 				recieveLsp[i][j].Cost = inf;
 			}
 			//printTest();
@@ -141,7 +143,7 @@ implementation{
 	uint8_t i = 0;
 	lspAlgorithm entry;
 	entry.nodeid = (uint8_t)(key+1);
-	for(i=0;i<numNodes;i++){
+	for(i=0;i<NUMNODES;i++){
 		entry.neighborid[i] = (uint8_t)(i+1);
 		entry.cost[i] =recieveLsp[key][i].Cost ;	
 	}
@@ -158,10 +160,14 @@ implementation{
 		while(riteratorHasNext(&r)){
 		
 			temp = riteratorNext(&r);
-			dbg("Project2","Counter: %d, Dest: %d, Cost: %d. NextHop: %d\n", count,temp.Dest,temp.Cost, temp.NextHop);
+			dbg("Project2","Dest: %d, Cost: %d. NextHop: %d\n", temp.Dest,temp.Cost, temp.NextHop);
 				count++;
 		}
 		dbg("Project2","----------------END---------------------\n"); 
+		//if(type==1||type==2)
+	/*	for(count = 0; count< 20; count++){
+			dbg("Project2","%d,%d\n",input->map[count].key,input->map[count].value.Dest);
+		}*/
 	}
 	uint8_t getLowestCost(rhashmap *input){
 		riterator r;
@@ -172,63 +178,256 @@ implementation{
 			temp = riteratorNext(&r);
 			if (temp.Cost<lowCost){
 				lowCost = temp.Cost;
-				nodeid = r.position;
+				nodeid = temp.Dest;
 			}				
 		}
 		return nodeid;
 	}
+	void printTable(int8_t type){
+		uint8_t i =0;
+		Route temp[NUMNODES];
+		if(type == 0){
+			for(i = 0; i< NUMNODES;i++){
+			
+			temp[i] = confirmList[i];
+			}
+				dbg("Project2","Printing ConfirmList\n");
+			}
+		else{
+			for(i = 0; i< NUMNODES;i++){
+			temp[i] = tentList[i];
+			}
+			dbg("Project2","Printing tentList\n");	
+		}
+		for(i = 0; i< NUMNODES;i++){
+			dbg("Project2","Entry %d: Dest: %d, Cost: %d, NextHop: %d, isValid: %d\n",i+1, temp[i].Dest,temp[i].Cost,temp[i].NextHop,temp[i].isValid);
+			
+		}
+	}
+	uint8_t countValid(){
+		uint8_t i = 0, countForValid=0;
+		for(i =0;i<NUMNODES;i++){
+			if(tentList[i].isValid)
+				countForValid++;
+		}
+		if(countForValid ==0){
+			dbg("Project2","Nothing was Valid\n");
+			return 0;}
+		else if (countForValid == NUMNODES){
+			dbg("Project2","All was valid\n");
+			return 1;}
+		else
+		dbg("Project2","Some was valid. Num valid: %d\n",countForValid);
+			return 2;
+	}
+	
+	uint8_t getLowCost(){
+		uint8_t i = 0, low = 21,node = 255;
+		for(i = 0; i< NUMNODES; i++){
+			//dbg("Project2","Checking if tentList[%d] with cost %d is the lowest compared to %d\n",i,tentList[i].Cost,low );
+			if(tentList[i].Cost< low && tentList[i].isValid){
+			low = tentList[i].Cost;
+			node = i; 
+			}
+		}
+		dbg("Project2","Lowest was Node %d", node);
+		return node;
+	}
 	void dijkstra(){
+		Route confirmEntry, tentativeEntry;
+		//Route confirmList[NUMNODES], tentList[NUMNODES];
+		uint8_t i = 0, j=0, infinity = 21, nextNode, counter=0, errorCount=0;
+		lspAlgorithm currentLsp;
+		for(i = 0;i<NUMNODES;i++){
+			confirmList[i].Cost = 21;
+			confirmList[i].isValid = FALSE;
+			tentList[i].isValid = FALSE;
+			tentList[i].Cost = 21;
+		}
+		nextNode = TOS_NODE_ID - 1;
+		confirmEntry.Cost = 0;
+		confirmEntry.NextHop = TOS_NODE_ID;
+		confirmEntry.Dest = TOS_NODE_ID;
+		confirmEntry.isValid = TRUE;
+		confirmList[nextNode] = confirmEntry;
+		
+		dbg("Project2","Doing Dijkstra Algorithm for node %d\n", nextNode+1); 
+		do{
+			counter++;						
+		/**
+		 * Select the LSP Packet relating to this node 
+		 */
+			dbg("Project2","Node %d was just added to confirmed List.\n", nextNode+1); 
+			printTable(0);
+			currentLsp = selectLSP(nextNode);
+			for(i = 0; i < NUMNODES;i++){
+				if(currentLsp.cost[i]<infinity){
+					dbg("Project2","Checking Cost for neighbors.\n"); 
+					tentativeEntry.Cost = currentLsp.cost[i]+ confirmEntry.Cost;
+					dbg("Project2","To reach Node %d, it cost %d.\n", i+1,tentativeEntry.Cost); 
+					dbg("Project2","Checking if its not neither list\n"); 
+					if(confirmList[i].isValid == TRUE || tentList[i].isValid == TRUE){
+						dbg("Project2","It was not in the list, adding entry to tentative with (%d,%d,%d)\n", i+1,tentativeEntry.Cost,i+1);
+                    	tentativeEntry.Dest = i+1;
+                        tentativeEntry.NextHop = i+1;
+                      	tentativeEntry.isValid = TRUE;
+                      	tentList[i]= tentativeEntry;
+						}
+					if( tentList[i].isValid == TRUE && tentativeEntry.Cost < tentList[i].Cost ){
+						dbg("Project2","A better entry was found, updating table with entry (%d,%d,%d)\n",currentLsp.neighborid[i],tentativeEntry.Cost,nextNode+1);
+						tentativeEntry.Dest = i+1;
+                        tentativeEntry.NextHop = nextNode+1;
+                        tentativeEntry.isValid = TRUE;
+                        tentList[i]= tentativeEntry;
+						}
+				}
+			}
+			printTable(1);
+			if(countValid()==0)
+				break;
+			nextNode = getLowCost();
+			dbg("Project2","It was Node %d with cost %d\n",nextNode+1,tentList[nextNode].Cost);
+			confirmEntry.Cost = tentList[nextNode].Cost;
+			confirmEntry.NextHop = tentList[nextNode].NextHop;
+			confirmEntry.Dest = tentList[nextNode].Dest;
+			confirmEntry.isValid = TRUE;
+			confirmList[nextNode] = confirmEntry;
+			tentList[nextNode].isValid = FALSE;
+			printTable(1);
+			}while(counter<2);
+		}
+		
+	
+	
+	/*void dijkstra(){
 	//void dijkstra(uint8_t dest){
 		Route confirmEntry, tentativeEntry, remainingNodes, neighNodes;
 		//nodeID next,hold;
 		lhashmap tenative;
-		hEntry rhashEntry;
 		rhashmap confirmList, tentList;
 		lspAlgorithm currentLsp;
-		//Route table[numNodes];
-		uint8_t i = 0, j=0, infinity = 21, next;
+		//Route table[NUMNODES];
+		uint8_t i = 0, j=0, infinity = 21, nextNode, counter=0, errorCount=0;
 		iterator it;
+		rhashmap temp,error;
+		
 		rhashmapInit(&confirmList);
+		rhashmapInit(&tentList);
 		iteratorInit(&it,&Neighbors);
 		/**
 		 * Initialized the confirmed entry with the current node
 		 * Set the cost to zero.
-		 */
-		next = TOS_NODE_ID - 1;
+		 
+		nextNode = TOS_NODE_ID - 1;
 		//confirmEntry.nodeid = TOS_NODE_ID;
 		confirmEntry.Cost = 0;
 		confirmEntry.NextHop = TOS_NODE_ID;
 		confirmEntry.Dest = TOS_NODE_ID;
-		rhashmapInsert(&confirmList, next, confirmEntry);
-		printrhmap(&confirmList,0);
+		rhashmapInsert(&confirmList, nextNode, confirmEntry);
+		//printrhmap(&confirmList,0);
+		dbg("Project2","Doing Dijkstra Algorithm for node %d\n", nextNode+1); 
 		do{
+			counter++;
+			while(rhashmapContains(&tentList,nextNode)){
+				
+				dbg("Project2","Node %d is still in tentList. Trying to remove.", nextNode+1);
+				rhashmapRemove(&tentList, nextNode);
+				if(errorCount>2 && errorCount<3){
+					rhashmapInit(&error);
+					error = tentList;
+					rhashmapInit(&tentList);
+					rhashmapRemove(&error, nextNode);
+					tentList = error;
+					}
+				else if(errorCount>3)
+					break;	
+				errorCount++;
+			}
 		/**
 		 * Select the LSP Packet relating to this node 
-		 */
-		currentLsp = selectLSP(next);
+		 //
+			dbg("Project2","Node %d was just added to confirmed List.\n", nextNode+1); 
+			currentLsp = selectLSP(nextNode);
 		/**
-		 * Insert into tentative list
-		 */
-			for(i = 0; i < numNodes;i++){
+		 * Calculate Cost
+		
+			for(i = 0; i < NUMNODES;i++){
 			//tentativeEntry.nodeid = currentLsp.neighborid[i];
+				
 				if(currentLsp.cost[i]<infinity){
-				tentativeEntry.Dest = currentLsp.neighborid[i];
-				tentativeEntry.Cost = currentLsp.cost[i];
-				tentativeEntry.NextHop = currentLsp.neighborid[i];
-				rhashmapInsert(&tentList,next,tentativeEntry);
+					dbg("Project2","Checking Cost for neighbors.\n"); 
+					tentativeEntry.Cost = currentLsp.cost[i]+ confirmEntry.Cost;
+					dbg("Project2","To reach Node %d, it cost %d.\n", i+1,tentativeEntry.Cost); 
+					dbg("Project2","Checking if its not neither list\n"); 
+					if(!(rhashmapContains(&confirmList,i))||!(rhashmapContains(&tentList,i))){
+						dbg("Project2","It was not in the list, adding entry to tentative with (%d,%d,%d)\n", i+1,tentativeEntry.Cost,i+1); 
+						tentativeEntry.Dest = i+1;
+						tentativeEntry.NextHop = i+1;
+						rhashmapInsert(&tentList,i,tentativeEntry);
+					}
+					else if(rhashmapContains(&tentList,i)){
+						dbg("Project2","It was in list, checking if it is better\n");
+						if(rhashmapGet(&tentList,i).Cost > tentativeEntry.Cost){
+							dbg("Project2","It was better, updating table with entry (%d,%d,%d)\n",currentLsp.neighborid[i],tentativeEntry.Cost,nextNode+1);
+							tentativeEntry.Dest = i+1;
+							tentativeEntry.NextHop = nextNode+1;
+							rhashmapRemove(&tentList,i);
+							rhashmapInsert(&tentList,i,tentativeEntry);
+							}
+							else{
+								dbg("Project2","It was worse");
+								}
+					}
+						
+					//tentativeEntry.Dest = currentLsp.neighborid[i];
+					//if(confirmEntry.Dest = TOS_NODE_ID)
+					//	tentativeEntry.NextHop = currentLsp.neighborid[i];
+					//rhashmapInsert(&tentList,next,tentativeEntry);
 				}	
 			}
 		printrhmap(&tentList,1);
-		next = getLowestCost(&getLowestCost);
-		rhashmapInsert(&confirmList,next,rhashmapGet(&tentList, next));
-		rhashmapRemove(&tentList, next);
-		}while(!rhashmapIsEmpty(&tentList));
+		
+		if(rhashmapIsEmpty(&tentList))
+			break;
+		dbg("Project2","Checking for lowest cost.");
+		nextNode = getLowestCost(&tentList) - 1;
+		//dbg("Project2","nextNode: is %d.", nextNode + 1);
+		dbg("Project2","It was Node %d with cost %d\n",nextNode+1,rhashmapGet(&tentList,nextNode).Cost);
+		rhashmapInsert(&confirmList,nextNode,rhashmapGet(&tentList, nextNode));
+		
+		//dbg("Project2","Trying to remove Node %d from list. nextNode is: %d. Hashing it gives: %d\n",nextNode+1,nextNode,rhash3(nextNode,0));
+		
+		//rhashmapRemove(&tentList, nextNode);
+		
+		//rhashmapInit(&tentList);
+		//printrhmap(&tentList,1);
+			
+		temp = tentList;
+		rhashmapInit(&tentList);
+		//rhashmapRemove(&temp, nextNode-1);
+		//rhashmapRemove(&temp, 0);
+		rhashmapRemove(&temp, nextNode);
+		
+		tentList = temp;
+		//rhashmapRemove(&temp, 2);
+		//rhashmapRemove(&temp, 3);
+		//rhashmapRemove(&temp, 4);
+		//printrhmap(&temp,2);
+		//dbg("Project2","Printing Tentative List. TentList amount is: %d\n", tentList.numofVals);
+		dbg("Project2","Printing Tentative List. TentList amount is: %d\n", tentList.numofVals);
+		printrhmap(&tentList,2);
+		confirmEntry.Cost = rhashmapGet(&tentList,nextNode).Cost;
+		confirmEntry.NextHop = rhashmapGet(&tentList,nextNode).Cost;
+		confirmEntry.Dest = rhashmapGet(&tentList,nextNode).Dest;
+		dbg("Project2","Printing Confirm List.\n");
+		printrhmap(&confirmList,0);
+		dbg("Project2","Counter %d of 6.\n", counter);
+		}while(counter<6);
 		//lsparrlistInit(&confirmList);
-
-	}
+		dbg("Project2","Algorithm has ended.\n");
+	}*/
 	event void Boot.booted(){
 		call AMControl.start();
-		numNodes = 5;
 		arrListInit(&Received);
 		neighborCount = 0;
 		hashmapInit(&Neighbors);
@@ -353,9 +552,9 @@ implementation{
 		uint8_t i=0,j=0;
 		dbg("Project2","------------------------------------\n");
 		dbg("Project2","Printing Recieved LSP List for Node %d\n",TOS_NODE_ID);
-		while(i<numNodes){
+		while(i<NUMNODES){
 			dbg("Project2","Node %d LSP list: ",i+1);
-			for(j=0;j<numNodes;j++){
+			for(j=0;j<NUMNODES;j++){
 				dbg("Project2","%d",recieveLsp[i][j].Cost);
 				}
 				dbg("Project2","\n");
@@ -369,10 +568,10 @@ implementation{
 		uint8_t i=0;
 		//uint8_t inf = 21;
 		dbg("Project2"," Going to store in slot %d\n",src);
-		for(i; i<numNodes;i++){
+		for(i; i<NUMNODES;i++){
 			recieveLsp[src][i].Cost= payload[i].Cost;
 			}
-		printRecieveLsp();
+		//printRecieveLsp();
 	}
 	void printPayload(lspList *payload,uint16_t src){
 		uint8_t i=0;
@@ -380,7 +579,7 @@ implementation{
 		dbg("Project2","*************************************\n");
 		dbg("Project2","Printing PAYLOAD from Node %d\n",src+1);
 		dbg("Project2","\tNode\tCost\n");
-		for(i; i<numNodes;i++)
+		for(i; i<NUMNODES;i++)
 			if(payload[i].Cost<21)
 				dbg("Project2","\t%d\t%d\n",i+1,payload[i].Cost);
 		dbg("Project2","*************************************\n");
