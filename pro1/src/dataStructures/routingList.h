@@ -3,7 +3,7 @@
 #define ROUTINGLIST_H
 
 #include "routingtable.h"
-typedef Route dataType1;
+typedef Route2 dataType1;
 #define routeAYSIZE 30
 #define MAXNUMVALS routeAYSIZE
 

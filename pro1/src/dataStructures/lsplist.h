@@ -4,7 +4,7 @@
 
 #include "lsp.h"
 #include "routingtable.h"
-typedef nodeID datatype2;
+typedef lspEntry datatype2;
 #define ARRAYSIZE 30
 #define MAXNUMVALS ARRAYSIZE
 
@@ -79,11 +79,11 @@ void lsparrlistClear(lsparrlist* cur){	cur->numValues = 0;}
 
 datatype2 lsparrlistGet(lsparrlist* cur, nx_uint8_t i){	return cur->values[i];}
 
-bool lsparrlistContains(lsparrlist* list, uint8_t iSrc, uint8_t iSeq){
+bool lsparrlistContains(lsparrlist* list, uint8_t iSrc){
 	uint8_t i=0;
-	//for(i; i<list->numValues; i++){
-	//	if(iSeq == list->values[i].seq && iSrc == list->values[i].src) return TRUE;
-	//}
+	for(i; i<list->numValues; i++){
+		if(iSrc == list->values[i].node) return TRUE;
+	}
 	return FALSE;
 }
 

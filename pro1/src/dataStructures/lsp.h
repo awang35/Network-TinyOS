@@ -9,10 +9,10 @@ typedef struct lspList{
 typedef struct nodeID{                           
 	uint8_t nodeid;                                       /* distance metric */
 }nodeID;
-typedef struct lspAlgorithm{                           
+typedef struct lspAlgorithm2{                           
 	uint8_t Cost;
 	uint8_t NodeID;                                       /* distance metric */
-}lspAlgorithm;
+}lspAlgorithm2;
 typedef struct recieveLspList{
 	uint8_t Cost;
 	lspList container[MAX_ROUTES][MAX_ROUTES];

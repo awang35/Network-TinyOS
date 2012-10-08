@@ -22,7 +22,10 @@
 //adds the lsp payload
 #include "dataStructures/lsp.h"
 #include "dataStructures/lsplist.h"
-#include "dataStructures/routingList.h"
+#include "dataStructures/routeHashmap.h"
+#include "dataStructures/lspHashmap.h"
+#include "dataStructures/riterator.h"
+//#include "dataStructures/routingList.h"
 
 
 module Node{
@@ -134,61 +137,94 @@ implementation{
   		}
 	}
 	
-	void selectLSP(uint8_t key){
+	lspAlgorithm selectLSP(uint8_t key){
 	uint8_t i = 0;
-	
+	lspAlgorithm entry;
+	entry.nodeid = (uint8_t)(key+1);
 	for(i=0;i<numNodes;i++){
-		lspEntry entry;
-		entry.cost =recieveLsp[key][i].Cost ;
-		entry.node = key+1;
+		entry.neighborid[i] = (uint8_t)(i+1);
+		entry.cost[i] =recieveLsp[key][i].Cost ;	
 	}
-		
+	//	lsparrlistPushBack(&recieveLspList,entry);
+	return entry;
 	}
-	
-	void dijkstra(uint8_t dest){
-		Route confirmList[numNodes], evaluatedList, remainingNodes, neighNodes;
-		nodeID next,hold;
+	void printrhmap(rhashmap *input,uint8_t type){
+		riterator r;
+		uint8_t count =0;
+		Route temp;
+		riteratorInit(&r, input);
 		
+		dbg("Project2","----------------------------------------\n Printing RouteMap Type: %d\n",type);
+		while(riteratorHasNext(&r)){
+		
+			temp = riteratorNext(&r);
+			dbg("Project2","Counter: %d, Dest: %d, Cost: %d. NextHop: %d\n", count,temp.Dest,temp.Cost, temp.NextHop);
+				count++;
+		}
+		dbg("Project2","----------------END---------------------\n"); 
+	}
+	uint8_t getLowestCost(rhashmap *input){
+		riterator r;
+		uint8_t lowCost = 21, nodeid=255;
+		Route temp;
+		riteratorInit(&r, input);
+		while(riteratorHasNext(&r)){
+			temp = riteratorNext(&r);
+			if (temp.Cost<lowCost){
+				lowCost = temp.Cost;
+				nodeid = r.position;
+			}				
+		}
+		return nodeid;
+	}
+	void dijkstra(){
+	//void dijkstra(uint8_t dest){
+		Route confirmEntry, tentativeEntry, remainingNodes, neighNodes;
+		//nodeID next,hold;
+		lhashmap tenative;
+		hEntry rhashEntry;
+		rhashmap confirmList, tentList;
+		lspAlgorithm currentLsp;
 		//Route table[numNodes];
-		uint8_t i = 0, j=0, infinity = 21;
+		uint8_t i = 0, j=0, infinity = 21, next;
 		iterator it;
+		rhashmapInit(&confirmList);
 		iteratorInit(&it,&Neighbors);
 		/**
 		 * Initialized the confirmed entry with the current node
 		 * Set the cost to zero.
 		 */
-		uint8_t curr = TOS_NODE_ID - 1;
-		confirmList[curr].Cost = 0;
-		confirmList[curr].NextHop = TOS_NODE_ID;
-		confirmList[curr].Dest = TOS_NODE_ID;
+		next = TOS_NODE_ID - 1;
+		//confirmEntry.nodeid = TOS_NODE_ID;
+		confirmEntry.Cost = 0;
+		confirmEntry.NextHop = TOS_NODE_ID;
+		confirmEntry.Dest = TOS_NODE_ID;
+		rhashmapInsert(&confirmList, next, confirmEntry);
+		printrhmap(&confirmList,0);
+		do{
 		/**
 		 * Select the LSP Packet relating to this node 
 		 */
-		
-		recieveLsp[curr][1];
-		//lsparrlistInit(&confirmList);
-	//	lsparrlistInit(&evaluatedList);
-	  	//lsparrlistInit(&remainingNodes);
-		//lsparrlistInit(&neighNodes);
-		//filling out my neighbor node list
-		while(iteratorHasNext(&it)){
-			nodeID buffer; 
-			buffer.nodeid = iteratorNext(&it);
-			lsparrlistPushBack(&neighNodes,buffer);
-		}
-	
-		for(i = 0; i < numNodes;i++){
-			if(i!=TOS_NODE_ID){
-			hold.nodeid = i+1;
-			lsparrlistPushBack(&remainingNodes,hold);
+		currentLsp = selectLSP(next);
+		/**
+		 * Insert into tentative list
+		 */
+			for(i = 0; i < numNodes;i++){
+			//tentativeEntry.nodeid = currentLsp.neighborid[i];
+				if(currentLsp.cost[i]<infinity){
+				tentativeEntry.Dest = currentLsp.neighborid[i];
+				tentativeEntry.Cost = currentLsp.cost[i];
+				tentativeEntry.NextHop = currentLsp.neighborid[i];
+				rhashmapInsert(&tentList,next,tentativeEntry);
+				}	
 			}
-		}
-		
-		
-		
-		
+		printrhmap(&tentList,1);
+		next = getLowestCost(&getLowestCost);
+		rhashmapInsert(&confirmList,next,rhashmapGet(&tentList, next));
+		rhashmapRemove(&tentList, next);
+		}while(!rhashmapIsEmpty(&tentList));
+		//lsparrlistInit(&confirmList);
 
-		//int shortestCost = distance[dest];
 	}
 	event void Boot.booted(){
 		call AMControl.start();
@@ -221,7 +257,7 @@ implementation{
 			call neighborDiscovey.startOneShot(30000 + (uint16_t) ((call Random.rand16())%200));
 			//call neighborDiscovey.startPeriodic(30000 + (uint16_t) ((call Random.rand16())%200));
 			//call helloProtocol.startPeriodic(45000 + (uint16_t) ((call Random.rand16())%200));
-			call neighborMap.startOneShot(35632 + (uint16_t) ((call Random.rand16())%200));
+			call neighborMap.startOneShot(35632 + (uint16_t) ((call Random.rand16())%2000));
 			//call neighborMap.startPeriodic(60000 + (uint16_t) ((call Random.rand16())%200));
 		}else{
 			//Retry until successful
@@ -361,6 +397,7 @@ implementation{
 			pack* myMsg=(pack*) payload;
 			pair receivedPacket = {myMsg->src,myMsg->seq};
 			iterator it;
+			
 			//dbg("Project1F", "Recieved a message with the following info:\n");
 			//dbg("Project1F", "*IP Header* Src: %d, Dest: %d Seq:%d TTL: %d\n", myMsg->src, myMsg->dest, myMsg->seq, myMsg->TTL);
 			/*
@@ -438,7 +475,8 @@ implementation{
 	
 				}
 				else{
-						dbg("Project1F", "Packet is not meant for me, broadcasting it.\n");
+					dbg("Project1F", "Packet is not meant for me, broadcasting it.\n");
+					dijkstra();
 					makePack(&sendPackage, myMsg->src,myMsg->dest, myMsg->TTL, myMsg->protocol, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));					
 					sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, AM_BROADCAST_ADDR);
 					post sendBufferTask();
@@ -456,6 +494,7 @@ implementation{
 					uint16_t dest;
 					case PROTOCOL_PING:
 					//if())
+					dijkstra();
 					dest =AM_BROADCAST_ADDR;
 					//else dest = myMsg->src;
 					dbg("Project1F", "Sending Ping Reply to %d! \n", myMsg->src);
