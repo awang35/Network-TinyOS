@@ -15,17 +15,12 @@
 #include "dataStructures/hashmap.h"
 #include "message.h"
 #include "string.h"
-//#include "routingtable.h"
 //Ping Includes
 #include "dataStructures/pingList.h"
 #include "ping.h"
-//adds the lsp payload
-#include "dataStructures/lsp.h"
-#include "dataStructures/lsplist.h"
-#include "dataStructures/routeHashmap.h"
-#include "dataStructures/lspHashmap.h"
-#include "dataStructures/riterator.h"
-//#include "dataStructures/routingList.h"
+#include "dataStructures/routingtable.h"
+//#include "dataStructures/lspHashmap.h"
+
 
 
 module Node{
@@ -68,12 +63,7 @@ implementation{
 	lspList sendLsp[NUMNODES];
 	lspList recieveLsp[NUMNODES][NUMNODES];
 	int8_t recieveSeq[NUMNODES];
-	//rLspList test;
 	Route confirmList[NUMNODES], tentList[NUMNODES];
-	//rhashmap confirmList, tentList;
-	// uint8_t lspSeq = 0;
-	// pack lspCache;
-
 	/**
 	 * End
 	 */ 
@@ -81,40 +71,12 @@ implementation{
 	 
 	error_t send(uint16_t src, uint16_t dest, pack *message);
 	void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t Protocol, uint16_t seq, uint8_t *payload, uint8_t length);
-	
-	
 	task void sendBufferTask();
-
-	void printLsp(){
-	 uint8_t p = 0;
-	//	dbg("Project2", "------------------------------------\n");
-	//	dbg("Project2","------------------------------------\n");
-	//	dbg("Project2","Printing LSP Payload that is going to be sent\n");
-		
-		for( p = 0; p<NUMNODES;p++)
-			dbg("Project2", "Node %d have cost %d.\n",p+1,sendLsp[p].Cost);
-	}
 	/**
 	 * Initialize LSP payload. Set all cost to inf (in this case 21 is infinity)
 	 * When it is infinity that means the node is not connected
 	 */
-	void printTest(){
-		 uint8_t o=0,i=0, j = 0;
-		dbg("Project2","------------------------------------\n");
-		dbg("Project2","Intial Print\n");
-		
-		dbg("Project2","LSP packet\n");
-		for(o=0; o<NUMNODES;o++){
-			dbg("Project2", "Node %d have cost %d.\n",o+1,sendLsp[o].Cost);
-			}
-		dbg("Project2","Recieve List\n");
-		for(i=0; i<NUMNODES;i++){
-			for(j=0;j<NUMNODES;j++){
-				dbg("Project2", "Node %d have cost %d.\n",i+1,sendLsp[i].Cost);
-				}
-			}
-		dbg("Project2","------------------------------------\n");
-	}
+
 	void intializeList(){
 		uint8_t i=0, j = 0;
 		uint8_t inf = 21;
@@ -124,11 +86,9 @@ implementation{
 			recieveSeq[i] = -1;
 			for(j=0; j<NUMNODES; j++)
 				recieveLsp[i][j].Cost = inf;
-			}
-			//printTest();
+			}	
 	}
 
-		
 	event void Boot.booted(){
 		call AMControl.start();
 		arrListInit(&Received);
@@ -153,10 +113,10 @@ implementation{
 	event void AMControl.startDone(error_t err){
 		if(err == SUCCESS){
 			call pingTimeoutTimer.startPeriodic(PING_TIMER_PERIOD + (uint16_t) ((call Random.rand16())%200));
-			call neighborDiscovey.startOneShot(13333 + (uint16_t) ((call Random.rand16())%200));
+			call neighborDiscovey.startOneShot(30000 + (uint16_t) ((call Random.rand16())%200));
 			//call neighborDiscovey.startPeriodic(30000 + (uint16_t) ((call Random.rand16())%200));
 			//call helloProtocol.startPeriodic(45000 + (uint16_t) ((call Random.rand16())%200));
-			call neighborMap.startOneShot(25323 + (uint16_t) ((call Random.rand16())%200));
+			call neighborMap.startOneShot(60000 + (uint16_t) ((call Random.rand16())%200));
 			//call neighborMap.startPeriodic(60000 + (uint16_t) ((call Random.rand16())%200));
 			call sendDelay.startOneShot( call Random.rand16() % 200);
 		}else{
@@ -187,7 +147,7 @@ implementation{
 	}
 	 void delaySendTask(){
                 call sendDelay.startOneShot( call Random.rand16() % 200);
-        }
+     }
 	void intializeNeighbors(hashmap *neighbors){
 		pack sendNeighbor;
 		dbg("Project1N", "Intializing Neighbors.\n");
@@ -209,22 +169,17 @@ implementation{
 		dbg("Project1N", "--------------------------------------\n");
 	}
 	void checkNeighbors(hashmap *neighbors){
-		//dbg("Project1F", "is hashmap empty?: %d\n",hashmapIsEmpty(neighbors));
-		//if (hashmapIsEmpty(neighbors)){
 		intializeNeighbors(neighbors);
-	
 	}
 	void makeLSP(){
 		pack lsp;
-	//	dbg("Project2", "Sending out LSP\n");
-		//dbg("Project2", "Size of list is %d\n",sizeof(sendLsp));
 		makePack(&lsp,TOS_NODE_ID,AM_BROADCAST_ADDR, MAX_TTL, PROTOCOL_LINKEDSTATE, sequenceNum++,&sendLsp,sizeof(sendLsp));
 		sendBufferPushBack(&packBuffer, lsp, lsp.src, AM_BROADCAST_ADDR);
 		//post sendBufferTask();
 		delaySendTask();
 	}
-	event void helloProtocol.fired(){
-		
+	
+	event void helloProtocol.fired(){	
 		pack helloPacket;
 		helloCount = 0;
 		if(call neighborDiscovey.isRunning());
@@ -245,28 +200,15 @@ implementation{
 			sendLsp[buffer-1].Cost = 1;
 		}
 		makeLSP();
-		call neighborMap.startPeriodic(600000 + (uint16_t) ((call Random.rand16())%200));
-		
+		call neighborMap.startPeriodic(332422 + (uint16_t) ((call Random.rand16())%200));	
 	}
 	event void neighborDiscovey.fired(){
 		// TODO Auto-generated method stub
-		call neighborDiscovey.startPeriodic(300000 + (uint16_t) ((call Random.rand16())%200));
+		call neighborDiscovey.startPeriodic(233333 + (uint16_t) ((call Random.rand16())%200));
 		dbg("Project1N","Looking up neighbors\n");
 		checkNeighbors(&Neighbors);
 	}
-	void bubbleSort(int numbers[], int array_size){
-  		int i, j, temp;
-  		for (i = (array_size - 1); i > 0; i--){
-    		for (j = 1; j <= i; j++){
-      			if (numbers[j-1] > numbers[j]){
-        			temp = numbers[j-1];
-        			numbers[j-1] = numbers[j];
-        			numbers[j] = temp;
-      			}
-    		}
-  		}
-	}
-	
+
 	lspAlgorithm selectLSP(uint8_t key){
 	uint8_t i = 0;
 	lspAlgorithm entry;
@@ -287,16 +229,16 @@ implementation{
 			
 			temp[i] = confirmList[i];
 			}
-				dbg("disAlg","Printing ConfirmList\n");
+				dbg("Project2p","Printing ConfirmList\n");
 			}
 		else{
 			for(i = 0; i< NUMNODES;i++){
 			temp[i] = tentList[i];
 			}
-			dbg("disAlg","Printing tentList\n");	
+			dbg("Project2p","Printing tentList\n");	
 		}
 		for(i = 0; i< NUMNODES;i++){
-			dbg("disAlg","Entry %d: Dest: %d, Cost: %d, NextHop: %d, isValid: %d\n",i+1, temp[i].Dest,temp[i].Cost,temp[i].NextHop,temp[i].isValid);
+			dbg("Project2p","Entry %d: Dest: %d, Cost: %d, NextHop: %d, isValid: %d\n",i+1, temp[i].Dest,temp[i].Cost,temp[i].NextHop,temp[i].isValid);
 			
 		}
 	}
@@ -331,18 +273,18 @@ implementation{
 	}
 		void printRecieveLsp(){
 		uint8_t i=0,j=0;
-		dbg("Project2","------------------------------------\n");
-		dbg("Project2","Printing Recieved LSP List for Node %d\n",TOS_NODE_ID);
+		dbg("Project2p","------------------------------------\n");
+		dbg("Project2p","Printing Recieved LSP List for Node %d\n",TOS_NODE_ID);
 		while(i<NUMNODES){
-			dbg("Project2","Node %d LSP list: ",i+1);
+			dbg("Project2p","Node %d LSP list: ",i+1);
 			for(j=0;j<NUMNODES;j++){
-				dbg("Project2","%d",recieveLsp[i][j].Cost);
+				dbg("Project2p","%d",recieveLsp[i][j].Cost);
 				}
-				dbg("Project2","\n");
+				dbg("Project2p","\n");
 				i++;
 			}
 		
-		dbg("Project2","------------------------------------\n");
+		dbg("Project2p","------------------------------------\n");
 		
 	}
 	void dijkstra(){
@@ -437,42 +379,29 @@ implementation{
 		dbg("Project2","*************************************\n");
 	}
 	
-	//event void checkNeighbors(){}
 	event message_t* Receive.receive(message_t* msg, void* payload, uint8_t len){
 		if(!isActive){
 			dbg("genDebug", "The Node is inactive, packet will not be read.");
 			return msg;	
 		}
-	
 		if(len==sizeof(pack)){
 			pack* myMsg=(pack*) payload;
 			pair receivedPacket = {myMsg->src,myMsg->seq};
 			uint8_t i = 0;
 			iterator it;
 			
-			//dbg("Project1F", "Recieved a message with the following info:\n");
-			//dbg("Project1F", "*IP Header* Src: %d, Dest: %d Seq:%d TTL: %d\n", myMsg->src, myMsg->dest, myMsg->seq, myMsg->TTL);
-			/*
-			 * Check if this node have seen this packet
-			 */
 			if( arrListContains(&Received,myMsg->src,myMsg->seq)){
 				dbg("Project1F", "Packet has been seen before, dropping it.\n");
 				return msg;
 			}
 			else//store it in the seen list
-			if(arrListPushBack(&Received,receivedPacket)){
-				//dbg("Project1F", "added to seen list.\n");
-			}//do nothing for now
+			if(arrListPushBack(&Received,receivedPacket));
 			else{
-					dbg("Project1F", "filled list\n");
+				dbg("Project1F", "filled list\n");
 				//only keep track of recent packets
 				pop_front(&Received);
 				arrListPushBack(&Received,receivedPacket);
-	
 			}
-			/*
-			 * Checking if this packet was intended for this node
-			 */
 	
 			if(TOS_NODE_ID!=myMsg->dest){
 				//dbg("Project1F", "Broadcasting to Neighbors\n");
@@ -483,7 +412,6 @@ implementation{
 						if(!strcmp(myMsg->payload,helloMessage)){
 							dbg("Project2", "Node %d said hello, sending reply.\n",myMsg->src);
 							makePack(&sendPackage, TOS_NODE_ID,myMsg->src, 1, PROTOCOL_PINGREPLY, sequenceNum++, (uint8_t *) helloMessage, sizeof(helloMessage));
-							//sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, sendPackage.dest);
 							sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, myMsg->src);
 							//post sendBufferTask();
 							delaySendTask();
@@ -504,7 +432,6 @@ implementation{
 						//dbg("Project2", "Compare Seq. Old %d from New %d\n",recieveSeq[myMsg->src-1] ,myMsg->seq);
 						
 						if(recieveSeq[myMsg->src-1]< myMsg->seq){
-							//dbg("Project2", "New LSP. Updating!");
 							storePayload(myMsg->payload,myMsg->src-1);
 							recieveSeq[myMsg->src-1]= myMsg->seq;
 						}
@@ -512,17 +439,7 @@ implementation{
 							return msg;
 						}
 						makePack(&sendPackage, myMsg->src,myMsg->dest, myMsg->TTL--, myMsg->protocol, myMsg->seq, myMsg->payload, sizeof(myMsg->payload));
-						//iteratorInit(&it,&Neighbors);
-						//while(iteratorHasNext(&it)){
-						//	int8_t buffer = iteratorNext(&it);
-						//	if(buffer != myMsg->src){
-							//	dbg("Project2", "LSP fowarded to %d\n", buffer);
-								
-								sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, AM_BROADCAST_ADDR);
-						//		}
-							//dbg("Project1N", "Node: %d\n", iteratorNext(&it));
-						//}
-						//post sendBufferTask();
+						sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, AM_BROADCAST_ADDR);
 						delaySendTask();
 						break;
 						default:
@@ -533,7 +450,8 @@ implementation{
 				else{
 					dbg("Project1F", "Packet is not meant for me, broadcasting it.\n");
 					dijkstra();
-					//printTable(0);
+					printRecieveLsp();
+					printTable(0);
 					dbg("Project2", "Packet is meant for Node %d. Looking up table. Will be routed to Node %d\n", myMsg->dest, confirmList[myMsg->dest-1].NextHop);
 					
 					makePack(&sendPackage, myMsg->src,myMsg->dest, myMsg->TTL, myMsg->protocol, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));					
@@ -553,15 +471,13 @@ implementation{
 					uint8_t zero = 1;
 					uint16_t dest;
 					case PROTOCOL_PING:
-					//if())
 					dijkstra();
-					//printTable(0);
+					printRecieveLsp();
+					printTable(0);
 					dbg("Project2", "PingReply Packeted is enroute to Node %d, will be routed to Node %d\n",myMsg->src, confirmList[myMsg->src-1].NextHop);
 					dest =AM_BROADCAST_ADDR;
-					//else dest = myMsg->src;
 					dbg("Project1F", "Sending Ping Reply to %d! \n", myMsg->src);
 					makePack(&sendPackage, TOS_NODE_ID,myMsg->src, MAX_TTL, PROTOCOL_PINGREPLY, sequenceNum++, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));
-					//sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, sendPackage.dest);
 					sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, confirmList[myMsg->src-1].NextHop);
 					//post sendBufferTask();
 					delaySendTask();
@@ -587,8 +503,9 @@ implementation{
 					}
 					//dbg("genDebug", "WENT PAST");
 					break;
-	
+					
 					case PROTOCOL_CMD:	
+					dbg("Project2", "WENT TO CMD");
 					switch(getCMD((uint8_t *) &myMsg->payload, sizeof(myMsg->payload))){
 						uint32_t temp=0;
 						case CMD_PING:
@@ -607,6 +524,7 @@ implementation{
 						case CMD_KILL:
 						isActive = FALSE;
 						break;
+	
 						case CMD_ERROR:
 						break;
 						default:

@@ -13,7 +13,7 @@ r = t.radio()
 print "Creating virtual motes and creating noise trace."
 #noise = open("no_noise.txt", "r")
 #Number of nodes that will be in the network
-numNodes = 10
+numNodes = 5
 for i in range(1, numNodes+1):
     for j in range (100):
         t.getNode(i).addNoiseTraceReading(-98)
@@ -53,19 +53,19 @@ for i in range(1, numNodes+1):
 
 
 def package(string):
- 	ints = []
-	for c in string:
-		ints.append(ord(c))
-	return ints
+    ints = []
+    for c in string:
+        ints.append(ord(c))
+    return ints
 
 def run(ticks):
-	for i in range(ticks):
-		t.runNextEvent()
+    for i in range(ticks):
+        t.runNextEvent()
 
 def runTime(amount):
-	time = t.time()
-	while time + amount*10000000000 > t.time():
-		t.runNextEvent() 
+    time = t.time()
+    while time + amount*10000000000 > t.time():
+        t.runNextEvent() 
 
 #Create a Command Packet
 msg = pack()
@@ -81,32 +81,23 @@ def sendCMD(string):
     args = string.split(' ');
     msg.set_src(int(args[0]));
     msg.set_dest(int(args[1]));
-    temp = args[2];
-    if(temp == 'cmd'):
-       print 'it is cmd\n'
-      # msg.set_protocol(args[3]);
-       payload = args[5];
-       for i in range(6, len(args)):
-           payload= payload + ' '+ args[i]
-       msg.setString_payload(payload)    
-       pkt.setData(msg.data)
-       pkt.setDestination(int(args[4]))
-    else:
-       payload=args[2];
-       for i in range(3, len(args)):
-           payload= payload + ' '+ args[i]
-	   msg.setString_payload(payload)	
-	   pkt.setData(msg.data)
-	   pkt.setDestination(int(args[1]))
-	
-	#print "Delivering!"
+    payload=args[2];
+    for i in range(3, len(args)):
+        payload= payload + ' '+ args[i]
+    
+    msg.setString_payload(payload)
+    
+    pkt.setData(msg.data)
+    pkt.setDestination(int(args[1]))
+    
+    #print "Delivering!"
     pkt.deliver(int(args[1]), t.time()+5)
     runTime(2);
 #Flood Control On(1) Off(0)
 flooding = 1;
 if(flooding == 1):
     runTime(200)
-    sendCMD("8 8 cmd ping 10 Hi!")
+    sendCMD("5 1 Hi!")
     #sendCMD("5 1 Hi again!")
   #  runTime(200)
    # sendCMD("5 2 Flooding!")
