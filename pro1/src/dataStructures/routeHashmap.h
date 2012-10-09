@@ -9,7 +9,7 @@
 
 enum{
 	rHASH_MAX_SIZE = 20,
-	NUMNODES = 5
+	NUMNODES = 10
 };
 typedef struct routingEntry2{
 	//uint16_t nodeid;

@@ -22,6 +22,7 @@ implementation {
 	components new TimerMilliC() as neighborMap;
 	components new TimerMilliC() as helloProtocol;
 	components new TimerMilliC() as waitTimer;
+	components new TimerMilliC() as sendDelay;
 	components ActiveMessageC;
 	components new AMSenderC(6);
 	components new AMReceiverC(6);
@@ -29,6 +30,7 @@ implementation {
 	Node->MainC.Boot;
 
 	//Timers
+	Node.sendDelay->sendDelay;
 	Node.pingTimeoutTimer->pingTimeoutTimer;
 	Node.neighborDiscovey->neighborDiscovery;
 	Node.neighborMap-> neighborMap;

@@ -36,6 +36,7 @@ module Node{
 	uses interface Timer<TMilli> as waitTimer;
 	uses interface Random as Random;
 	uses interface Timer<TMilli> as helloProtocol; 
+	uses interface Timer<TMilli> as sendDelay;
 	
 	uses interface Packet;
 	uses interface AMPacket;
@@ -125,6 +126,133 @@ implementation{
 				recieveLsp[i][j].Cost = inf;
 			}
 			//printTest();
+	}
+
+		
+	event void Boot.booted(){
+		call AMControl.start();
+		arrListInit(&Received);
+		neighborCount = 0;
+		hashmapInit(&Neighbors);
+		intializeList();
+			
+		//dbg("genDebug", "Booted\n");
+	}
+	event void pingTimeoutTimer.fired(){
+		checkTimes(&pings, call pingTimeoutTimer.getNow());
+	}
+	event void waitTimer.fired(){
+		//checkTimes(&pings, call pingTimeoutTimer.getNow());
+		dbg("Project2","Wait is over! Checking if Neighbor is the same. Current Neighbors: %d. Past Neighbors: %d.\n",helloCount, neighborCount);
+		if(helloCount == neighborCount)
+			dbg("Project2","Same neighbors, nothing to do.\n");
+		else{
+			dbg("Project2","Different neighbors! Time to update everyone.\n");
+		}
+	}
+	event void AMControl.startDone(error_t err){
+		if(err == SUCCESS){
+			call pingTimeoutTimer.startPeriodic(PING_TIMER_PERIOD + (uint16_t) ((call Random.rand16())%200));
+			call neighborDiscovey.startOneShot(13333 + (uint16_t) ((call Random.rand16())%200));
+			//call neighborDiscovey.startPeriodic(30000 + (uint16_t) ((call Random.rand16())%200));
+			//call helloProtocol.startPeriodic(45000 + (uint16_t) ((call Random.rand16())%200));
+			call neighborMap.startOneShot(25323 + (uint16_t) ((call Random.rand16())%200));
+			//call neighborMap.startPeriodic(60000 + (uint16_t) ((call Random.rand16())%200));
+			call sendDelay.startOneShot( call Random.rand16() % 200);
+		}else{
+			//Retry until successful
+			call AMControl.start();
+		}
+	}
+	
+	event void AMControl.stopDone(error_t err){}
+
+
+	event void AMSend.sendDone(message_t* msg, error_t error){
+		//Clear Flag, we can send again.
+		if(&pkt == msg){
+			dbg("Project1F", "Packet Sent\n");
+			busy = FALSE;
+			post sendBufferTask();
+		}
+	}
+
+	void isOnline(hashmap *neighbors){
+		uint8_t i=0;
+		pair temp;
+		for(i; i<(neighbors->numofVals); i++){
+			dbg("Project1N", "Node Lost!\n Msg: %s", temp.src);
+			hashmapRemove(neighbors, i);
+		}
+	}
+	 void delaySendTask(){
+                call sendDelay.startOneShot( call Random.rand16() % 200);
+        }
+	void intializeNeighbors(hashmap *neighbors){
+		pack sendNeighbor;
+		dbg("Project1N", "Intializing Neighbors.\n");
+		hashmapInit(&Neighbors);
+		makePack(&sendNeighbor,TOS_NODE_ID,AM_BROADCAST_ADDR, 1, PROTOCOL_PING, sequenceNum++,NULL,0);
+		sendBufferPushBack(&packBuffer, sendNeighbor, sendNeighbor.src, AM_BROADCAST_ADDR);
+		post sendBufferTask();
+	}
+	void printNeighbors(hashmap *neighbors){
+		iterator it;
+		iteratorInit(&it,neighbors);
+		dbg("Project1N", "--------------------------------------\n");
+		dbg("Project1N", "Printing Neighbor List:\n");
+		while(iteratorHasNext(&it)){
+ 
+			dbg("Project1N", "Node: %d\n", iteratorNext(&it));
+		}
+		dbg("Project1N", "Printing Done.\n");
+		dbg("Project1N", "--------------------------------------\n");
+	}
+	void checkNeighbors(hashmap *neighbors){
+		//dbg("Project1F", "is hashmap empty?: %d\n",hashmapIsEmpty(neighbors));
+		//if (hashmapIsEmpty(neighbors)){
+		intializeNeighbors(neighbors);
+	
+	}
+	void makeLSP(){
+		pack lsp;
+	//	dbg("Project2", "Sending out LSP\n");
+		//dbg("Project2", "Size of list is %d\n",sizeof(sendLsp));
+		makePack(&lsp,TOS_NODE_ID,AM_BROADCAST_ADDR, MAX_TTL, PROTOCOL_LINKEDSTATE, sequenceNum++,&sendLsp,sizeof(sendLsp));
+		sendBufferPushBack(&packBuffer, lsp, lsp.src, AM_BROADCAST_ADDR);
+		//post sendBufferTask();
+		delaySendTask();
+	}
+	event void helloProtocol.fired(){
+		
+		pack helloPacket;
+		helloCount = 0;
+		if(call neighborDiscovey.isRunning());
+		else{
+			dbg("Project2","NEIGHBOR DISCOVERY TIMER STARTED\n");
+			call neighborDiscovey.startPeriodic(90000 + (uint16_t) ((call Random.rand16())%200));}
+		makePack(&helloPacket,TOS_NODE_ID,AM_BROADCAST_ADDR, 1, PROTOCOL_PING, sequenceNum++,(uint8_t *) helloMessage,sizeof(helloMessage));
+		sendBufferPushBack(&packBuffer, helloPacket, helloPacket.src, AM_BROADCAST_ADDR);
+		//post sendBufferTask();
+		delaySendTask();
+	}
+	event void neighborMap.fired(){
+		//Generating neighbor map
+		iterator it;
+		iteratorInit(&it,&Neighbors);
+		while(iteratorHasNext(&it)){
+			int8_t buffer = iteratorNext(&it);
+			sendLsp[buffer-1].Cost = 1;
+		}
+		makeLSP();
+		call neighborMap.startPeriodic(600000 + (uint16_t) ((call Random.rand16())%200));
+		
+	}
+	event void neighborDiscovey.fired(){
+		// TODO Auto-generated method stub
+		call neighborDiscovey.startPeriodic(300000 + (uint16_t) ((call Random.rand16())%200));
+		dbg("Project1N","Looking up neighbors\n");
+		checkNeighbors(&Neighbors);
 	}
 	void bubbleSort(int numbers[], int array_size){
   		int i, j, temp;
@@ -221,9 +349,9 @@ implementation{
 		
 		Route confirmEntry, tentativeEntry;
 		//Route confirmList[NUMNODES], tentList[NUMNODES];
-		uint8_t i = 0, j=0, infinity = 21, nextNode, counter=0, errorCount=0, path;
+		uint8_t i = 0, j=0, infinity = 21, nextNode, counter=0, errorCount=0, path, traceList[NUMNODES];
 		lspAlgorithm currentLsp;
-		printRecieveLsp();
+		//printRecieveLsp();
 		for(i = 0;i<NUMNODES;i++){
 			confirmList[i].Cost = 21;
 			confirmList[i].isValid = FALSE;
@@ -245,7 +373,7 @@ implementation{
 		 * Select the LSP Packet relating to this node 
 		 */
 			dbg("disAlg","Node %d was just added to confirmed List.\n", nextNode+1); 
-			printTable(0);
+			//printTable(0);
 			currentLsp = selectLSP(nextNode);
 			for(i = 0; i < NUMNODES;i++){
 				if(currentLsp.cost[i]<infinity){
@@ -254,7 +382,7 @@ implementation{
 					dbg("disAlg","To reach Node %d, it cost %d.\n", i+1,tentativeEntry.Cost); 
 					dbg("disAlg","Checking if its not neither list\n"); 
 					if(confirmEntry.Dest!= TOS_NODE_ID)
-							path = confirmEntry.Dest;
+							path = confirmEntry.NextHop;
 						else
 							path = i+1;
 					if((confirmList[i].isValid == FALSE) && (tentList[i].isValid == FALSE)){
@@ -274,7 +402,7 @@ implementation{
 						}
 				}
 			}
-			printTable(1);
+			//printTable(1);
 			if(countValid()==0)
 				break;
 			nextNode = getLowCost();
@@ -285,137 +413,13 @@ implementation{
 			confirmEntry.isValid = TRUE;
 			confirmList[nextNode] = confirmEntry;
 			tentList[nextNode].isValid = FALSE;
-			printTable(1);
+			//printTable(1);
 			}while(TRUE);//counter<4);
 		}
-		
-	event void Boot.booted(){
-		call AMControl.start();
-		arrListInit(&Received);
-		neighborCount = 0;
-		hashmapInit(&Neighbors);
-		//lsplist = sendLsp;
-		intializeList();
-		
-		//lspPointer = sendLsp
-		
-		//dbg("genDebug", "Booted\n");
-	}
-	event void pingTimeoutTimer.fired(){
-		checkTimes(&pings, call pingTimeoutTimer.getNow());
-	}
-	event void waitTimer.fired(){
-		//checkTimes(&pings, call pingTimeoutTimer.getNow());
-		dbg("Project2","Wait is over! Checking if Neighbor is the same. Current Neighbors: %d. Past Neighbors: %d.\n",helloCount, neighborCount);
-		if(helloCount == neighborCount)
-			dbg("Project2","Same neighbors, nothing to do.\n");
-		else{
-			dbg("Project2","Different neighbors! Time to update everyone.\n");
-		}
-	}
-	event void AMControl.startDone(error_t err){
-		if(err == SUCCESS){
-			call pingTimeoutTimer.startPeriodic(PING_TIMER_PERIOD + (uint16_t) ((call Random.rand16())%200));
-			call neighborDiscovey.startOneShot(30000 + (uint16_t) ((call Random.rand16())%200));
-			//call neighborDiscovey.startPeriodic(30000 + (uint16_t) ((call Random.rand16())%200));
-			//call helloProtocol.startPeriodic(45000 + (uint16_t) ((call Random.rand16())%200));
-			call neighborMap.startOneShot(55632 + (uint16_t) ((call Random.rand16())%2000));
-			//call neighborMap.startPeriodic(60000 + (uint16_t) ((call Random.rand16())%200));
-		}else{
-			//Retry until successful
-			call AMControl.start();
-		}
-	}
-	
-	event void AMControl.stopDone(error_t err){}
-
-
-	event void AMSend.sendDone(message_t* msg, error_t error){
-		//Clear Flag, we can send again.
-		if(&pkt == msg){
-			dbg("Project1F", "Packet Sent\n");
-			busy = FALSE;
-			post sendBufferTask();
-		}
-	}
-
-	void isOnline(hashmap *neighbors){
-		uint8_t i=0;
-		pair temp;
-		for(i; i<(neighbors->numofVals); i++){
-			dbg("Project1N", "Node Lost!\n Msg: %s", temp.src);
-			hashmapRemove(neighbors, i);
-		}
-	}
-	void intializeNeighbors(hashmap *neighbors){
-		pack sendNeighbor;
-		dbg("Project1N", "Intializing Neighbors.\n");
-		hashmapInit(&Neighbors);
-		makePack(&sendNeighbor,TOS_NODE_ID,AM_BROADCAST_ADDR, 1, PROTOCOL_PING, sequenceNum++,NULL,0);
-		sendBufferPushBack(&packBuffer, sendNeighbor, sendNeighbor.src, AM_BROADCAST_ADDR);
-		post sendBufferTask();
-	}
-	void printNeighbors(hashmap *neighbors){
-		iterator it;
-		iteratorInit(&it,neighbors);
-		dbg("Project1N", "--------------------------------------\n");
-		dbg("Project1N", "Printing Neighbor List:\n");
-		while(iteratorHasNext(&it)){
- 
-			dbg("Project1N", "Node: %d\n", iteratorNext(&it));
-		}
-		dbg("Project1N", "Printing Done.\n");
-		dbg("Project1N", "--------------------------------------\n");
-	}
-	void checkNeighbors(hashmap *neighbors){
-		//dbg("Project1F", "is hashmap empty?: %d\n",hashmapIsEmpty(neighbors));
-		//if (hashmapIsEmpty(neighbors)){
-		intializeNeighbors(neighbors);
-	
-	}
-	void makeLSP(){
-		pack lsp;
-		dbg("Project2", "Sending out LSP\n");
-		//dbg("Project2", "Size of list is %d\n",sizeof(sendLsp));
-		makePack(&lsp,TOS_NODE_ID,AM_BROADCAST_ADDR, MAX_TTL, PROTOCOL_LINKEDSTATE, sequenceNum++,&sendLsp,sizeof(sendLsp));
-		sendBufferPushBack(&packBuffer, lsp, lsp.src, AM_BROADCAST_ADDR);
-		post sendBufferTask();
-	}
-	event void helloProtocol.fired(){
-		
-		pack helloPacket;
-		helloCount = 0;
-		if(call neighborDiscovey.isRunning());
-		else{
-			dbg("Project2","NEIGHBOR DISCOVERY TIMER STARTED\n");
-			call neighborDiscovey.startPeriodic(90000 + (uint16_t) ((call Random.rand16())%200));}
-		makePack(&helloPacket,TOS_NODE_ID,AM_BROADCAST_ADDR, 1, PROTOCOL_PING, sequenceNum++,(uint8_t *) helloMessage,sizeof(helloMessage));
-		sendBufferPushBack(&packBuffer, helloPacket, helloPacket.src, AM_BROADCAST_ADDR);
-		post sendBufferTask();
-	}
-	event void neighborMap.fired(){
-		//Generating neighbor map
-		iterator it;
-		iteratorInit(&it,&Neighbors);
-		while(iteratorHasNext(&it)){
-			int8_t buffer = iteratorNext(&it);
-			sendLsp[buffer-1].Cost = 1;
-		}
-		makeLSP();
-		call neighborMap.startPeriodic(600000 + (uint16_t) ((call Random.rand16())%200));
-		
-	}
-	event void neighborDiscovey.fired(){
-		// TODO Auto-generated method stub
-		call neighborDiscovey.startPeriodic(300000 + (uint16_t) ((call Random.rand16())%200));
-		dbg("Project1N","Looking up neighbors\n");
-		checkNeighbors(&Neighbors);
-	}
-
 	void storePayload(lspList *payload, uint16_t src ){
 		uint8_t i=0;
 		//uint8_t inf = 21;
-		dbg("Project2"," Going to store in slot %d\n",src);
+		//dbg("Project2"," Going to store in slot %d\n",src);
 		for(i; i<NUMNODES;i++){
 			recieveLsp[src][i].Cost= payload[i].Cost;
 			}
@@ -481,24 +485,26 @@ implementation{
 							makePack(&sendPackage, TOS_NODE_ID,myMsg->src, 1, PROTOCOL_PINGREPLY, sequenceNum++, (uint8_t *) helloMessage, sizeof(helloMessage));
 							//sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, sendPackage.dest);
 							sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, myMsg->src);
-							post sendBufferTask();
+							//post sendBufferTask();
+							delaySendTask();
 						}
 						else{
 							dbg("Project1N", "I have been discovered, sending reply.\n");
 							makePack(&sendPackage, TOS_NODE_ID,myMsg->src, 1, PROTOCOL_PINGREPLY, sequenceNum++, (uint8_t *) broadcastMessage, sizeof(broadcastMessage));
 							//sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, sendPackage.dest);
 							sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, myMsg->src);
-							post sendBufferTask();
+							//post sendBufferTask();
+							delaySendTask();
 						}
 						break;
 						case PROTOCOL_LINKEDSTATE:
-						dbg("Project2", "I have recieved the list from Node %d, checking if its old.\n", myMsg->src);
+						//dbg("Project2", "I have recieved the list from Node %d, checking if its old.\n", myMsg->src);
 						//logPack(myMsg);
-						printPayload(myMsg->payload,myMsg->src-1);
-						dbg("Project2", "Compare Seq. Old %d from New %d\n",recieveSeq[myMsg->src-1] ,myMsg->seq);
+						//printPayload(myMsg->payload,myMsg->src-1);
+						//dbg("Project2", "Compare Seq. Old %d from New %d\n",recieveSeq[myMsg->src-1] ,myMsg->seq);
 						
 						if(recieveSeq[myMsg->src-1]< myMsg->seq){
-							dbg("Project2", "New LSP. Updating!");
+							//dbg("Project2", "New LSP. Updating!");
 							storePayload(myMsg->payload,myMsg->src-1);
 							recieveSeq[myMsg->src-1]= myMsg->seq;
 						}
@@ -511,12 +517,13 @@ implementation{
 						//	int8_t buffer = iteratorNext(&it);
 						//	if(buffer != myMsg->src){
 							//	dbg("Project2", "LSP fowarded to %d\n", buffer);
-								for (i = 0; i< 3; i++)
+								
 								sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, AM_BROADCAST_ADDR);
 						//		}
 							//dbg("Project1N", "Node: %d\n", iteratorNext(&it));
 						//}
-						post sendBufferTask();
+						//post sendBufferTask();
+						delaySendTask();
 						break;
 						default:
 						break;
@@ -526,11 +533,13 @@ implementation{
 				else{
 					dbg("Project1F", "Packet is not meant for me, broadcasting it.\n");
 					dijkstra();
-					dbg("Project2", "Packet is not meant for me. Looking up table. Will be routed to Node %d\n", confirmList[myMsg->dest].NextHop);
+					//printTable(0);
+					dbg("Project2", "Packet is meant for Node %d. Looking up table. Will be routed to Node %d\n", myMsg->dest, confirmList[myMsg->dest-1].NextHop);
 					
 					makePack(&sendPackage, myMsg->src,myMsg->dest, myMsg->TTL, myMsg->protocol, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));					
-					sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, confirmList[myMsg->dest].NextHop);
-					post sendBufferTask();
+					sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, confirmList[myMsg->dest-1].NextHop);
+					//post sendBufferTask();
+					delaySendTask();
 				}
 			}
 			if(TOS_NODE_ID==myMsg->src){
@@ -546,18 +555,21 @@ implementation{
 					case PROTOCOL_PING:
 					//if())
 					dijkstra();
-					dbg("Project2", "PingReply Packeted will be routed to Node %d\n", confirmList[myMsg->dest].NextHop);
+					//printTable(0);
+					dbg("Project2", "PingReply Packeted is enroute to Node %d, will be routed to Node %d\n",myMsg->src, confirmList[myMsg->src-1].NextHop);
 					dest =AM_BROADCAST_ADDR;
 					//else dest = myMsg->src;
 					dbg("Project1F", "Sending Ping Reply to %d! \n", myMsg->src);
 					makePack(&sendPackage, TOS_NODE_ID,myMsg->src, MAX_TTL, PROTOCOL_PINGREPLY, sequenceNum++, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));
 					//sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, sendPackage.dest);
-					sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, confirmList[myMsg->dest].NextHop);
-					post sendBufferTask();
+					sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, confirmList[myMsg->src-1].NextHop);
+					//post sendBufferTask();
+					delaySendTask();
 					break;
 
 					case PROTOCOL_PINGREPLY:
 					dbg("Project1F", "Received a Ping Reply from %d with message: %s!\n", myMsg->src, myMsg->payload);
+					dbg("Project2", "Received a Ping Reply from %d with message: %s!\n", myMsg->src, myMsg->payload);
 					//should add the node to the map
 					if(!strcmp(myMsg->payload,helloMessage)){
 						helloCount++;
@@ -588,7 +600,8 @@ implementation{
 	
 						//Place in Send Buffer
 						sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, sendPackage.dest);
-						post sendBufferTask();
+						//post sendBufferTask();
+						delaySendTask();
 	
 						break;
 						case CMD_KILL:
@@ -646,7 +659,8 @@ implementation{
 		}
 	
 		if(packBuffer.size !=0 && !busy){
-			post sendBufferTask();
+			//post sendBufferTask();
+			delaySendTask();
 		}
 	}
 
@@ -697,6 +711,11 @@ implementation{
 	}
 
 	
+
+	event void sendDelay.fired(){
+		// TODO Auto-generated method stub
+		 post sendBufferTask();
+	}
 }
 
 
