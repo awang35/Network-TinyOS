@@ -19,6 +19,7 @@
 #include "dataStructures/pingList.h"
 #include "ping.h"
 #include "dataStructures/routingtable.h"
+#include "dataStructures/TCPlist.h"
 //#include "dataStructures/lspHashmap.h"
 
 
@@ -55,6 +56,8 @@ implementation{
 	/**
 	* Adrian's Variable
 	*/
+	tcplist reBuffer;
+	tcplist seBuffer;
 	uint8_t neighborCount;
 	uint8_t helloCount;
 	hashmap Neighbors;
