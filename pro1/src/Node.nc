@@ -229,16 +229,16 @@ implementation{
 			
 			temp[i] = confirmList[i];
 			}
-				dbg("Project2p","Printing ConfirmList\n");
+				dbg("Project2","Printing ConfirmList\n");
 			}
 		else{
 			for(i = 0; i< NUMNODES;i++){
 			temp[i] = tentList[i];
 			}
-			dbg("Project2p","Printing tentList\n");	
+			dbg("Project2","Printing tentList\n");	
 		}
 		for(i = 0; i< NUMNODES;i++){
-			dbg("Project2p","Entry %d: Dest: %d, Cost: %d, NextHop: %d, isValid: %d\n",i+1, temp[i].Dest,temp[i].Cost,temp[i].NextHop,temp[i].isValid);
+			dbg("Project2","Entry %d: Dest: %d, Cost: %d, NextHop: %d, isValid: %d\n",i+1, temp[i].Dest,temp[i].Cost,temp[i].NextHop,temp[i].isValid);
 			
 		}
 	}
