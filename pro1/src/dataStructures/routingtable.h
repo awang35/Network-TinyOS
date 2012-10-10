@@ -4,7 +4,7 @@
 #define MAX_TTL 120 /* time (in seconds) until route expires */
 
 enum{
-	NUMNODES = 6
+	NUMNODES = 5
 };
 
 typedef struct routingEntry2{

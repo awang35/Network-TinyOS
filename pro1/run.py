@@ -13,7 +13,7 @@ r = t.radio()
 print "Creating virtual motes and creating noise trace."
 #noise = open("no_noise.txt", "r")
 #Number of nodes that will be in the network
-numNodes = 6
+numNodes = 5
 for i in range(1, numNodes+1):
     for j in range (100):
         t.getNode(i).addNoiseTraceReading(-98)
@@ -97,7 +97,7 @@ def sendCMD(string):
 flooding = 1;
 if(flooding == 1):
     runTime(200)
-    sendCMD("6 2 Hi!")
+    sendCMD("5 1 Hi!")
     #sendCMD("5 1 Hi again!")
   #  runTime(200)
    # sendCMD("5 2 Flooding!")

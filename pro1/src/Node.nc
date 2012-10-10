@@ -19,9 +19,8 @@
 #include "dataStructures/pingList.h"
 #include "ping.h"
 #include "dataStructures/routingtable.h"
-#include "dataStructures/TCPlist.h"
 //#include "dataStructures/lspHashmap.h"
-
+#include "lib/TCPSocketAL.h"
 
 
 module Node{
@@ -56,8 +55,6 @@ implementation{
 	/**
 	* Adrian's Variable
 	*/
-	tcplist reBuffer;
-	tcplist seBuffer;
 	uint8_t neighborCount;
 	uint8_t helloCount;
 	hashmap Neighbors;
@@ -232,16 +229,16 @@ implementation{
 			
 			temp[i] = confirmList[i];
 			}
-				dbg("Project2","Printing ConfirmList\n");
+				dbg("Project2p","Printing ConfirmList\n");
 			}
 		else{
 			for(i = 0; i< NUMNODES;i++){
 			temp[i] = tentList[i];
 			}
-			dbg("Project2","Printing tentList\n");	
+			dbg("Project2p","Printing tentList\n");	
 		}
 		for(i = 0; i< NUMNODES;i++){
-			dbg("Project2","Entry %d: Dest: %d, Cost: %d, NextHop: %d, isValid: %d\n",i+1, temp[i].Dest,temp[i].Cost,temp[i].NextHop,temp[i].isValid);
+			dbg("Project2p","Entry %d: Dest: %d, Cost: %d, NextHop: %d, isValid: %d\n",i+1, temp[i].Dest,temp[i].Cost,temp[i].NextHop,temp[i].isValid);
 			
 		}
 	}
