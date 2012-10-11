@@ -1,4 +1,4 @@
-/**
+ /**
  * ANDES Lab - University of California, Merced
  * This class provides the basic functions of a network node.
  *
@@ -19,26 +19,26 @@
 #include "dataStructures/pingList.h"
 #include "ping.h"
 #include "dataStructures/routingtable.h"
-//#include "dataStructures/lspHashmap.h"
 #include "lib/TCPSocketAL.h"
 
-
 module Node{
-	uses interface Boot;
-	uses interface Timer<TMilli> as pingTimeoutTimer;
-	uses interface Timer<TMilli> as neighborDiscovey;
-	uses interface Timer<TMilli> as neighborMap;
-	uses interface Timer<TMilli> as waitTimer;
-	uses interface Random as Random;
-	uses interface Timer<TMilli> as helloProtocol; 
-	uses interface Timer<TMilli> as sendDelay;
-	
-	uses interface Packet;
-	uses interface AMPacket;
-	uses interface AMSend;
-	uses interface SplitControl as AMControl;
-	uses interface Receive;
-	
+	uses{
+		interface Boot;
+		interface Timer<TMilli> as pingTimeoutTimer;
+		interface Timer<TMilli> as neighborDiscovey;
+		interface Timer<TMilli> as neighborMap;
+		interface Timer<TMilli> as waitTimer;
+		interface Random as Random;
+		interface Timer<TMilli> as helloProtocol; 
+		interface Timer<TMilli> as sendDelay;
+		interface Packet;
+		interface AMPacket;
+		interface AMSend;
+		interface SplitControl as AMControl;
+		interface Receive;
+		interface TCPManager<TCPSocketAL,pack> as tcpLayer;
+		interface TCPSocket<TCPSocketAL> as tcpSocket;
+	}
 }
 
 implementation{
@@ -531,31 +531,9 @@ implementation{
 						break;
 					}
 					break;
-					case PROTOCOL_LINKEDSTATE:
-					/*dbg("Project2", "I have recieved the list from Node %d, updating table and fowarding.\n", myMsg->src);
-						
-					printPayload(myMsg->payload,myMsg->src-1);
-					dbg("Project2", "Compare Seq. Old %d from New %d\n",recieveSeq[myMsg->src-1] ,myMsg->seq);
-						
-					if(recieveSeq[myMsg->src-1]< myMsg->seq){
-						dbg("Project2", "New LSP. Updating!");
-						storePayload(myMsg->payload,myMsg->src-1);
-						recieveSeq[myMsg->src-1]= myMsg->seq;
-					}
-					else{
-						return msg;
-					}
-					makePack(&sendPackage, myMsg->src,myMsg->dest, myMsg->TTL--, myMsg->protocol, myMsg->seq, myMsg->payload, sizeof(myMsg->payload));
-					iteratorInit(&it,&Neighbors);
-					//while(iteratorHasNext(&it)){
-						//int8_t buffer = iteratorNext(&it);
-						//if(buffer != myMsg->src){
-						//	dbg("Project2", "LSP fowarded to %d\n", buffer);
-							sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, AM_BROADCAST_ADDR);
-						//	}
-						//dbg("Project1N", "Node: %d\n", iteratorNext(&it));
-					//}
-					post sendBufferTask();*/
+					case PROTOCOL_TCP:
+					dbg("Project3", "TCP Packet has arrived.\n");
+					call tcpLayer.handlePacket(myMsg->payload);
 					break;
 					default:
 					break;

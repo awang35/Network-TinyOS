@@ -16,7 +16,7 @@ implementation {
 	components MainC;
 	components Node;
 	components RandomC as Random;
-
+	//components new 
 	components new TimerMilliC() as pingTimeoutTimer;
 	components new TimerMilliC() as neighborDiscovery;
 	components new TimerMilliC() as neighborMap;
@@ -26,7 +26,8 @@ implementation {
 	components ActiveMessageC;
 	components new AMSenderC(6);
 	components new AMReceiverC(6);
-
+	components TCPManagerC as tcpLayer;
+	components TCPSocketC as tcpSocket;
 	Node->MainC.Boot;
 
 	//Timers
@@ -38,12 +39,13 @@ implementation {
 	Node.waitTimer -> waitTimer;
 	//Node.neighborDiscovey -> TimerMilliC;
 	Node.Random->Random;
-
+	
 	Node.Packet->AMSenderC;
 	Node.AMPacket->AMSenderC;
 	Node.AMSend->AMSenderC;
 	Node.AMControl->ActiveMessageC;
-
 	Node.Receive->AMReceiverC;
-
+	//TCP LAYER
+	Node.tcpLayer->tcpLayer;
+	Node.tcpSocket-> tcpSocket;
 }

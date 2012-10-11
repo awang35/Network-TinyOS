@@ -40,8 +40,9 @@ print "Setting Debug Channels"
 #t.addChannel("cmdDebug", sys.stdout);
 #t.addChannel("Project1F", sys.stdout);
 #t.addChannel("Project1N", sys.stdout);
-t.addChannel("Project2", sys.stdout);
+#t.addChannel("Project2", sys.stdout);
 #t.addChannel("disAlg", sys.stdout);
+t.addChannel("Project3", sys.stdout);
 
 print "Setting noise model"
 for i in range(1, numNodes+1):
@@ -71,7 +72,7 @@ def runTime(amount):
 msg = pack()
 msg.set_seq(0)
 msg.set_TTL(15)
-msg.set_protocol(0)
+msg.set_protocol(4)
 
 pkt = t.newPacket()
 pkt.setData(msg.data)
