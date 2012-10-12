@@ -24,5 +24,5 @@ interface TCPSocket<val_t>{
 	async command bool isClosed(val_t *input);
 	async command bool isClosing(val_t *input);
 	
-	async command void copy(val_t *input, val_t*output);
+	async command void copy(val_t *input, val_t *output);
 }

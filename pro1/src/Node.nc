@@ -20,6 +20,7 @@
 #include "ping.h"
 #include "dataStructures/routingtable.h"
 #include "lib/TCPSocketAL.h"
+#include "transport.h"
 
 module Node{
 	uses{
@@ -27,9 +28,7 @@ module Node{
 		interface Timer<TMilli> as pingTimeoutTimer;
 		interface Timer<TMilli> as neighborDiscovey;
 		interface Timer<TMilli> as neighborMap;
-		interface Timer<TMilli> as waitTimer;
 		interface Random as Random;
-		interface Timer<TMilli> as helloProtocol; 
 		interface Timer<TMilli> as sendDelay;
 		interface Packet;
 		interface AMPacket;
@@ -55,11 +54,13 @@ implementation{
 	/**
 	* Adrian's Variable
 	*/
+	transport transportPckt;
 	uint8_t neighborCount;
 	uint8_t helloCount;
 	hashmap Neighbors;
 	uint8_t broadcastMessage[PACKET_MAX_PAYLOAD_SIZE] = {"broadc@st"};
 	uint8_t helloMessage[PACKET_MAX_PAYLOAD_SIZE] = {"he!!o"};
+	uint8_t trans[5] = {"abc"};
 	lspList sendLsp[NUMNODES];
 	lspList recieveLsp[NUMNODES][NUMNODES];
 	int8_t recieveSeq[NUMNODES];
@@ -101,15 +102,7 @@ implementation{
 	event void pingTimeoutTimer.fired(){
 		checkTimes(&pings, call pingTimeoutTimer.getNow());
 	}
-	event void waitTimer.fired(){
-		//checkTimes(&pings, call pingTimeoutTimer.getNow());
-		dbg("Project2","Wait is over! Checking if Neighbor is the same. Current Neighbors: %d. Past Neighbors: %d.\n",helloCount, neighborCount);
-		if(helloCount == neighborCount)
-			dbg("Project2","Same neighbors, nothing to do.\n");
-		else{
-			dbg("Project2","Different neighbors! Time to update everyone.\n");
-		}
-	}
+
 	event void AMControl.startDone(error_t err){
 		if(err == SUCCESS){
 			call pingTimeoutTimer.startPeriodic(PING_TIMER_PERIOD + (uint16_t) ((call Random.rand16())%200));
@@ -137,14 +130,6 @@ implementation{
 		}
 	}
 
-	void isOnline(hashmap *neighbors){
-		uint8_t i=0;
-		pair temp;
-		for(i; i<(neighbors->numofVals); i++){
-			dbg("Project1N", "Node Lost!\n Msg: %s", temp.src);
-			hashmapRemove(neighbors, i);
-		}
-	}
 	 void delaySendTask(){
                 call sendDelay.startOneShot( call Random.rand16() % 200);
      }
@@ -178,19 +163,7 @@ implementation{
 		//post sendBufferTask();
 		delaySendTask();
 	}
-	
-	event void helloProtocol.fired(){	
-		pack helloPacket;
-		helloCount = 0;
-		if(call neighborDiscovey.isRunning());
-		else{
-			dbg("Project2","NEIGHBOR DISCOVERY TIMER STARTED\n");
-			call neighborDiscovey.startPeriodic(90000 + (uint16_t) ((call Random.rand16())%200));}
-		makePack(&helloPacket,TOS_NODE_ID,AM_BROADCAST_ADDR, 1, PROTOCOL_PING, sequenceNum++,(uint8_t *) helloMessage,sizeof(helloMessage));
-		sendBufferPushBack(&packBuffer, helloPacket, helloPacket.src, AM_BROADCAST_ADDR);
-		//post sendBufferTask();
-		delaySendTask();
-	}
+
 	event void neighborMap.fired(){
 		//Generating neighbor map
 		iterator it;
@@ -532,8 +505,11 @@ implementation{
 					}
 					break;
 					case PROTOCOL_TCP:
-					dbg("Project3", "TCP Packet has arrived.\n");
-					call tcpLayer.handlePacket(myMsg->payload);
+				
+					createTransport(&transportPckt,0,0,0,0,0, &trans, sizeof(trans));
+					//dbg("Project3", "TCP Packet has arrived.\n");
+					//printTransport(&transportPckt);
+					call tcpLayer.handlePacket(&transportPckt);
 					break;
 					default:
 					break;

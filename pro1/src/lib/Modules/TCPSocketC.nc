@@ -1,5 +1,5 @@
 #include "TCPSocketAL.h"
-
+#include "transport.h"
 module TCPSocketC{
 	provides{
 		interface TCPSocket<TCPSocketAL>;
@@ -7,30 +7,49 @@ module TCPSocketC{
 }
 implementation{	
 	async command void TCPSocket.init(TCPSocketAL *input){
+		input->currentState = CLOSED;
 		
 	}
 	
 	async command uint8_t TCPSocket.bind(TCPSocketAL *input, uint8_t localPort, uint16_t address){
+	//For servers, associates a socket with a port and address. For clients, associates a socket with a specific source address.
+	input->srcPort = localPort;
+	input->srcID = address;
 	
 	return input;
 	}
 	
 	async command uint8_t TCPSocket.listen(TCPSocketAL *input, uint8_t backlog){
-	//make this listen into a blocking call
+	//(Server only.) Waits for incoming connection with a client.
 	
 		return input;
 	
 	}
 	
 	async command uint8_t TCPSocket.accept(TCPSocketAL *input, TCPSocketAL *output){
+		//(Server only.) Accepts incoming connection with a client.
+		input->currentState = LISTEN;
+		
 		return input;
 	}
 	
 	async command uint8_t TCPSocket.connect(TCPSocketAL *input, uint16_t destAddr, uint8_t destPort){
-		return input;
+		//(Client only.) Establishes a network connection on a socket.
+		transport pckt;
+		if(destPort < 0 || destPort > TRANSPORT_MAX_PORT)
+			return -1;
+		if(input->currentState == CLOSED){
+			//send a syn packet
+			//createTransport(&pckt,0,destPort,TRANSPORT_SYN,0,0,NULL,0);	
+			
+			return input;
+		}
+		return -1;
 	}
 
 	async command uint8_t TCPSocket.close(TCPSocketAL *input){
+		//Terminates a network connection.
+		
 		return input;
 	}
 
@@ -39,6 +58,8 @@ implementation{
 	}
 
 	async command int16_t TCPSocket.read(TCPSocketAL *input, uint8_t *readBuffer, uint16_t pos, uint16_t len){
+		
+		
 		return input;
 	}
 

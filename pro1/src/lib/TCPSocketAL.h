@@ -21,7 +21,14 @@ enum TCPSOCKET_STATE{
 
 typedef struct TCPSocketAL{
 	/*Insert Variables Here */
-	 uint8_t currentState;
+	uint8_t currentState;
+	uint8_t destPort;
+	uint8_t destID;
+	uint8_t srcPort;
+	uint8_t srcID;
+	uint8_t packetID;
+	uint8_t highestSeqSeen;
+	uint8_t highestSeqSent;
 }TCPSocketAL;
 
 #endif /* TCP_SOCKET_AL_H */

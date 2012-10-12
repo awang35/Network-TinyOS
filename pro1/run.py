@@ -9,7 +9,6 @@ import random
 
 t = Tossim([])
 r = t.radio()
-
 print "Creating virtual motes and creating noise trace."
 #noise = open("no_noise.txt", "r")
 #Number of nodes that will be in the network
@@ -43,7 +42,7 @@ print "Setting Debug Channels"
 #t.addChannel("Project2", sys.stdout);
 #t.addChannel("disAlg", sys.stdout);
 t.addChannel("Project3", sys.stdout);
-
+t.addChannel("transport", sys.stdout);
 print "Setting noise model"
 for i in range(1, numNodes+1):
     t.getNode(i).createNoiseModel()
