@@ -17,6 +17,7 @@ implementation{
 	}
 	
 	command TCPSocketAL *TCPManager.socket(){
+	//returns a socket
 		
 	
 	}
