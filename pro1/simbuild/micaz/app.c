@@ -3,11 +3,11 @@
 #define dbg(mode, format, ...) ((void)0)
 #define dbg_clear(mode, format, ...) ((void)0)
 #define dbg_active(mode) 0
-# 150 "/usr/lib/gcc/x86_64-linux-gnu/4.6/include/stddef.h" 3
-typedef long int ptrdiff_t;
-#line 212
-typedef long unsigned int size_t;
-#line 324
+# 150 "/usr/lib/gcc/i686-linux-gnu/4.7/include/stddef.h" 3
+typedef int ptrdiff_t;
+#line 213
+typedef unsigned int size_t;
+#line 325
 typedef int wchar_t;
 # 8 "/usr/lib/ncc/deputy_nodeputy.h"
 struct __nesc_attr_nonnull {
@@ -64,10 +64,10 @@ typedef signed char int8_t;
 typedef short int int16_t;
 typedef int int32_t;
 
-typedef long int int64_t;
 
 
-
+__extension__ 
+typedef long long int int64_t;
 
 
 
@@ -79,10 +79,10 @@ typedef unsigned int uint32_t;
 
 
 
-typedef unsigned long int uint64_t;
 
 
-
+__extension__ 
+typedef unsigned long long int uint64_t;
 
 
 
@@ -93,10 +93,10 @@ typedef signed char int_least8_t;
 typedef short int int_least16_t;
 typedef int int_least32_t;
 
-typedef long int int_least64_t;
 
 
-
+__extension__ 
+typedef long long int int_least64_t;
 
 
 
@@ -104,10 +104,10 @@ typedef unsigned char uint_least8_t;
 typedef unsigned short int uint_least16_t;
 typedef unsigned int uint_least32_t;
 
-typedef unsigned long int uint_least64_t;
 
 
-
+__extension__ 
+typedef unsigned long long int uint_least64_t;
 
 
 
@@ -116,38 +116,52 @@ typedef unsigned long int uint_least64_t;
 
 typedef signed char int_fast8_t;
 
-typedef long int int_fast16_t;
-typedef long int int_fast32_t;
-typedef long int int_fast64_t;
 
 
 
 
-
+typedef int int_fast16_t;
+typedef int int_fast32_t;
+__extension__ 
+typedef long long int int_fast64_t;
 
 
 
 typedef unsigned char uint_fast8_t;
 
-typedef unsigned long int uint_fast16_t;
-typedef unsigned long int uint_fast32_t;
-typedef unsigned long int uint_fast64_t;
-#line 120
-typedef long int intptr_t;
 
 
-typedef unsigned long int uintptr_t;
-#line 135
-typedef long int intmax_t;
-typedef unsigned long int uintmax_t;
+
+
+typedef unsigned int uint_fast16_t;
+typedef unsigned int uint_fast32_t;
+__extension__ 
+typedef unsigned long long int uint_fast64_t;
+#line 126
+typedef int intptr_t;
+
+
+typedef unsigned int uintptr_t;
+
+
+
+
+
+
+
+
+__extension__ 
+typedef long long int intmax_t;
+__extension__ 
+typedef unsigned long long int uintmax_t;
 # 35 "/usr/include/inttypes.h" 3
 typedef int __gwchar_t;
-#line 283
-#line 279
+#line 292
+#line 288
 typedef struct __nesc_unnamed4242 {
 
-  long int quot;
-  long int rem;
+  long long int quot;
+  long long int rem;
 } imaxdiv_t;
 # 281 "/usr/lib/ncc/nesc_nx.h"
 static __inline uint8_t __nesc_ntoh_uint8(const void * source)  ;
@@ -229,7 +243,7 @@ __attribute((__leaf__)) __attribute((__nothrow__)) __attribute((__pure__)) __att
 #line 399
 extern size_t strlen(const char *__s) 
 __attribute((__leaf__)) __attribute((__nothrow__)) __attribute((__pure__)) __attribute((__nonnull__(1))) ;
-# 67 "/usr/include/x86_64-linux-gnu/bits/waitstatus.h" 3
+# 67 "/usr/include/i386-linux-gnu/bits/waitstatus.h" 3
 union wait {
 
   int w_status;
@@ -329,7 +343,7 @@ __extension__
 
 
 __extension__ 
-# 31 "/usr/include/x86_64-linux-gnu/bits/types.h" 3
+# 31 "/usr/include/i386-linux-gnu/bits/types.h" 3
 typedef unsigned char __u_char;
 typedef unsigned short int __u_short;
 typedef unsigned int __u_int;
@@ -343,8 +357,15 @@ typedef unsigned short int __uint16_t;
 typedef signed int __int32_t;
 typedef unsigned int __uint32_t;
 
-typedef signed long int __int64_t;
-typedef unsigned long int __uint64_t;
+
+
+
+__extension__ 
+#line 47
+typedef signed long long int __int64_t;
+__extension__ 
+#line 48
+typedef unsigned long long int __uint64_t;
 
 
 
@@ -352,61 +373,127 @@ typedef unsigned long int __uint64_t;
 
 
 
-typedef long int __quad_t;
-typedef unsigned long int __u_quad_t;
+__extension__ 
+#line 56
+typedef long long int __quad_t;
+__extension__ 
+#line 57
+typedef unsigned long long int __u_quad_t;
 #line 134
-typedef unsigned long int __dev_t;
+__extension__ 
+#line 134
+typedef __u_quad_t __dev_t;
+__extension__ 
+#line 135
 typedef unsigned int __uid_t;
+__extension__ 
+#line 136
 typedef unsigned int __gid_t;
+__extension__ 
+#line 137
 typedef unsigned long int __ino_t;
-typedef unsigned long int __ino64_t;
+__extension__ 
+#line 138
+typedef __u_quad_t __ino64_t;
+__extension__ 
+#line 139
 typedef unsigned int __mode_t;
-typedef unsigned long int __nlink_t;
+__extension__ 
+#line 140
+typedef unsigned int __nlink_t;
+__extension__ 
+#line 141
 typedef long int __off_t;
-typedef long int __off64_t;
+__extension__ 
+#line 142
+typedef __quad_t __off64_t;
+__extension__ 
+#line 143
 typedef int __pid_t;
+__extension__ 
+#line 144
 typedef struct __nesc_unnamed4249 {
 #line 144
   int __val[2];
 } 
 #line 144
 __fsid_t;
+__extension__ 
+#line 145
 typedef long int __clock_t;
+__extension__ 
+#line 146
 typedef unsigned long int __rlim_t;
-typedef unsigned long int __rlim64_t;
+__extension__ 
+#line 147
+typedef __u_quad_t __rlim64_t;
+__extension__ 
+#line 148
 typedef unsigned int __id_t;
+__extension__ 
+#line 149
 typedef long int __time_t;
+__extension__ 
+#line 150
 typedef unsigned int __useconds_t;
+__extension__ 
+#line 151
 typedef long int __suseconds_t;
 
+__extension__ 
+#line 153
 typedef int __daddr_t;
+__extension__ 
+#line 154
 typedef long int __swblk_t;
+__extension__ 
+#line 155
 typedef int __key_t;
 
 
+__extension__ 
+#line 158
 typedef int __clockid_t;
 
 
+__extension__ 
+#line 161
 typedef void *__timer_t;
 
 
+__extension__ 
+#line 164
 typedef long int __blksize_t;
 
 
 
 
+__extension__ 
+#line 169
 typedef long int __blkcnt_t;
-typedef long int __blkcnt64_t;
+__extension__ 
+#line 170
+typedef __quad_t __blkcnt64_t;
 
 
+__extension__ 
+#line 173
 typedef unsigned long int __fsblkcnt_t;
-typedef unsigned long int __fsblkcnt64_t;
+__extension__ 
+#line 174
+typedef __u_quad_t __fsblkcnt64_t;
 
 
+__extension__ 
+#line 177
 typedef unsigned long int __fsfilcnt_t;
-typedef unsigned long int __fsfilcnt64_t;
+__extension__ 
+#line 178
+typedef __u_quad_t __fsfilcnt64_t;
 
-typedef long int __ssize_t;
+__extension__ 
+#line 180
+typedef int __ssize_t;
 
 
 
@@ -415,11 +502,15 @@ typedef __quad_t *__qaddr_t;
 typedef char *__caddr_t;
 
 
-typedef long int __intptr_t;
+__extension__ 
+#line 189
+typedef int __intptr_t;
 
 
+__extension__ 
+#line 192
 typedef unsigned int __socklen_t;
-# 34 "/usr/include/x86_64-linux-gnu/sys/types.h" 3
+# 34 "/usr/include/i386-linux-gnu/sys/types.h" 3
 typedef __u_char u_char;
 typedef __u_short u_short;
 typedef __u_int u_int;
@@ -498,7 +589,7 @@ typedef __time_t time_t;
 typedef __clockid_t clockid_t;
 #line 104
 typedef __timer_t timer_t;
-# 151 "/usr/include/x86_64-linux-gnu/sys/types.h" 3
+# 151 "/usr/include/i386-linux-gnu/sys/types.h" 3
 typedef unsigned long int ulong;
 typedef unsigned short int ushort;
 typedef unsigned int uint;
@@ -509,7 +600,7 @@ typedef unsigned int u_int32_t __attribute((__mode__(__SI__))) ;
 typedef unsigned int u_int64_t __attribute((__mode__(__DI__))) ;
 
 typedef int register_t __attribute((__mode__(__word__))) ;
-# 24 "/usr/include/x86_64-linux-gnu/bits/sigset.h" 3
+# 24 "/usr/include/i386-linux-gnu/bits/sigset.h" 3
 typedef int __sig_atomic_t;
 
 
@@ -523,7 +614,7 @@ typedef struct __nesc_unnamed4250 {
 
   unsigned long int __val[1024 / (8 * sizeof(unsigned long int ))];
 } __sigset_t;
-# 38 "/usr/include/x86_64-linux-gnu/sys/select.h" 3
+# 38 "/usr/include/i386-linux-gnu/sys/select.h" 3
 typedef __sigset_t sigset_t;
 # 120 "/usr/include/time.h" 3
 struct timespec {
@@ -531,13 +622,13 @@ struct timespec {
   __time_t tv_sec;
   long int tv_nsec;
 };
-# 31 "/usr/include/x86_64-linux-gnu/bits/time.h" 3
+# 31 "/usr/include/i386-linux-gnu/bits/time.h" 3
 struct timeval {
 
   __time_t tv_sec;
   __suseconds_t tv_usec;
 };
-# 49 "/usr/include/x86_64-linux-gnu/sys/select.h" 3
+# 49 "/usr/include/i386-linux-gnu/sys/select.h" 3
 typedef __suseconds_t suseconds_t;
 
 
@@ -566,7 +657,7 @@ fd_set;
 
 
 typedef __fd_mask fd_mask;
-# 32 "/usr/include/x86_64-linux-gnu/sys/sysmacros.h" 3
+# 32 "/usr/include/i386-linux-gnu/sys/sysmacros.h" 3
 __extension__ 
 
 
@@ -574,7 +665,7 @@ __extension__
 
 
 __extension__ 
-# 229 "/usr/include/x86_64-linux-gnu/sys/types.h" 3
+# 229 "/usr/include/i386-linux-gnu/sys/types.h" 3
 typedef __blksize_t blksize_t;
 
 
@@ -591,7 +682,7 @@ typedef __fsblkcnt_t fsblkcnt_t;
 
 
 typedef __fsfilcnt_t fsfilcnt_t;
-# 50 "/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h" 3
+# 36 "/usr/include/i386-linux-gnu/bits/pthreadtypes.h" 3
 typedef unsigned long int pthread_t;
 
 
@@ -599,10 +690,10 @@ typedef unsigned long int pthread_t;
 
 
 
-#line 53
+#line 39
 typedef union __nesc_unnamed4252 {
 
-  char __size[56];
+  char __size[36];
   long int __align;
 } pthread_attr_t;
 
@@ -610,16 +701,13 @@ typedef union __nesc_unnamed4252 {
 
 
 
+#line 46
+typedef struct __pthread_internal_slist {
 
-
-#line 61
-typedef struct __pthread_internal_list {
-
-  struct __pthread_internal_list *__prev;
-  struct __pthread_internal_list *__next;
-} __pthread_list_t;
-#line 104
-#line 76
+  struct __pthread_internal_slist *__next;
+} __pthread_slist_t;
+#line 73
+#line 54
 typedef union __nesc_unnamed4253 {
 
   struct __pthread_mutex_s {
@@ -628,25 +716,16 @@ typedef union __nesc_unnamed4253 {
     unsigned int __count;
     int __owner;
 
-    unsigned int __nusers;
-
-
 
     int __kind;
+    unsigned int __nusers;
+    __extension__ union  {
 
-    int __spins;
-    __pthread_list_t __list;
-  } 
-
-
-
-
-
-
-
-
-  __data;
-  char __size[40];
+      int __spins;
+      __pthread_slist_t __list;
+    } ;
+  } __data;
+  char __size[24];
   long int __align;
 } pthread_mutex_t;
 
@@ -654,14 +733,14 @@ typedef union __nesc_unnamed4253 {
 
 
 
-#line 106
+#line 75
 typedef union __nesc_unnamed4254 {
 
   char __size[4];
-  int __align;
+  long int __align;
 } pthread_mutexattr_t;
-#line 130
-#line 115
+#line 99
+#line 84
 typedef union __nesc_unnamed4255 {
 
   struct __nesc_unnamed4256 {
@@ -683,11 +762,11 @@ typedef union __nesc_unnamed4255 {
 
 
 
-#line 132
+#line 101
 typedef union __nesc_unnamed4257 {
 
   char __size[4];
-  int __align;
+  long int __align;
 } pthread_condattr_t;
 
 
@@ -697,10 +776,9 @@ typedef unsigned int pthread_key_t;
 
 
 typedef int pthread_once_t;
-#line 189
-#line 150
+#line 139
+#line 119
 typedef union __nesc_unnamed4258 {
-
 
   struct __nesc_unnamed4259 {
 
@@ -710,16 +788,15 @@ typedef union __nesc_unnamed4258 {
     unsigned int __writer_wakeup;
     unsigned int __nr_readers_queued;
     unsigned int __nr_writers_queued;
+
+
+    unsigned char __flags;
+    unsigned char __shared;
+    unsigned char __pad1;
+    unsigned char __pad2;
     int __writer;
-    int __shared;
-    unsigned long int __pad1;
-    unsigned long int __pad2;
-
-
-    unsigned int __flags;
   } __data;
-#line 187
-  char __size[56];
+  char __size[32];
   long int __align;
 } pthread_rwlock_t;
 
@@ -727,7 +804,7 @@ typedef union __nesc_unnamed4258 {
 
 
 
-#line 191
+#line 141
 typedef union __nesc_unnamed4260 {
 
   char __size[8];
@@ -747,10 +824,10 @@ typedef volatile int pthread_spinlock_t;
 
 
 
-#line 206
+#line 156
 typedef union __nesc_unnamed4261 {
 
-  char __size[32];
+  char __size[20];
   long int __align;
 } pthread_barrier_t;
 
@@ -758,7 +835,7 @@ typedef union __nesc_unnamed4261 {
 
 
 
-#line 212
+#line 162
 typedef union __nesc_unnamed4262 {
 
   char __size[4];
@@ -789,15 +866,16 @@ extern void *malloc(size_t __size) __attribute((__leaf__)) __attribute((__nothro
 #line 488
 extern void free(void *__ptr) __attribute((__leaf__)) __attribute((__nothrow__)) ;
 #line 742
-typedef int (*__compar_fn_t)(const void *arg_0x2ba4a09171f0, const void *arg_0x2ba4a09174c8);
+typedef int (*__compar_fn_t)(const void *arg_0x4039da98, const void *arg_0x4039dc30);
 #line 776
 __extension__ 
 #line 793
 __extension__ 
-# 31 "/usr/include/x86_64-linux-gnu/bits/mathdef.h" 3
-typedef float float_t;
-typedef double double_t;
-# 110 "/usr/include/x86_64-linux-gnu/bits/mathcalls.h" 3
+# 36 "/usr/include/i386-linux-gnu/bits/mathdef.h" 3
+typedef long double float_t;
+
+typedef long double double_t;
+# 110 "/usr/include/i386-linux-gnu/bits/mathcalls.h" 3
 extern double log(double __x) __attribute((__leaf__)) __attribute((__nothrow__)) ;
 #line 155
 extern double pow(double __x, double __y) __attribute((__leaf__)) __attribute((__nothrow__)) ;
@@ -807,7 +885,7 @@ extern double sqrt(double __x) __attribute((__leaf__)) __attribute((__nothrow__)
 #line 186
 extern double floor(double __x) __attribute((__leaf__)) __attribute((__nothrow__)) __attribute((const)) ;
 #line 252
-extern double erfc(double arg_0x2ba4a09999c8) __attribute((__leaf__)) __attribute((__nothrow__)) ;
+extern double erfc(double arg_0x403e4da8) __attribute((__leaf__)) __attribute((__nothrow__)) ;
 # 203 "/usr/include/math.h" 3
 enum __nesc_unnamed4263 {
 
@@ -902,7 +980,7 @@ typedef int _G_int16_t __attribute((__mode__(__HI__))) ;
 typedef int _G_int32_t __attribute((__mode__(__SI__))) ;
 typedef unsigned int _G_uint16_t __attribute((__mode__(__HI__))) ;
 typedef unsigned int _G_uint32_t __attribute((__mode__(__SI__))) ;
-# 40 "/usr/lib/gcc/x86_64-linux-gnu/4.6/include/stdarg.h" 3
+# 40 "/usr/lib/gcc/i686-linux-gnu/4.7/include/stdarg.h" 3
 typedef __builtin_va_list __gnuc_va_list;
 # 172 "/usr/include/libio.h" 3
 struct _IO_jump_t;
@@ -1182,8 +1260,8 @@ typedef struct hashtable hashtable_t;
 #line 78
 struct hashtable *
 create_hashtable(unsigned int minsize, 
-unsigned int (*hashfunction)(void *arg_0x2ba4a0be7868), 
-int (*key_eq_fn)(void *arg_0x2ba4a0be6020, void *arg_0x2ba4a0be62c0));
+unsigned int (*hashfunction)(void *arg_0x40540320), 
+int (*key_eq_fn)(void *arg_0x40540768, void *arg_0x405408e0));
 #line 103
 #line 102
 int 
@@ -1219,7 +1297,7 @@ typedef struct sim_log_channel {
 } sim_log_channel_t;
 
 enum __nesc_unnamed4272 {
-  SIM_LOG_OUTPUT_COUNT = 276U
+  SIM_LOG_OUTPUT_COUNT = 278U
 };
 
 sim_log_output_t outputs[SIM_LOG_OUTPUT_COUNT];
@@ -1384,7 +1462,7 @@ void sim_queue_cleanup_total(sim_event_t *event)   ;
 
 
 static sim_event_t *sim_queue_allocate_event();
-# 57 "/usr/include/x86_64-linux-gnu/sys/time.h" 3
+# 57 "/usr/include/i386-linux-gnu/sys/time.h" 3
 struct timezone {
 
   int tz_minuteswest;
@@ -1796,7 +1874,7 @@ struct tm;
 
 struct tm;
 # 46 "/home/adrian/local/tinyos-2.1.1/tos/lib/tossim/randomlib.h"
-static inline void RandomInitialise(int arg_0x2ba4a0dd6288, int arg_0x2ba4a0dd64f0);
+static inline void RandomInitialise(int arg_0x40674558, int arg_0x406746b0);
 static double RandomUniform(void );
 # 51 "/home/adrian/local/tinyos-2.1.1/tos/lib/tossim/sim_noise.c"
 int numCase1 = 0;
@@ -2173,7 +2251,7 @@ typedef struct __nesc_unnamed4283 {
 } 
 #line 44
 TMicro;
-# 8 "/home/adrian/git/tinyos-project1/pro1/src/protocol.h"
+# 8 "/home/adrian/workspace/Network-TinyOS/pro1/src/protocol.h"
 enum __nesc_unnamed4284 {
   PROTOCOL_PING = 0, 
   PROTOCOL_PINGREPLY = 1, 
@@ -2182,7 +2260,7 @@ enum __nesc_unnamed4284 {
   PROTOCOL_TCP = 4, 
   PROTOCOL_CMD = 99
 };
-# 13 "/home/adrian/git/tinyos-project1/pro1/src/packet.h"
+# 13 "/home/adrian/workspace/Network-TinyOS/pro1/src/packet.h"
 enum __nesc_unnamed4285 {
   PACKET_HEADER_LENGTH = 8, 
   PACKET_MAX_PAYLOAD_SIZE = 28 - PACKET_HEADER_LENGTH, 
@@ -2206,7 +2284,18 @@ typedef nx_struct pack {
   nx_uint8_t protocol;
   nx_uint8_t payload[PACKET_MAX_PAYLOAD_SIZE];
 } __attribute__((packed)) pack;
-#line 40
+
+
+
+
+
+
+
+static inline void logPack(pack *input);
+
+
+
+
 enum __nesc_unnamed4286 {
   AM_PACK = 6
 };
@@ -3331,7 +3420,7 @@ enum __nesc_unnamed4301 {
 };
 # 41 "/home/adrian/local/tinyos-2.1.1/tos/lib/tossim/SimMainP.nc"
 static void __nesc_nido_initialise(int node);
-# 7 "/home/adrian/git/tinyos-project1/pro1/src/dataStructures/hashmap.h"
+# 7 "/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/hashmap.h"
 typedef uint8_t hashType;
 
 enum __nesc_unnamed4302 {
@@ -3389,7 +3478,7 @@ static void hashmapInit(hashmap *input);
 static inline hashType hashmapGet(hashmap *input, uint8_t key);
 #line 101
 static inline void hashmapInsert(hashmap *input, uint8_t key, hashType value);
-# 14 "/home/adrian/git/tinyos-project1/pro1/src/dataStructures/iterator.h"
+# 14 "/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/iterator.h"
 #line 10
 typedef struct iterator {
   hashType values[HASH_MAX_SIZE];
@@ -3408,7 +3497,7 @@ static void iteratorInit(iterator *it, hashmap *input);
 static hashType iteratorNext(iterator *it);
 #line 60
 static bool iteratorHasNext(iterator *it);
-# 12 "/home/adrian/git/tinyos-project1/pro1/src/command.h"
+# 12 "/home/adrian/workspace/Network-TinyOS/pro1/src/command.h"
 enum __nesc_unnamed4303 {
   CMD_PING = 0, 
   CMD_NEIGHBOR_DUMP = 1, 
@@ -3443,13 +3532,13 @@ static inline bool isKill(uint8_t *array, uint8_t size);
 static inline bool isPing(uint8_t *array, uint8_t size);
 #line 59
 static inline int getCMD(uint8_t *array, uint8_t size);
-# 9 "/home/adrian/git/tinyos-project1/pro1/src/dataStructures/pair.h"
+# 9 "/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/pair.h"
 #line 6
 typedef struct pair {
   uint8_t src;
   uint8_t seq;
 } pair;
-# 6 "/home/adrian/git/tinyos-project1/pro1/src/dataStructures/list.h"
+# 6 "/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/list.h"
 typedef pair dataType;
 
 
@@ -3474,7 +3563,7 @@ static bool arrListPushBack(arrlist *cur, dataType newVal);
 static inline dataType pop_front(arrlist *cur);
 #line 81
 static inline bool arrListContains(arrlist *list, uint8_t iSrc, uint8_t iSeq);
-# 8 "/home/adrian/git/tinyos-project1/pro1/src/packBuffer.h"
+# 8 "/home/adrian/workspace/Network-TinyOS/pro1/src/packBuffer.h"
 enum __nesc_unnamed4305 {
   SEND_BUFFER_SIZE = 128
 };
@@ -3507,14 +3596,14 @@ typedef struct sendBuffer {
 static inline sendInfo sendBufferPopFront(sendBuffer *buffer);
 #line 41
 static void sendBufferPushBack(sendBuffer *buff, pack packet, uint16_t src, uint16_t dest);
-# 9 "/home/adrian/git/tinyos-project1/pro1/src/dataStructures/pingInfo.h"
+# 9 "/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/pingInfo.h"
 #line 5
 typedef struct pingInfo {
   uint16_t dest;
   uint32_t timeSent;
   uint8_t msg[PACKET_MAX_PAYLOAD_SIZE];
 } pingInfo;
-# 5 "/home/adrian/git/tinyos-project1/pro1/src/dataStructures/pingList.h"
+# 5 "/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/pingList.h"
 typedef pingInfo pingType;
 
 
@@ -3536,14 +3625,14 @@ static inline uint8_t pingListSize(pingList *cur);
 static inline pingType pingListGet(pingList *cur, __nesc_nxbase_nx_uint8_t i);
 #line 56
 static inline void pingListDelete(pingList *list, uint8_t i);
-# 7 "/home/adrian/git/tinyos-project1/pro1/src/ping.h"
+# 7 "/home/adrian/workspace/Network-TinyOS/pro1/src/ping.h"
 enum __nesc_unnamed4306 {
   PING_TIMER_PERIOD = 5333, 
   PING_TIMEOUT = 5000
 };
 
 static inline void checkTimes(pingList *pings, uint32_t currentTime);
-# 6 "/home/adrian/git/tinyos-project1/pro1/src/dataStructures/routingtable.h"
+# 6 "/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/routingtable.h"
 enum __nesc_unnamed4307 {
   NUMNODES = 5
 };
@@ -3591,7 +3680,7 @@ typedef struct lspEntry {
   uint8_t node;
   uint8_t cost[20];
 } lspEntry;
-# 13 "/home/adrian/git/tinyos-project1/pro1/src/lib/TCPSocketAL.h"
+# 13 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/TCPSocketAL.h"
 enum TCPSOCKET_STATE {
   CLOSED = 0, 
   LISTEN = 1, 
@@ -3613,7 +3702,7 @@ typedef struct TCPSocketAL {
   uint8_t highestSeqSeen;
   uint8_t highestSeqSent;
 } TCPSocketAL;
-# 14 "/home/adrian/git/tinyos-project1/pro1/src/transport.h"
+# 14 "/home/adrian/workspace/Network-TinyOS/pro1/src/transport.h"
 enum __nesc_unnamed4308 {
   TRANSPORT_MAX_SIZE = PACKET_MAX_PAYLOAD_SIZE, 
   TRANSPORT_HEADER_SIZE = 7, 
@@ -3655,7 +3744,7 @@ typedef nx_struct transport {
 
 static inline void createTransport(transport *output, uint8_t srcPort, uint8_t destPort, uint8_t type, uint16_t window, int16_t seq, uint8_t *payload, uint8_t packetLength);
 static inline void printTransport(transport *input);
-# 7 "/home/adrian/git/tinyos-project1/pro1/src/transport.c"
+# 7 "/home/adrian/workspace/Network-TinyOS/pro1/src/transport.c"
 static inline void createTransport(transport *output, uint8_t srcPort, uint8_t destPort, uint8_t type, uint16_t window, int16_t seq, uint8_t *payload, uint8_t packetLength);
 #line 29
 static inline void printTransport(transport *input);
@@ -3930,7 +4019,7 @@ typedef union __nesc_unnamed4336 {
     uint8_t rsvd : 2;
   } bits;
 } Atm128_ETIFR_t;
-# 8 "/home/adrian/git/tinyos-project1/pro1/src/lib/../dataStructures/socketHash.h"
+# 8 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/../dataStructures/socketHash.h"
 typedef TCPSocketAL sockType;
 
 enum __nesc_unnamed4338 {
@@ -4029,11 +4118,11 @@ static error_t MeasureClockC$Init$init(void );
 # 67 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/TaskBasic.nc"
 static error_t SimSchedulerBasicP$TaskBasic$postTask(
 # 49 "/home/adrian/local/tinyos-2.1.1/tos/lib/tossim/SimSchedulerBasicP.nc"
-uint8_t arg_0x2ba4a0ef7ab0);
+uint8_t arg_0x407111b8);
 # 75 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/TaskBasic.nc"
 static void SimSchedulerBasicP$TaskBasic$default$runTask(
 # 49 "/home/adrian/local/tinyos-2.1.1/tos/lib/tossim/SimSchedulerBasicP.nc"
-uint8_t arg_0x2ba4a0ef7ab0);
+uint8_t arg_0x407111b8);
 # 57 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Scheduler.nc"
 static void SimSchedulerBasicP$Scheduler$init(void );
 
@@ -4063,7 +4152,7 @@ static long long int SimMoteP$SimMote$getStartTime(void );
 # 80 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/AMSend.nc"
 static error_t TossimActiveMessageC$AMSend$send(
 # 47 "/home/adrian/local/tinyos-2.1.1/tos/lib/tossim/TossimActiveMessageC.nc"
-am_id_t arg_0x2ba4a11fe220, 
+am_id_t arg_0x408db148, 
 # 80 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/AMSend.nc"
 am_addr_t addr, 
 #line 71
@@ -4086,7 +4175,7 @@ message_t *
 
 TossimActiveMessageC$Snoop$default$receive(
 # 49 "/home/adrian/local/tinyos-2.1.1/tos/lib/tossim/TossimActiveMessageC.nc"
-am_id_t arg_0x2ba4a11fc020, 
+am_id_t arg_0x408d81b8, 
 # 71 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
@@ -4133,7 +4222,7 @@ message_t *
 
 TossimActiveMessageC$Receive$default$receive(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/lib/tossim/TossimActiveMessageC.nc"
-am_id_t arg_0x2ba4a11fd340, 
+am_id_t arg_0x408dbb08, 
 # 71 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
@@ -4345,15 +4434,15 @@ static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$TimerFrom$fire
 #line 136
 static uint32_t /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$getNow(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x2ba4a1829da0);
+uint8_t arg_0x40c9a3a8);
 # 83 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$default$fired(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x2ba4a1829da0);
+uint8_t arg_0x40c9a3a8);
 # 64 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$startPeriodic(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x2ba4a1829da0, 
+uint8_t arg_0x40c9a3a8, 
 # 64 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 uint32_t dt);
 
@@ -4366,7 +4455,7 @@ uint32_t dt);
 
 static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$startOneShot(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x2ba4a1829da0, 
+uint8_t arg_0x40c9a3a8, 
 # 73 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 uint32_t dt);
 # 82 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Counter.nc"
@@ -4395,7 +4484,7 @@ error_t error);
 # 110 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/AMSend.nc"
 static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$AMSend$sendDone(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc"
-am_id_t arg_0x2ba4a18ed488, 
+am_id_t arg_0x40cea9f8, 
 # 103 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/AMSend.nc"
 message_t * msg, 
 
@@ -4408,7 +4497,7 @@ error_t error);
 # 75 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc"
 static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$send(
 # 46 "/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc"
-uint8_t arg_0x2ba4a18ee318, 
+uint8_t arg_0x40cea010, 
 # 67 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc"
 message_t * msg, 
 
@@ -4422,7 +4511,7 @@ uint8_t len);
 #line 100
 static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$default$sendDone(
 # 46 "/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc"
-uint8_t arg_0x2ba4a18ee318, 
+uint8_t arg_0x40cea010, 
 # 96 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc"
 message_t * msg, 
 
@@ -4433,8 +4522,8 @@ error_t error);
 static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$errorTask$runTask(void );
 #line 75
 static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$CancelTask$runTask(void );
-# 5 "/home/adrian/git/tinyos-project1/pro1/src/lib/Interfaces/TCPManager.nc"
-static void TCPManagerC$TCPManager$handlePacket(void *arg_0x2ba4a14e5208);
+# 5 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPManager.nc"
+static void TCPManagerC$TCPManager$handlePacket(void *arg_0x40aa0668);
 # 62 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Init.nc"
 static error_t PlatformP$MoteInit$init(void );
 #line 62
@@ -4479,7 +4568,7 @@ int sim_main_start_mote(void )   ;
 # 75 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/TaskBasic.nc"
 static void SimSchedulerBasicP$TaskBasic$runTask(
 # 49 "/home/adrian/local/tinyos-2.1.1/tos/lib/tossim/SimSchedulerBasicP.nc"
-uint8_t arg_0x2ba4a0ef7ab0);
+uint8_t arg_0x407111b8);
 
 
 
@@ -4647,7 +4736,7 @@ static am_addr_t TossimActiveMessageC$amAddress(void );
 # 110 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/AMSend.nc"
 static void TossimActiveMessageC$AMSend$sendDone(
 # 47 "/home/adrian/local/tinyos-2.1.1/tos/lib/tossim/TossimActiveMessageC.nc"
-am_id_t arg_0x2ba4a11fe220, 
+am_id_t arg_0x408db148, 
 # 103 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/AMSend.nc"
 message_t * msg, 
 
@@ -4666,7 +4755,7 @@ message_t *
 
 TossimActiveMessageC$Snoop$receive(
 # 49 "/home/adrian/local/tinyos-2.1.1/tos/lib/tossim/TossimActiveMessageC.nc"
-am_id_t arg_0x2ba4a11fc020, 
+am_id_t arg_0x408d81b8, 
 # 71 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
@@ -4685,7 +4774,7 @@ message_t *
 
 TossimActiveMessageC$Receive$receive(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/lib/tossim/TossimActiveMessageC.nc"
-am_id_t arg_0x2ba4a11fd340, 
+am_id_t arg_0x408dbb08, 
 # 71 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
@@ -5076,8 +5165,8 @@ message_t * msg,
 uint8_t len);
 # 52 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Random.nc"
 static uint16_t Node$Random$rand16(void );
-# 5 "/home/adrian/git/tinyos-project1/pro1/src/lib/Interfaces/TCPManager.nc"
-static void Node$tcpLayer$handlePacket(void *arg_0x2ba4a14e5208);
+# 5 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPManager.nc"
+static void Node$tcpLayer$handlePacket(void *arg_0x40aa0668);
 # 73 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 static void Node$sendDelay$startOneShot(uint32_t dt);
 # 67 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/TaskBasic.nc"
@@ -5108,7 +5197,7 @@ static void Node$neighborDiscovey$startPeriodic(uint32_t dt);
 
 
 static void Node$neighborDiscovey$startOneShot(uint32_t dt);
-# 75 "/home/adrian/git/tinyos-project1/pro1/src/Node.nc"
+# 75 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 enum Node$__nesc_unnamed4344 {
 #line 75
   Node$sendBufferTask = 3U
@@ -5240,11 +5329,11 @@ static void Node$dijkstra(void );
 static inline void Node$storePayload(lspList *payload, uint16_t src);
 #line 355
 static inline message_t *Node$Receive$receive(message_t *msg, void *payload, uint8_t len);
-#line 526
+#line 532
 static inline void Node$sendBufferTask$runTask(void );
-#line 550
+#line 556
 static inline error_t Node$send(uint16_t src, uint16_t dest, pack *message);
-#line 576
+#line 582
 static void Node$makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t protocol, uint16_t seq, uint8_t *payload, uint8_t length);
 
 
@@ -5588,7 +5677,7 @@ static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$TimerFrom$stop
 
 static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$fired(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x2ba4a1829da0);
+uint8_t arg_0x40c9a3a8);
 #line 71
 enum /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$__nesc_unnamed4347 {
 #line 71
@@ -5712,7 +5801,7 @@ static inline void /*NodeC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP$0$Send
 # 80 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/AMSend.nc"
 static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$AMSend$send(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc"
-am_id_t arg_0x2ba4a18ed488, 
+am_id_t arg_0x40cea9f8, 
 # 80 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/AMSend.nc"
 am_addr_t addr, 
 #line 71
@@ -5729,7 +5818,7 @@ uint8_t len);
 # 100 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc"
 static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$sendDone(
 # 46 "/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc"
-uint8_t arg_0x2ba4a18ee318, 
+uint8_t arg_0x40cea010, 
 # 96 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc"
 message_t * msg, 
 
@@ -5807,9 +5896,9 @@ static inline void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$tryToSend(void );
 static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$AMSend$sendDone(am_id_t id, message_t *msg, error_t err);
 #line 215
 static inline void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$default$sendDone(uint8_t id, message_t *msg, error_t err);
-# 12 "/home/adrian/git/tinyos-project1/pro1/src/lib/Modules/TCPManagerC.nc"
+# 12 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
 socketmap TCPManagerC$activeSockets[1000][TRANSPORT_MAX_PORT];
-#line 28
+#line 29
 static inline void TCPManagerC$TCPManager$handlePacket(void *payload);
 # 78 "/home/adrian/local/tinyos-2.1.1/tos/lib/tossim/heap.c"
 static inline void init_heap(heap_t *heap)
@@ -6207,7 +6296,7 @@ static __inline  uint8_t __nesc_hton_uint8(void * target, uint8_t value)
   return value;
 }
 
-# 33 "/home/adrian/git/tinyos-project1/pro1/src/lib/../dataStructures/socketHash.h"
+# 33 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/../dataStructures/socketHash.h"
 static inline uint16_t shash2(uint16_t k)
 #line 33
 {
@@ -6261,7 +6350,7 @@ static inline bool shashmapContains(socketmap *input, uint8_t key)
   return FALSE;
 }
 
-# 29 "/home/adrian/git/tinyos-project1/pro1/src/transport.c"
+# 29 "/home/adrian/workspace/Network-TinyOS/pro1/src/transport.c"
 static inline void printTransport(transport *input)
 #line 29
 {
@@ -6294,9 +6383,9 @@ static inline void printTransport(transport *input)
   sim_log_debug_clear(77U, "transport", "\n");
 }
 
-# 28 "/home/adrian/git/tinyos-project1/pro1/src/lib/Modules/TCPManagerC.nc"
+# 29 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
 static inline void TCPManagerC$TCPManager$handlePacket(void *payload)
-#line 28
+#line 29
 {
 
   transport *pckt = (transport *)payload;
@@ -6304,8 +6393,8 @@ static inline void TCPManagerC$TCPManager$handlePacket(void *payload)
   uint8_t i = 0;
   TCPSocketAL sckt;
 
-#line 34
-  sim_log_debug(270U, "Project3", "Recieved a TCP packet\n");
+#line 35
+  sim_log_debug(272U, "Project3", "Recieved a TCP packet\n");
   printTransport(pckt);
 
   if (shashmapContains(&TCPManagerC$activeSockets[sim_node()][__nesc_ntoh_uint8(pckt->srcPort.nxdata)], __nesc_ntoh_uint8(pckt->destPort.nxdata))) {
@@ -6313,29 +6402,29 @@ static inline void TCPManagerC$TCPManager$handlePacket(void *payload)
 
   switch (__nesc_ntoh_uint8(pckt->type.nxdata)) {
       case TRANSPORT_SYN: 
-        sim_log_debug(271U, "Project3", "SYN ");
+        sim_log_debug(273U, "Project3", "SYN ");
 
 
 
       break;
       case TRANSPORT_ACK: 
-        sim_log_debug(272U, "Project3", "ACK ");
+        sim_log_debug(274U, "Project3", "ACK ");
       break;
       case TRANSPORT_FIN: 
-        sim_log_debug(273U, "Project3", "FIN ");
+        sim_log_debug(275U, "Project3", "FIN ");
       break;
       case TRANSPORT_DATA: 
-        sim_log_debug(274U, "Project3", "DATA ");
+        sim_log_debug(276U, "Project3", "DATA ");
       break;
       default: 
-        sim_log_debug(275U, "Project3", "UNKNOWN");
+        sim_log_debug(277U, "Project3", "UNKNOWN");
     }
 }
 
-# 5 "/home/adrian/git/tinyos-project1/pro1/src/lib/Interfaces/TCPManager.nc"
-inline static void Node$tcpLayer$handlePacket(void *arg_0x2ba4a14e5208){
+# 5 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPManager.nc"
+inline static void Node$tcpLayer$handlePacket(void *arg_0x40aa0668){
 #line 5
-  TCPManagerC$TCPManager$handlePacket(arg_0x2ba4a14e5208);
+  TCPManagerC$TCPManager$handlePacket(arg_0x40aa0668);
 #line 5
 }
 #line 5
@@ -6351,7 +6440,7 @@ static __inline  uint16_t __nesc_hton_uint16(void * target, uint16_t value)
   return value;
 }
 
-# 7 "/home/adrian/git/tinyos-project1/pro1/src/transport.c"
+# 7 "/home/adrian/workspace/Network-TinyOS/pro1/src/transport.c"
 static inline void createTransport(transport *output, uint8_t srcPort, uint8_t destPort, uint8_t type, uint16_t window, int16_t seq, uint8_t *payload, uint8_t packetLength)
 #line 7
 {
@@ -6458,14 +6547,14 @@ inline static void Node$sendDelay$startOneShot(uint32_t dt){
 #line 73
 }
 #line 73
-# 133 "/home/adrian/git/tinyos-project1/pro1/src/Node.nc"
+# 133 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 static inline void Node$delaySendTask(void )
 #line 133
 {
   Node$sendDelay$startOneShot(Node$Random$rand16() % 200);
 }
 
-# 35 "/home/adrian/git/tinyos-project1/pro1/src/command.h"
+# 35 "/home/adrian/workspace/Network-TinyOS/pro1/src/command.h"
 static inline bool isKill(uint8_t *array, uint8_t size)
 #line 35
 {
@@ -6530,7 +6619,7 @@ static inline int getCMD(uint8_t *array, uint8_t size)
   return CMD_ERROR;
 }
 
-# 144 "/home/adrian/git/tinyos-project1/pro1/src/Node.nc"
+# 144 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 static inline void Node$printNeighbors(hashmap *neighbors)
 #line 144
 {
@@ -6548,7 +6637,7 @@ static inline void Node$printNeighbors(hashmap *neighbors)
   sim_log_debug(189U, "Project1N", "--------------------------------------\n");
 }
 
-# 32 "/home/adrian/git/tinyos-project1/pro1/src/dataStructures/hashmap.h"
+# 32 "/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/hashmap.h"
 static inline uint16_t hash2(uint16_t k)
 #line 32
 {
@@ -6606,7 +6695,7 @@ static inline void hashmapInsert(hashmap *input, uint8_t key, hashType value)
   i < HASH_MAX_SIZE);
 }
 
-# 334 "/home/adrian/git/tinyos-project1/pro1/src/Node.nc"
+# 334 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 static inline void Node$storePayload(lspList *payload, uint16_t src)
 #line 334
 {
@@ -6618,7 +6707,7 @@ static inline void Node$storePayload(lspList *payload, uint16_t src)
     }
 }
 
-# 45 "/home/adrian/git/tinyos-project1/pro1/src/dataStructures/list.h"
+# 45 "/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/list.h"
 static inline dataType pop_front(arrlist *cur)
 #line 45
 {
@@ -6655,7 +6744,14 @@ static inline bool arrListContains(arrlist *list, uint8_t iSrc, uint8_t iSeq)
   return FALSE;
 }
 
-# 355 "/home/adrian/git/tinyos-project1/pro1/src/Node.nc"
+# 35 "/home/adrian/workspace/Network-TinyOS/pro1/src/packet.h"
+static inline void logPack(pack *input)
+#line 35
+{
+  sim_log_debug(53U, "cmdDebug", "Src: %hhu Dest: %hhu Seq: %hhu TTL: %hhu Protocol:%hhu  Payload: %s\n", __nesc_ntoh_uint16(input->src.nxdata), __nesc_ntoh_uint16(input->dest.nxdata), __nesc_ntoh_uint16(input->seq.nxdata), __nesc_ntoh_uint8(input->TTL.nxdata), __nesc_ntoh_uint8(input->protocol.nxdata), input->payload);
+}
+
+# 355 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 static inline message_t *Node$Receive$receive(message_t *msg, void *payload, uint8_t len)
 #line 355
 {
@@ -6673,6 +6769,8 @@ static inline message_t *Node$Receive$receive(message_t *msg, void *payload, uin
       uint8_t i = 0;
       iterator it;
 
+#line 365
+      logPack(payload);
       if (arrListContains(&Node$Received[sim_node()], __nesc_ntoh_uint16(myMsg->src.nxdata), __nesc_ntoh_uint16(myMsg->seq.nxdata))) {
           sim_log_debug(218U, "Project1F", "Packet has been seen before, dropping it.\n");
           return msg;
@@ -6691,21 +6789,30 @@ static inline message_t *Node$Receive$receive(message_t *msg, void *payload, uin
             arrListPushBack(&Node$Received[sim_node()], receivedPacket);
           }
         }
+#line 378
+      if (__nesc_ntoh_uint8(myMsg->protocol.nxdata) == PROTOCOL_CMD) {
+        sim_log_debug(220U, "cmdDebug", "CMD packet has arrive\n");
+        }
+#line 380
       if (TOS_NODE_ID != __nesc_ntoh_uint16(myMsg->dest.nxdata)) {
 
-
+          if (__nesc_ntoh_uint8(myMsg->protocol.nxdata) == PROTOCOL_CMD) {
+            sim_log_debug(221U, "cmdDebug", "Not meant for me\n");
+            }
+#line 384
           if (__nesc_ntoh_uint16(myMsg->dest.nxdata) == AM_BROADCAST_ADDR) {
+
               switch (__nesc_ntoh_uint8(myMsg->protocol.nxdata)) {
                   case PROTOCOL_PING: 
                     if (!strcmp(myMsg->payload, Node$helloMessage[sim_node()])) {
-                        sim_log_debug(220U, "Project2", "Node %d said hello, sending reply.\n", __nesc_ntoh_uint16(myMsg->src.nxdata));
+                        sim_log_debug(222U, "Project2", "Node %d said hello, sending reply.\n", __nesc_ntoh_uint16(myMsg->src.nxdata));
                         Node$makePack(&Node$sendPackage[sim_node()], TOS_NODE_ID, __nesc_ntoh_uint16(myMsg->src.nxdata), 1, PROTOCOL_PINGREPLY, Node$sequenceNum[sim_node()]++, (uint8_t *)Node$helloMessage[sim_node()], sizeof Node$helloMessage[sim_node()]);
                         sendBufferPushBack(&Node$packBuffer[sim_node()], Node$sendPackage[sim_node()], __nesc_ntoh_uint16(Node$sendPackage[sim_node()].src.nxdata), __nesc_ntoh_uint16(myMsg->src.nxdata));
 
                         Node$delaySendTask();
                       }
                     else {
-                        sim_log_debug(221U, "Project1N", "I have been discovered, sending reply.\n");
+                        sim_log_debug(223U, "Project1N", "I have been discovered, sending reply.\n");
                         Node$makePack(&Node$sendPackage[sim_node()], TOS_NODE_ID, __nesc_ntoh_uint16(myMsg->src.nxdata), 1, PROTOCOL_PINGREPLY, Node$sequenceNum[sim_node()]++, (uint8_t *)Node$broadcastMessage[sim_node()], sizeof Node$broadcastMessage[sim_node()]);
 
                         sendBufferPushBack(&Node$packBuffer[sim_node()], Node$sendPackage[sim_node()], __nesc_ntoh_uint16(Node$sendPackage[sim_node()].src.nxdata), __nesc_ntoh_uint16(myMsg->src.nxdata));
@@ -6736,11 +6843,11 @@ static inline message_t *Node$Receive$receive(message_t *msg, void *payload, uin
             }
           else 
             {
-              sim_log_debug(222U, "Project1F", "Packet is not meant for me, broadcasting it.\n");
+              sim_log_debug(224U, "Project1F", "Packet is not meant for me, broadcasting it.\n");
               Node$dijkstra();
               Node$printRecieveLsp();
               Node$printTable(0);
-              sim_log_debug(223U, "Project2", "Packet is meant for Node %d. Looking up table. Will be routed to Node %d\n", __nesc_ntoh_uint16(myMsg->dest.nxdata), Node$confirmList[sim_node()][__nesc_ntoh_uint16(myMsg->dest.nxdata) - 1].NextHop);
+              sim_log_debug(225U, "Project2", "Packet is meant for Node %d. Looking up table. Will be routed to Node %d\n", __nesc_ntoh_uint16(myMsg->dest.nxdata), Node$confirmList[sim_node()][__nesc_ntoh_uint16(myMsg->dest.nxdata) - 1].NextHop);
 
               Node$makePack(&Node$sendPackage[sim_node()], __nesc_ntoh_uint16(myMsg->src.nxdata), __nesc_ntoh_uint16(myMsg->dest.nxdata), __nesc_ntoh_uint8(myMsg->TTL.nxdata), __nesc_ntoh_uint8(myMsg->protocol.nxdata), __nesc_ntoh_uint16(myMsg->seq.nxdata), (uint8_t *)myMsg->payload, sizeof  myMsg->payload);
               sendBufferPushBack(&Node$packBuffer[sim_node()], Node$sendPackage[sim_node()], __nesc_ntoh_uint16(Node$sendPackage[sim_node()].src.nxdata), Node$confirmList[sim_node()][__nesc_ntoh_uint16(myMsg->dest.nxdata) - 1].NextHop);
@@ -6748,25 +6855,28 @@ static inline message_t *Node$Receive$receive(message_t *msg, void *payload, uin
               Node$delaySendTask();
             }
         }
-      if (TOS_NODE_ID == __nesc_ntoh_uint16(myMsg->src.nxdata)) {
-          sim_log_debug(224U, "Project1F", "Source is this node: %s\n", myMsg->payload);
+      if (TOS_NODE_ID == __nesc_ntoh_uint16(myMsg->src.nxdata) && __nesc_ntoh_uint8(myMsg->protocol.nxdata) != 99) {
+          sim_log_debug(226U, "Project1F", "Source is this node: %s\n", myMsg->payload);
           return msg;
         }
       if (TOS_NODE_ID == __nesc_ntoh_uint16(myMsg->dest.nxdata)) {
-          sim_log_debug(225U, "Project1F", "Packet from %d has arrived! Msg: %s\n", __nesc_ntoh_uint16(myMsg->src.nxdata), myMsg->payload);
+          if (__nesc_ntoh_uint8(myMsg->protocol.nxdata) == PROTOCOL_CMD) {
+            sim_log_debug(227U, "cmdDebug", "Meant for me\n");
+            }
+          sim_log_debug(228U, "Project1F", "Packet from %d has arrived! Msg: %s\n", __nesc_ntoh_uint16(myMsg->src.nxdata), myMsg->payload);
           switch (__nesc_ntoh_uint8(myMsg->protocol.nxdata)) {
               uint8_t createMsg[PACKET_MAX_PAYLOAD_SIZE];
               uint8_t zero = 1;
               uint16_t dest;
 
-#line 446
+#line 452
               case PROTOCOL_PING: 
                 Node$dijkstra();
               Node$printRecieveLsp();
               Node$printTable(0);
-              sim_log_debug(226U, "Project2", "PingReply Packeted is enroute to Node %d, will be routed to Node %d\n", __nesc_ntoh_uint16(myMsg->src.nxdata), Node$confirmList[sim_node()][__nesc_ntoh_uint16(myMsg->src.nxdata) - 1].NextHop);
+              sim_log_debug(229U, "Project2", "PingReply Packeted is enroute to Node %d, will be routed to Node %d\n", __nesc_ntoh_uint16(myMsg->src.nxdata), Node$confirmList[sim_node()][__nesc_ntoh_uint16(myMsg->src.nxdata) - 1].NextHop);
               dest = AM_BROADCAST_ADDR;
-              sim_log_debug(227U, "Project1F", "Sending Ping Reply to %d! \n", __nesc_ntoh_uint16(myMsg->src.nxdata));
+              sim_log_debug(230U, "Project1F", "Sending Ping Reply to %d! \n", __nesc_ntoh_uint16(myMsg->src.nxdata));
               Node$makePack(&Node$sendPackage[sim_node()], TOS_NODE_ID, __nesc_ntoh_uint16(myMsg->src.nxdata), 120, PROTOCOL_PINGREPLY, Node$sequenceNum[sim_node()]++, (uint8_t *)myMsg->payload, sizeof  myMsg->payload);
               sendBufferPushBack(&Node$packBuffer[sim_node()], Node$sendPackage[sim_node()], __nesc_ntoh_uint16(Node$sendPackage[sim_node()].src.nxdata), Node$confirmList[sim_node()][__nesc_ntoh_uint16(myMsg->src.nxdata) - 1].NextHop);
 
@@ -6774,12 +6884,12 @@ static inline message_t *Node$Receive$receive(message_t *msg, void *payload, uin
               break;
 
               case PROTOCOL_PINGREPLY: 
-                sim_log_debug(228U, "Project1F", "Received a Ping Reply from %d with message: %s!\n", __nesc_ntoh_uint16(myMsg->src.nxdata), myMsg->payload);
-              sim_log_debug(229U, "Project2", "Received a Ping Reply from %d with message: %s!\n", __nesc_ntoh_uint16(myMsg->src.nxdata), myMsg->payload);
+                sim_log_debug(231U, "Project1F", "Received a Ping Reply from %d with message: %s!\n", __nesc_ntoh_uint16(myMsg->src.nxdata), myMsg->payload);
+              sim_log_debug(232U, "Project2", "Received a Ping Reply from %d with message: %s!\n", __nesc_ntoh_uint16(myMsg->src.nxdata), myMsg->payload);
 
               if (!strcmp(myMsg->payload, Node$helloMessage[sim_node()])) {
                   Node$helloCount[sim_node()]++;
-                  sim_log_debug(230U, "Project2", "Timer for neighbor check intiated.\n");
+                  sim_log_debug(233U, "Project2", "Timer for neighbor check intiated.\n");
                 }
 
               if (!strcmp(myMsg->payload, Node$broadcastMessage[sim_node()])) {
@@ -6795,13 +6905,13 @@ static inline message_t *Node$Receive$receive(message_t *msg, void *payload, uin
               break;
 
               case PROTOCOL_CMD: 
-                sim_log_debug(231U, "Project2", "WENT TO CMD");
+                sim_log_debug(234U, "Project2", "WENT TO CMD");
               switch (getCMD((uint8_t *)& myMsg->payload, sizeof  myMsg->payload)) {
                   uint32_t temp = 0;
 
-#line 484
+#line 490
                   case CMD_PING: 
-                    sim_log_debug(232U, "genDebug", "Ping packet received: %lu\n", temp);
+                    sim_log_debug(235U, "genDebug", "Ping packet received: %lu\n", temp);
                   memcpy(&createMsg, myMsg->payload + PING_CMD_LENGTH, sizeof  myMsg->payload - PING_CMD_LENGTH);
                   memcpy(&dest, myMsg->payload + PING_CMD_LENGTH - 2, sizeof(uint8_t ));
                   Node$makePack(&Node$sendPackage[sim_node()], TOS_NODE_ID, (dest - 48) & 0x00FF, 120, PROTOCOL_PING, Node$sequenceNum[sim_node()]++, (uint8_t *)createMsg, 
@@ -6826,7 +6936,7 @@ static inline message_t *Node$Receive$receive(message_t *msg, void *payload, uin
               case PROTOCOL_TCP: 
 
                 createTransport(&Node$transportPckt[sim_node()], 0, 0, 0, 0, 0, &Node$trans[sim_node()], sizeof Node$trans[sim_node()]);
-              sim_log_debug(233U, "Project3", "TCP Packet has arrived.\n");
+
 
               Node$tcpLayer$handlePacket(&Node$transportPckt[sim_node()]);
               break;
@@ -6838,7 +6948,7 @@ static inline message_t *Node$Receive$receive(message_t *msg, void *payload, uin
       return msg;
     }
 
-  sim_log_debug(234U, "genDebug", "Unknown Packet Type\n");
+  sim_log_debug(236U, "genDebug", "Unknown Packet Type\n");
   return msg;
 }
 
@@ -6850,13 +6960,13 @@ static inline message_t *TossimActiveMessageC$Receive$default$receive(am_id_t id
 }
 
 # 78 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Receive.nc"
-inline static message_t * TossimActiveMessageC$Receive$receive(am_id_t arg_0x2ba4a11fd340, message_t * msg, void * payload, uint8_t len){
+inline static message_t * TossimActiveMessageC$Receive$receive(am_id_t arg_0x408dbb08, message_t * msg, void * payload, uint8_t len){
 #line 78
   nx_struct message_t *__nesc_result;
 #line 78
 
 #line 78
-  switch (arg_0x2ba4a11fd340) {
+  switch (arg_0x408dbb08) {
 #line 78
     case 6:
 #line 78
@@ -6866,7 +6976,7 @@ inline static message_t * TossimActiveMessageC$Receive$receive(am_id_t arg_0x2ba
 #line 78
     default:
 #line 78
-      __nesc_result = TossimActiveMessageC$Receive$default$receive(arg_0x2ba4a11fd340, msg, payload, len);
+      __nesc_result = TossimActiveMessageC$Receive$default$receive(arg_0x408dbb08, msg, payload, len);
 #line 78
       break;
 #line 78
@@ -6967,7 +7077,7 @@ inline static Atm128_TIFR_t /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAs
 #line 53
 }
 #line 53
-# 185 "/home/adrian/git/tinyos-project1/pro1/src/Node.nc"
+# 185 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 static inline lspAlgorithm Node$selectLSP(uint8_t key)
 #line 185
 {
@@ -7039,7 +7149,7 @@ static inline uint8_t Node$getLowCost(void )
   return node;
 }
 
-# 68 "/home/adrian/git/tinyos-project1/pro1/src/dataStructures/hashmap.h"
+# 68 "/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/hashmap.h"
 static inline hashType hashmapGet(hashmap *input, uint8_t key)
 #line 68
 {
@@ -7071,13 +7181,13 @@ static inline message_t *TossimActiveMessageC$Snoop$default$receive(am_id_t id, 
 }
 
 # 78 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Receive.nc"
-inline static message_t * TossimActiveMessageC$Snoop$receive(am_id_t arg_0x2ba4a11fc020, message_t * msg, void * payload, uint8_t len){
+inline static message_t * TossimActiveMessageC$Snoop$receive(am_id_t arg_0x408d81b8, message_t * msg, void * payload, uint8_t len){
 #line 78
   nx_struct message_t *__nesc_result;
 #line 78
 
 #line 78
-    __nesc_result = TossimActiveMessageC$Snoop$default$receive(arg_0x2ba4a11fc020, msg, payload, len);
+    __nesc_result = TossimActiveMessageC$Snoop$default$receive(arg_0x408d81b8, msg, payload, len);
 #line 78
 
 #line 78
@@ -7227,7 +7337,7 @@ inline static void Node$pingTimeoutTimer$startPeriodic(uint32_t dt){
 #line 64
 }
 #line 64
-# 106 "/home/adrian/git/tinyos-project1/pro1/src/Node.nc"
+# 106 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 static inline void Node$AMControl$startDone(error_t err)
 #line 106
 {
@@ -7263,7 +7373,7 @@ static inline void TossimPacketModelC$startDoneTask$runTask(void )
   TossimPacketModelC$Control$startDone(SUCCESS);
 }
 
-# 121 "/home/adrian/git/tinyos-project1/pro1/src/Node.nc"
+# 121 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 static inline void Node$AMControl$stopDone(error_t err)
 #line 121
 {
@@ -7295,9 +7405,9 @@ static __inline  int8_t __nesc_hton_int8(void * target, int8_t value)
 }
 
 # 110 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/AMSend.nc"
-inline static void TossimActiveMessageC$AMSend$sendDone(am_id_t arg_0x2ba4a11fe220, message_t * msg, error_t error){
+inline static void TossimActiveMessageC$AMSend$sendDone(am_id_t arg_0x408db148, message_t * msg, error_t error){
 #line 110
-  /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$AMSend$sendDone(arg_0x2ba4a11fe220, msg, error);
+  /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$AMSend$sendDone(arg_0x408db148, msg, error);
 #line 110
 }
 #line 110
@@ -7379,57 +7489,57 @@ inline static void * Node$Packet$getPayload(message_t * msg, uint8_t len){
 #line 126
 }
 #line 126
-# 550 "/home/adrian/git/tinyos-project1/pro1/src/Node.nc"
+# 556 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 static inline error_t Node$send(uint16_t src, uint16_t dest, pack *message)
-#line 550
+#line 556
 {
   unsigned char __nesc_temp47;
   unsigned char *__nesc_temp46;
 
-#line 551
+#line 557
   if (!Node$busy[sim_node()] && Node$isActive[sim_node()]) {
       pack *msg = (pack *)Node$Packet$getPayload(&Node$pkt[sim_node()], sizeof(pack ));
 
-#line 553
+#line 559
       *msg = *message;
 
       if (__nesc_ntoh_uint8(msg->TTL.nxdata) > 0) {
-#line 555
+#line 561
         (__nesc_temp46 = msg->TTL.nxdata, __nesc_hton_uint8(__nesc_temp46, (__nesc_temp47 = __nesc_ntoh_uint8(__nesc_temp46)) - 1), __nesc_temp47);
         }
       else {
-#line 556
+#line 562
         return FAIL;
         }
       if (Node$AMSend$send(dest, &Node$pkt[sim_node()], sizeof(pack )) == SUCCESS) {
-          sim_log_debug(235U, "Project1F", "Successful sent\n");
+          sim_log_debug(237U, "Project1F", "Successful sent\n");
           Node$busy[sim_node()] = TRUE;
           return SUCCESS;
         }
       else {
-#line 562
+#line 568
         if (Node$AMSend$send(AM_BROADCAST_ADDR, &Node$pkt[sim_node()], sizeof(pack )) == SUCCESS) {
             Node$busy[sim_node()] = TRUE;
             return SUCCESS;
           }
         else 
-#line 565
+#line 571
           {
-            sim_log_debug(236U, "genDebug", "The radio is busy, or something\n");
+            sim_log_debug(238U, "genDebug", "The radio is busy, or something\n");
             return FAIL;
           }
         }
     }
   else 
-#line 569
+#line 575
     {
       return EBUSY;
     }
-  sim_log_debug(237U, "genDebug", "FAILED!?");
+  sim_log_debug(239U, "genDebug", "FAILED!?");
   return FAIL;
 }
 
-# 28 "/home/adrian/git/tinyos-project1/pro1/src/packBuffer.h"
+# 28 "/home/adrian/workspace/Network-TinyOS/pro1/src/packBuffer.h"
 static inline sendInfo sendBufferPopFront(sendBuffer *buffer)
 #line 28
 {
@@ -7445,14 +7555,14 @@ static inline sendInfo sendBufferPopFront(sendBuffer *buffer)
   return returnVal;
 }
 
-# 526 "/home/adrian/git/tinyos-project1/pro1/src/Node.nc"
+# 532 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 static inline void Node$sendBufferTask$runTask(void )
-#line 526
+#line 532
 {
   if (Node$packBuffer[sim_node()].size != 0 && !Node$busy[sim_node()]) {
       sendInfo info;
 
-#line 529
+#line 535
       info = sendBufferPopFront(&Node$packBuffer[sim_node()]);
       Node$send(info.src, info.dest, & info.packet);
     }
@@ -7663,9 +7773,9 @@ static inline void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$default$sendDone
 }
 
 # 100 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc"
-inline static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$sendDone(uint8_t arg_0x2ba4a18ee318, message_t * msg, error_t error){
+inline static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$sendDone(uint8_t arg_0x40cea010, message_t * msg, error_t error){
 #line 100
-  switch (arg_0x2ba4a18ee318) {
+  switch (arg_0x40cea010) {
 #line 100
     case 0U:
 #line 100
@@ -7675,7 +7785,7 @@ inline static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$sendDone(uint8_t
 #line 100
     default:
 #line 100
-      /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$default$sendDone(arg_0x2ba4a18ee318, msg, error);
+      /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$default$sendDone(arg_0x40cea010, msg, error);
 #line 100
       break;
 #line 100
@@ -7719,9 +7829,9 @@ static inline void SimSchedulerBasicP$TaskBasic$default$runTask(uint8_t id)
 }
 
 # 75 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/TaskBasic.nc"
-inline static void SimSchedulerBasicP$TaskBasic$runTask(uint8_t arg_0x2ba4a0ef7ab0){
+inline static void SimSchedulerBasicP$TaskBasic$runTask(uint8_t arg_0x407111b8){
 #line 75
-  switch (arg_0x2ba4a0ef7ab0) {
+  switch (arg_0x407111b8) {
 #line 75
     case TossimPacketModelC$startDoneTask:
 #line 75
@@ -7773,7 +7883,7 @@ inline static void SimSchedulerBasicP$TaskBasic$runTask(uint8_t arg_0x2ba4a0ef7a
 #line 75
     default:
 #line 75
-      SimSchedulerBasicP$TaskBasic$default$runTask(arg_0x2ba4a0ef7ab0);
+      SimSchedulerBasicP$TaskBasic$default$runTask(arg_0x407111b8);
 #line 75
       break;
 #line 75
@@ -7797,13 +7907,13 @@ inline static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$errorTask$postTask
 }
 #line 67
 # 80 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/AMSend.nc"
-inline static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$AMSend$send(am_id_t arg_0x2ba4a18ed488, am_addr_t addr, message_t * msg, uint8_t len){
+inline static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$AMSend$send(am_id_t arg_0x40cea9f8, am_addr_t addr, message_t * msg, uint8_t len){
 #line 80
   unsigned char __nesc_result;
 #line 80
 
 #line 80
-  __nesc_result = TossimActiveMessageC$AMSend$send(arg_0x2ba4a18ed488, addr, msg, len);
+  __nesc_result = TossimActiveMessageC$AMSend$send(arg_0x40cea9f8, addr, msg, len);
 #line 80
 
 #line 80
@@ -8615,7 +8725,7 @@ inline static uint32_t Node$pingTimeoutTimer$getNow(void ){
 #line 136
 }
 #line 136
-# 56 "/home/adrian/git/tinyos-project1/pro1/src/dataStructures/pingList.h"
+# 56 "/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/pingList.h"
 static inline void pingListDelete(pingList *list, uint8_t i)
 #line 56
 {
@@ -8641,7 +8751,7 @@ static inline uint8_t pingListSize(pingList *cur)
   return cur->numValues;
 }
 
-# 12 "/home/adrian/git/tinyos-project1/pro1/src/ping.h"
+# 12 "/home/adrian/workspace/Network-TinyOS/pro1/src/ping.h"
 static inline void checkTimes(pingList *pings, uint32_t currentTime)
 #line 12
 {
@@ -8659,7 +8769,7 @@ static inline void checkTimes(pingList *pings, uint32_t currentTime)
     }
 }
 
-# 102 "/home/adrian/git/tinyos-project1/pro1/src/Node.nc"
+# 102 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 static inline void Node$pingTimeoutTimer$fired(void )
 #line 102
 {
@@ -8681,7 +8791,7 @@ inline static error_t Node$sendBufferTask$postTask(void ){
 #line 67
 }
 #line 67
-# 136 "/home/adrian/git/tinyos-project1/pro1/src/Node.nc"
+# 136 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 static inline void Node$intializeNeighbors(hashmap *neighbors)
 #line 136
 {
@@ -8709,7 +8819,7 @@ inline static void Node$neighborDiscovey$startPeriodic(uint32_t dt){
 #line 64
 }
 #line 64
-# 178 "/home/adrian/git/tinyos-project1/pro1/src/Node.nc"
+# 178 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 static inline void Node$neighborDiscovey$fired(void )
 #line 178
 {
@@ -8726,7 +8836,7 @@ inline static void Node$neighborMap$startPeriodic(uint32_t dt){
 #line 64
 }
 #line 64
-# 159 "/home/adrian/git/tinyos-project1/pro1/src/Node.nc"
+# 159 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 static inline void Node$makeLSP(void )
 #line 159
 {
@@ -8757,9 +8867,9 @@ static inline void Node$neighborMap$fired(void )
   Node$neighborMap$startPeriodic(332422 + (uint16_t )(Node$Random$rand16() % 200));
 }
 
-#line 587
+#line 593
 static inline void Node$sendDelay$fired(void )
-#line 587
+#line 593
 {
 
   Node$sendBufferTask$postTask();
@@ -8771,9 +8881,9 @@ static inline void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$d
 }
 
 # 83 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
-inline static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$fired(uint8_t arg_0x2ba4a1829da0){
+inline static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$fired(uint8_t arg_0x40c9a3a8){
 #line 83
-  switch (arg_0x2ba4a1829da0) {
+  switch (arg_0x40c9a3a8) {
 #line 83
     case 0U:
 #line 83
@@ -8801,7 +8911,7 @@ inline static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$f
 #line 83
     default:
 #line 83
-      /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$default$fired(arg_0x2ba4a1829da0);
+      /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$default$fired(arg_0x40c9a3a8);
 #line 83
       break;
 #line 83
@@ -8875,7 +8985,7 @@ static inline void /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm
 static inline void HplAtm128Timer0AsyncP$cancel_compare(void )
 #line 577
 {
-  sim_log_debug(264U, "HplAtm128CompareC", "Cancelling compare at 0x%p\n", HplAtm128Timer0AsyncP$compare[sim_node()]);
+  sim_log_debug(266U, "HplAtm128CompareC", "Cancelling compare at 0x%p\n", HplAtm128Timer0AsyncP$compare[sim_node()]);
   if (HplAtm128Timer0AsyncP$compare[sim_node()] != (void *)0) {
       HplAtm128Timer0AsyncP$compare[sim_node()]->cancelled = 1;
       HplAtm128Timer0AsyncP$compare[sim_node()]->cleanup = sim_queue_cleanup_total;
@@ -8904,7 +9014,7 @@ static inline void HplAtm128Timer0AsyncP$cancel_overflow(void )
 {
   if (HplAtm128Timer0AsyncP$overflow[sim_node()] != (void *)0) {
       HplAtm128Timer0AsyncP$overflow[sim_node()]->cancelled = 1;
-      sim_log_debug(263U, "HplAtm128Timer0AsyncP", "Cancelling overflow %p.\n", HplAtm128Timer0AsyncP$overflow[sim_node()]);
+      sim_log_debug(265U, "HplAtm128Timer0AsyncP", "Cancelling overflow %p.\n", HplAtm128Timer0AsyncP$overflow[sim_node()]);
       HplAtm128Timer0AsyncP$overflow[sim_node()]->cleanup = sim_queue_cleanup_total;
     }
 }
@@ -8919,11 +9029,11 @@ static inline void HplAtm128Timer0AsyncP$timer0_overflow_handle(sim_event_t *evt
   else {
       if ((atm128RegFile[sim_node()][ATM128_TIMSK] & (1 << TOIE0)) != 0) {
           atm128RegFile[sim_node()][ATM128_TIFR] &= ~(1 << TOV0);
-          sim_log_debug(260U, "HplAtm128Timer0AsyncP", "Overflow interrupt at %s\n", sim_time_string());
+          sim_log_debug(262U, "HplAtm128Timer0AsyncP", "Overflow interrupt at %s\n", sim_time_string());
           INTERRUPT_16();
         }
       else {
-          sim_log_debug(261U, "HplAtm128Timer0AsyncP", "Setting overflow bit at %s\n", sim_time_string());
+          sim_log_debug(263U, "HplAtm128Timer0AsyncP", "Setting overflow bit at %s\n", sim_time_string());
           atm128RegFile[sim_node()][ATM128_TIFR] |= 1 << TOV0;
         }
       HplAtm128Timer0AsyncP$configure_overflow(evt);
@@ -8973,7 +9083,7 @@ static inline void HplAtm128Timer0AsyncP$Timer0$set(uint8_t newVal)
   uint8_t curVal = HplAtm128Timer0AsyncP$Timer0$get();
 
 #line 299
-  sim_log_debug(253U, "HplAtm128Timer0AsyncP", "HplAtm128Timer0AsyncP: Setting timer: %hhu\n", newVal);
+  sim_log_debug(255U, "HplAtm128Timer0AsyncP", "HplAtm128Timer0AsyncP: Setting timer: %hhu\n", newVal);
   if (newVal == curVal) {
       return;
     }
@@ -9000,7 +9110,7 @@ static inline void HplAtm128Timer0AsyncP$Timer0$set(uint8_t newVal)
 static inline void HplAtm128Timer0AsyncP$timer0_compare_handle(sim_event_t *evt)
 #line 187
 {
-  sim_log_debug(243U, "HplAtm128Timer0AsyncP", "Beginning compare 0x%p at %s\n", evt, sim_time_string());
+  sim_log_debug(245U, "HplAtm128Timer0AsyncP", "Beginning compare 0x%p at %s\n", evt, sim_time_string());
   if (evt->cancelled) {
       return;
     }
@@ -9009,21 +9119,21 @@ static inline void HplAtm128Timer0AsyncP$timer0_compare_handle(sim_event_t *evt)
 
 #line 194
       sim_print_now(timeStr, 128);
-      sim_log_debug(244U, "HplAtm128Timer0AsyncP", "Handling compare at 0x%p @ %s\n", evt, sim_time_string());
+      sim_log_debug(246U, "HplAtm128Timer0AsyncP", "Handling compare at 0x%p @ %s\n", evt, sim_time_string());
 
       if ((atm128RegFile[sim_node()][ATM128_TCCR0] & (1 << WGM01)) != 0 && !((atm128RegFile[sim_node()][ATM128_TCCR0] & (1 << WGM00)) != 0)) {
-          sim_log_debug(245U, "HplAtm128Timer0AsyncP", "%s: CTC is set, clear timer.\n", __FUNCTION__);
+          sim_log_debug(247U, "HplAtm128Timer0AsyncP", "%s: CTC is set, clear timer.\n", __FUNCTION__);
           HplAtm128Timer0AsyncP$Timer0$set(0);
         }
       else {
-          sim_log_debug(246U, "HplAtm128Timer0AsyncP", "%s: TCCR is 0x%hhx, %i, %i\n", __FUNCTION__, * (volatile uint8_t *)&atm128RegFile[sim_node()][0x33], (int )((atm128RegFile[sim_node()][ATM128_TCCR0] & (1 << WGM01)) != 0), (int )((atm128RegFile[sim_node()][ATM128_TCCR0] & (1 << WGM00)) != 0));
+          sim_log_debug(248U, "HplAtm128Timer0AsyncP", "%s: TCCR is 0x%hhx, %i, %i\n", __FUNCTION__, * (volatile uint8_t *)&atm128RegFile[sim_node()][0x33], (int )((atm128RegFile[sim_node()][ATM128_TCCR0] & (1 << WGM01)) != 0), (int )((atm128RegFile[sim_node()][ATM128_TCCR0] & (1 << WGM00)) != 0));
         }
 
       if ((atm128RegFile[sim_node()][ATM128_TIMSK] & (1 << OCIE0)) != 0) {
-          sim_log_debug(247U, "HplAtm128Timer0AsyncP", "TIFR is %hhx\n", * (volatile uint8_t *)&atm128RegFile[sim_node()][0x36]);
+          sim_log_debug(249U, "HplAtm128Timer0AsyncP", "TIFR is %hhx\n", * (volatile uint8_t *)&atm128RegFile[sim_node()][0x36]);
           atm128RegFile[sim_node()][ATM128_TIFR] &= ~(1 << OCF0);
-          sim_log_debug(248U, "HplAtm128Timer0AsyncP", "TIFR is %hhx\n", * (volatile uint8_t *)&atm128RegFile[sim_node()][0x36]);
-          sim_log_debug(249U, "HplAtm128Timer0AsyncP", "Compare interrupt @ %s\n", timeStr);
+          sim_log_debug(250U, "HplAtm128Timer0AsyncP", "TIFR is %hhx\n", * (volatile uint8_t *)&atm128RegFile[sim_node()][0x36]);
+          sim_log_debug(251U, "HplAtm128Timer0AsyncP", "Compare interrupt @ %s\n", timeStr);
           INTERRUPT_15();
         }
       else {
@@ -9043,7 +9153,7 @@ static inline sim_event_t *HplAtm128Timer0AsyncP$allocate_compare(void )
   sim_event_t *newEvent = sim_queue_allocate_event();
 
 #line 225
-  sim_log_debug(250U, "HplAtm128Timer0AsyncP", "Allocated compare at 0x%p\n", newEvent);
+  sim_log_debug(252U, "HplAtm128Timer0AsyncP", "Allocated compare at 0x%p\n", newEvent);
   newEvent->handle = HplAtm128Timer0AsyncP$timer0_compare_handle;
   newEvent->cleanup = sim_queue_cleanup_none;
   return newEvent;
@@ -9207,7 +9317,7 @@ uint8_t len)
   if (/*AMQueueP.AMQueueImplP*/AMQueueImplP$0$queue[sim_node()][clientId].msg != (void *)0) {
       return EBUSY;
     }
-  sim_log_debug(265U, "AMQueue", "AMQueue: request to send from %hhu (%p): passed checks\n", clientId, msg);
+  sim_log_debug(267U, "AMQueue", "AMQueue: request to send from %hhu (%p): passed checks\n", clientId, msg);
 
   /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$queue[sim_node()][clientId].msg = msg;
   /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Packet$setPayloadLength(msg, len);
@@ -9217,12 +9327,12 @@ uint8_t len)
       am_id_t amId = /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$AMPacket$type(msg);
       am_addr_t dest = /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$AMPacket$destination(msg);
 
-      sim_log_debug(266U, "AMQueue", "%s: request to send from %hhu (%p): queue empty\n", __FUNCTION__, clientId, msg);
+      sim_log_debug(268U, "AMQueue", "%s: request to send from %hhu (%p): queue empty\n", __FUNCTION__, clientId, msg);
       /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$current[sim_node()] = clientId;
 
       err = /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$AMSend$send(amId, dest, msg, len);
       if (err != SUCCESS) {
-          sim_log_debug(267U, "AMQueue", "%s: underlying send failed.\n", __FUNCTION__);
+          sim_log_debug(269U, "AMQueue", "%s: underlying send failed.\n", __FUNCTION__);
           /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$current[sim_node()] = 1;
           /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$queue[sim_node()][clientId].msg = (void *)0;
         }
@@ -9230,7 +9340,7 @@ uint8_t len)
       return err;
     }
   else {
-      sim_log_debug(268U, "AMQueue", "AMQueue: request to send from %hhu (%p): queue not empty\n", clientId, msg);
+      sim_log_debug(270U, "AMQueue", "AMQueue: request to send from %hhu (%p): queue not empty\n", clientId, msg);
     }
   return SUCCESS;
 }
@@ -9464,7 +9574,7 @@ inline static void /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm
 static inline void HplAtm128Timer0AsyncP$Timer0Ctrl$setControl(Atm128TimerControl_t x)
 #line 364
 {
-  sim_log_debug(255U, "HplAtm128Timer0AsyncP", "Setting control to be 0x%hhx\n", x.flat);
+  sim_log_debug(257U, "HplAtm128Timer0AsyncP", "Setting control to be 0x%hhx\n", x.flat);
   * (volatile uint8_t *)&atm128RegFile[sim_node()][0x33] = x.flat;
 }
 
@@ -9528,7 +9638,7 @@ inline static error_t SimMainP$SoftwareInit$init(void ){
 #line 62
 }
 #line 62
-# 81 "/home/adrian/git/tinyos-project1/pro1/src/Node.nc"
+# 81 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 static inline void Node$intializeList(void )
 #line 81
 {
@@ -9547,14 +9657,14 @@ static inline void Node$intializeList(void )
     }
 }
 
-# 16 "/home/adrian/git/tinyos-project1/pro1/src/dataStructures/list.h"
+# 16 "/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/list.h"
 static inline void arrListInit(arrlist *cur)
 #line 16
 {
   cur->numValues = 0;
 }
 
-# 93 "/home/adrian/git/tinyos-project1/pro1/src/Node.nc"
+# 93 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 static inline void Node$Boot$booted(void )
 #line 93
 {
@@ -11114,7 +11224,7 @@ static am_id_t TossimActiveMessageC$AMPacket$type(message_t *amsg)
   return __nesc_ntoh_uint8(header->type.nxdata);
 }
 
-# 20 "/home/adrian/git/tinyos-project1/pro1/src/dataStructures/list.h"
+# 20 "/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/list.h"
 static bool arrListPushBack(arrlist *cur, dataType newVal)
 #line 20
 {
@@ -11129,9 +11239,9 @@ static bool arrListPushBack(arrlist *cur, dataType newVal)
     }
 }
 
-# 576 "/home/adrian/git/tinyos-project1/pro1/src/Node.nc"
+# 582 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 static void Node$makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t protocol, uint16_t seq, uint8_t *payload, uint8_t length)
-#line 576
+#line 582
 {
   __nesc_hton_uint16(Package->src.nxdata, src);
   __nesc_hton_uint16(Package->dest.nxdata, dest);
@@ -11141,7 +11251,7 @@ static void Node$makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t T
   memcpy(Package->payload, payload, length);
 }
 
-# 41 "/home/adrian/git/tinyos-project1/pro1/src/packBuffer.h"
+# 41 "/home/adrian/workspace/Network-TinyOS/pro1/src/packBuffer.h"
 static void sendBufferPushBack(sendBuffer *buff, pack packet, uint16_t src, uint16_t dest)
 #line 41
 {
@@ -11242,7 +11352,7 @@ static uint8_t HplAtm128Timer0AsyncP$Timer0$get(void )
   elapsed = HplAtm128Timer0AsyncP$sim_to_clock(elapsed);
   elapsed = elapsed >> HplAtm128Timer0AsyncP$shiftFromScale();
   rval = (uint8_t )(elapsed & 0xff);
-  sim_log_debug(252U, "HplAtm128Timer0AsyncP", "HplAtm128Timer0AsyncP: Getting timer: %hhu\n", rval);
+  sim_log_debug(254U, "HplAtm128Timer0AsyncP", "HplAtm128Timer0AsyncP: Getting timer: %hhu\n", rval);
   return rval;
 }
 
@@ -11321,7 +11431,7 @@ static Atm128_TIFR_t HplAtm128Timer0AsyncP$Timer0Ctrl$getInterruptFlag(void )
 static uint8_t HplAtm128Timer0AsyncP$Compare$get(void )
 #line 457
 {
-  sim_log_debug(258U, "HplAtm128Timer0AsyncP", "HplAtm128Timer0AsyncP: Getting compare: %hhu\n", * (volatile uint8_t *)&atm128RegFile[sim_node()][0x31]);
+  sim_log_debug(260U, "HplAtm128Timer0AsyncP", "HplAtm128Timer0AsyncP: Getting compare: %hhu\n", * (volatile uint8_t *)&atm128RegFile[sim_node()][0x31]);
   return * (volatile uint8_t *)&atm128RegFile[sim_node()][0x31];
 }
 
@@ -11355,7 +11465,7 @@ static uint32_t RandomMlcgC$Random$rand32(void )
   return mlcg;
 }
 
-# 263 "/home/adrian/git/tinyos-project1/pro1/src/Node.nc"
+# 263 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 static void Node$dijkstra(void )
 #line 263
 {
@@ -11501,7 +11611,7 @@ static void Node$printTable(int8_t type)
     }
 }
 
-# 22 "/home/adrian/git/tinyos-project1/pro1/src/dataStructures/iterator.h"
+# 22 "/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/iterator.h"
 static void iteratorInit(iterator *it, hashmap *input)
 #line 22
 {
@@ -11649,7 +11759,7 @@ static bool SimSchedulerBasicP$Scheduler$runNextTask(void )
   return TRUE;
 }
 
-# 124 "/home/adrian/git/tinyos-project1/pro1/src/Node.nc"
+# 124 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 static void Node$AMSend$sendDone(message_t *msg, error_t error)
 #line 124
 {
@@ -11746,7 +11856,7 @@ static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$AMSend$sendDone(am_id_t id, 
       /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$sendDone(/*AMQueueP.AMQueueImplP*/AMQueueImplP$0$current[sim_node()], msg, err);
     }
   else {
-      sim_log_debug(269U, "PointerBug", "%s received send done for %p, signaling for %p.\n", __FUNCTION__, msg, /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$queue[sim_node()][/*AMQueueP.AMQueueImplP*/AMQueueImplP$0$current[sim_node()]].msg);
+      sim_log_debug(271U, "PointerBug", "%s received send done for %p, signaling for %p.\n", __FUNCTION__, msg, /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$queue[sim_node()][/*AMQueueP.AMQueueImplP*/AMQueueImplP$0$current[sim_node()]].msg);
     }
 }
 
@@ -11836,7 +11946,7 @@ static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$startPer
   /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$startTimer(num, /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$TimerFrom$getNow(), dt, FALSE);
 }
 
-# 50 "/home/adrian/git/tinyos-project1/pro1/src/dataStructures/hashmap.h"
+# 50 "/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/hashmap.h"
 static void hashmapInit(hashmap *input)
 #line 50
 {
@@ -11880,13 +11990,13 @@ static void /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128Alar
       uint8_t tifr = (uint8_t )/*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128AlarmAsyncP$0$TimerCtrl$getInterruptFlag().flat;
 
 #line 101
-      sim_log_debug(238U, "Atm128AlarmAsyncP", "Atm128AlarmAsyncP: TIFR is %hhx\n", tifr);
+      sim_log_debug(240U, "Atm128AlarmAsyncP", "Atm128AlarmAsyncP: TIFR is %hhx\n", tifr);
       if ((interrupt_in != 0 && interrupt_in < /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128AlarmAsyncP$0$MINDT) || tifr & (1 << OCF0)) {
           if (interrupt_in < /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128AlarmAsyncP$0$MINDT) {
-              sim_log_debug(239U, "Atm128AlarmAsyncP", "Atm128AlarmAsyncP: under min: %hhu.\n", interrupt_in);
+              sim_log_debug(241U, "Atm128AlarmAsyncP", "Atm128AlarmAsyncP: under min: %hhu.\n", interrupt_in);
             }
           else {
-              sim_log_debug(240U, "Atm128AlarmAsyncP", "Atm128AlarmAsyncP: OCF set.\n");
+              sim_log_debug(242U, "Atm128AlarmAsyncP", "Atm128AlarmAsyncP: OCF set.\n");
             }
           {
 #line 109
@@ -11898,14 +12008,14 @@ static void /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128Alar
 
       if (!/*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128AlarmAsyncP$0$set[sim_node()]) {
           newOcr0 = /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128AlarmAsyncP$0$MAXT;
-          sim_log_debug(241U, "Atm128AlarmAsyncP", "Atm128AlarmAsyncP: no alarm set, set at max.\n");
+          sim_log_debug(243U, "Atm128AlarmAsyncP", "Atm128AlarmAsyncP: no alarm set, set at max.\n");
         }
       else 
         {
           uint32_t now = /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128AlarmAsyncP$0$Counter$get();
 
 #line 120
-          sim_log_debug(242U, "Atm128AlarmAsyncP", "Atm128AlarmAsyncP: now-t0 = %llu, dt = %llu\n", now - /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128AlarmAsyncP$0$t0[sim_node()], /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128AlarmAsyncP$0$dt[sim_node()]);
+          sim_log_debug(244U, "Atm128AlarmAsyncP", "Atm128AlarmAsyncP: now-t0 = %llu, dt = %llu\n", now - /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128AlarmAsyncP$0$t0[sim_node()], /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128AlarmAsyncP$0$dt[sim_node()]);
 
           if ((uint32_t )(now - /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128AlarmAsyncP$0$t0[sim_node()]) >= /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128AlarmAsyncP$0$dt[sim_node()]) 
             {
@@ -11949,7 +12059,7 @@ static void /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128Alar
 static void HplAtm128Timer0AsyncP$Compare$set(uint8_t t)
 #line 463
 {
-  sim_log_debug(259U, "HplAtm128Timer0AsyncP", "HplAtm128Timer0AsyncP: Setting compare: %hhu\n", t);
+  sim_log_debug(261U, "HplAtm128Timer0AsyncP", "HplAtm128Timer0AsyncP: Setting compare: %hhu\n", t);
   /* atomic removed: atomic calls only */
 #line 465
   {
@@ -12030,7 +12140,7 @@ static void HplAtm128Timer0AsyncP$configure_overflow(sim_event_t *evt)
   overflowTime += sim_time();
   overflowTime -= (sim_time() - HplAtm128Timer0AsyncP$last_zero()) % (1 << HplAtm128Timer0AsyncP$shiftFromScale());
 
-  sim_log_debug(262U, "HplAtm128Timer0AsyncP", "Scheduling new overflow for %i at time %llu\n", sim_node(), overflowTime);
+  sim_log_debug(264U, "HplAtm128Timer0AsyncP", "Scheduling new overflow for %i at time %llu\n", sim_node(), overflowTime);
 
   evt->time = overflowTime;
 }
@@ -12077,7 +12187,7 @@ static void HplAtm128Timer0AsyncP$configure_compare(sim_event_t *evt)
   phaseOffset %= HplAtm128Timer0AsyncP$clock_to_sim(1 << HplAtm128Timer0AsyncP$shiftFromScale());
   compareTime -= phaseOffset;
 
-  sim_log_debug(251U, "HplAtm128Timer0AsyncP", "Configuring new compare of %i for %i at time %llu  (@ %llu)\n", (int )compareVal, sim_node(), compareTime, sim_time());
+  sim_log_debug(253U, "HplAtm128Timer0AsyncP", "Configuring new compare of %i for %i at time %llu  (@ %llu)\n", (int )compareVal, sim_node(), compareTime, sim_time());
 
   evt->time = compareTime;
 }

@@ -362,7 +362,7 @@ implementation{
 			pair receivedPacket = {myMsg->src,myMsg->seq};
 			uint8_t i = 0;
 			iterator it;
-			
+			logPack(payload);
 			if( arrListContains(&Received,myMsg->src,myMsg->seq)){
 				dbg("Project1F", "Packet has been seen before, dropping it.\n");
 				return msg;
@@ -375,11 +375,14 @@ implementation{
 				pop_front(&Received);
 				arrListPushBack(&Received,receivedPacket);
 			}
-	
+			if(myMsg->protocol==PROTOCOL_CMD)
+				dbg("cmdDebug", "CMD packet has arrive\n");
 			if(TOS_NODE_ID!=myMsg->dest){
 				//dbg("Project1F", "Broadcasting to Neighbors\n");
-	
+				if(myMsg->protocol==PROTOCOL_CMD)
+					dbg("cmdDebug", "Not meant for me\n");
 				if(myMsg->dest==AM_BROADCAST_ADDR){//should be a broadcast packet
+				
 					switch(myMsg->protocol){
 						case PROTOCOL_PING:
 						if(!strcmp(myMsg->payload,helloMessage)){
@@ -433,11 +436,14 @@ implementation{
 					delaySendTask();
 				}
 			}
-			if(TOS_NODE_ID==myMsg->src){
+			if(TOS_NODE_ID==myMsg->src&& myMsg->protocol != 99){
 				dbg("Project1F", "Source is this node: %s\n", myMsg->payload);
 				return msg;
 			}
 			if(TOS_NODE_ID==myMsg->dest){
+				if(myMsg->protocol==PROTOCOL_CMD)
+					dbg("cmdDebug", "Meant for me\n");
+			
 				dbg("Project1F", "Packet from %d has arrived! Msg: %s\n", myMsg->src, myMsg->payload);
 				switch(myMsg->protocol){
 					uint8_t createMsg[PACKET_MAX_PAYLOAD_SIZE];

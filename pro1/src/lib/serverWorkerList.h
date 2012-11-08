@@ -1,16 +1,15 @@
 /**
  * ANDES Lab - University of California, Merced
- * This class provides the basic functions of a network node.
+ * This class provides a list of workers needed by the server.
  *
  * @author UCM ANDES Lab
- * @date   October 1 2012
+ * @date   Novemeber 3 2012
  * 
- */ 
-
+ */
 #ifndef SERVER_WORKER_LIST_H
 #define SERVER_WORKER_LIST_H
 
-#include "../lib/serverAL.h"
+#include "serverAL.h"
 
 typedef serverWorkerAL workerType;
 enum{
@@ -18,8 +17,8 @@ enum{
 };
 
 typedef struct serverWorkerList{	
-	workerType values[SERVER_WORKER_LIST_MAX_SIZE]; //list of values
-	uint8_t numValues;			//number of objects currently in the array
+	workerType values[SERVER_WORKER_LIST_MAX_SIZE];
+	uint8_t numValues;
 }serverWorkerList;
 
 void serverWorkerListInit(serverWorkerList *cur){
@@ -47,10 +46,23 @@ uint8_t serverWorkerListSize(serverWorkerList* cur){	return cur->numValues;}
 workerType *serverWorkerListGet(serverWorkerList* cur, nx_uint8_t i){	return &(cur->values[i]);}
 
 void serverWorkerListRemoveKey(serverWorkerList *list, uint8_t i){
-	for(i; i<list->numValues-1; i++){
+	for(i=0; i<list->numValues-1; i++){
 		list->values[i]=list->values[i+1];
 	}
 	list->numValues--;
 }
 
-#endif /* SERVER LIST_H */
+bool serverWorkerListRemoveValue(serverWorkerList *list, workerType newVal){
+	uint8_t i=0;
+
+	for(i=0; i<list->numValues; i++){
+		if(list->values[i].socket->destPort == newVal.socket->destPort &&
+		list->values[i].socket->srcPort == newVal.socket->srcPort){
+			serverWorkerListRemoveKey(list, i);
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+
+#endif /* SERVER WORKER LIST_H */

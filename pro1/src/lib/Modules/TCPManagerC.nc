@@ -9,7 +9,7 @@ module TCPManagerC{
 implementation{
 	socketmap freeList;
 	//a pair of sockets will uniquely id a connection
-	socketmap activeSockets[TRANSPORT_MAX_PORT];
+	socketmap activePorts[TRANSPORT_MAX_PORT];
 	
 	command void TCPManager.init(){
 	
