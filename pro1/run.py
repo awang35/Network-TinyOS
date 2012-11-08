@@ -36,7 +36,7 @@ print "--------------------------------------"
 # Channels used for debuging
 print "Setting Debug Channels"
 #t.addChannel("genDebug", sys.stdout)
-#t.addChannel("cmdDebug", sys.stdout);
+t.addChannel("cmdDebug", sys.stdout);
 #t.addChannel("Project1F", sys.stdout);
 #t.addChannel("Project1N", sys.stdout);
 #t.addChannel("Project2", sys.stdout);
@@ -97,7 +97,8 @@ def sendCMD(string):
 flooding = 1;
 if(flooding == 1):
     runTime(200)
-    sendCMD("1 1 cmd ping 3 Hi!")
+    #sendCMD("1 1 cmd ping 2 hi")
+    sendCMD("1 1 cmd client 3 10 3")
     #sendCMD("5 1 Hi again!")
   #  runTime(200)
    # sendCMD("5 2 Flooding!")

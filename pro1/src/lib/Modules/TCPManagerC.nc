@@ -9,7 +9,7 @@ module TCPManagerC{
 implementation{
 	socketmap freeList;
 	//a pair of sockets will uniquely id a connection
-	socketmap activePorts[TRANSPORT_MAX_PORT];
+	//socketmap activePorts[TRANSPORT_MAX_PORT];
 	
 	command void TCPManager.init(){
 	
@@ -35,9 +35,9 @@ implementation{
 	dbg("Project3","Recieved a TCP packet\n");
 	printTransport(pckt);
 	//check connection info if there is a socket relating to it
-	if(shashmapContains(&activeSockets[pckt->srcPort],pckt->destPort)){
+	//if(shashmapContains(&activePorts[pckt->srcPort],pckt->destPort)){
 		
-	} 
+	//} 
 	switch(pckt->type){
 		case TRANSPORT_SYN:
 			dbg("Project3", "SYN ");

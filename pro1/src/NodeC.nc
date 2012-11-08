@@ -21,11 +21,16 @@ implementation {
 	components new TimerMilliC() as neighborDiscovery;
 	components new TimerMilliC() as neighborMap;
 	components new TimerMilliC() as sendDelay;
+	components new TimerMilliC() as ServerTimer;
+	components new TimerMilliC() as WorkerTimer;
 	components ActiveMessageC;
 	components new AMSenderC(6);
 	components new AMReceiverC(6);
 	components TCPManagerC as tcpLayer;
 	components TCPSocketC as tcpSocket;
+	components clientC as client;
+	components serverC as server;
+	components new TimerMilliC() as ClientTimer;
 	Node->MainC.Boot;
 
 	//Timers
@@ -44,4 +49,17 @@ implementation {
 	//TCP LAYER
 	Node.tcpLayer->tcpLayer;
 	Node.tcpSocket-> tcpSocket;
+	client.TCPManager -> tcpLayer;
+	client.TCPSocket -> tcpSocket;
+	server.TCPManager -> tcpLayer;
+	server.TCPSocket -> tcpSocket;
+	
+	//Server and Client
+	Node.ALClient -> client;
+	Node.ALServer -> server;
+	client.ClientTimer -> ClientTimer;
+	client.Random -> Random;
+	server.ServerTimer -> ServerTimer;
+	server.WorkerTimer -> WorkerTimer;
+	server.Random -> Random;
 }

@@ -4,19 +4,22 @@ module TCPSocketC{
 	provides{
 		interface TCPSocket<TCPSocketAL>;
 	}
+	uses interface TCPManager<TCPSocketAL, pack>;
 }
 implementation{	
 	async command void TCPSocket.init(TCPSocketAL *input){
 		input->currentState = CLOSED;
-		
+				
 	}
 	
 	async command uint8_t TCPSocket.bind(TCPSocketAL *input, uint8_t localPort, uint16_t address){
 	//For servers, associates a socket with a port and address. For clients, associates a socket with a specific source address.
+	
+	
 	input->srcPort = localPort;
 	input->srcID = address;
 	
-	return input;
+	return 1;
 	}
 	
 	async command uint8_t TCPSocket.listen(TCPSocketAL *input, uint8_t backlog){

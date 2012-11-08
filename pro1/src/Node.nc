@@ -37,6 +37,8 @@ module Node{
 		interface Receive;
 		interface TCPManager<TCPSocketAL,pack> as tcpLayer;
 		interface TCPSocket<TCPSocketAL> as tcpSocket;
+		interface client<TCPSocketAL> as ALClient;
+		interface server<TCPSocketAL> as ALServer;
 	}
 }
 
@@ -362,6 +364,7 @@ implementation{
 			pair receivedPacket = {myMsg->src,myMsg->seq};
 			uint8_t i = 0;
 			iterator it;
+			TCPSocketAL *mSocket;
 			logPack(payload);
 			if( arrListContains(&Received,myMsg->src,myMsg->seq)){
 				dbg("Project1F", "Packet has been seen before, dropping it.\n");
@@ -441,20 +444,17 @@ implementation{
 				return msg;
 			}
 			if(TOS_NODE_ID==myMsg->dest){
-				if(myMsg->protocol==PROTOCOL_CMD)
-					dbg("cmdDebug", "Meant for me\n");
-			
 				dbg("Project1F", "Packet from %d has arrived! Msg: %s\n", myMsg->src, myMsg->payload);
 				switch(myMsg->protocol){
 					uint8_t createMsg[PACKET_MAX_PAYLOAD_SIZE];
 					uint8_t zero = 1;
-					uint16_t dest;
+					uint16_t dest,srcPort,destPort;
 					case PROTOCOL_PING:
 					dijkstra();
 					printRecieveLsp();
 					printTable(0);
 					dbg("Project2", "PingReply Packeted is enroute to Node %d, will be routed to Node %d\n",myMsg->src, confirmList[myMsg->src-1].NextHop);
-					dest =AM_BROADCAST_ADDR;
+					//dest =AM_BROADCAST_ADDR;
 					dbg("Project1F", "Sending Ping Reply to %d! \n", myMsg->src);
 					makePack(&sendPackage, TOS_NODE_ID,myMsg->src, MAX_TTL, PROTOCOL_PINGREPLY, sequenceNum++, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));
 					sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, confirmList[myMsg->src-1].NextHop);
@@ -488,7 +488,8 @@ implementation{
 					switch(getCMD((uint8_t *) &myMsg->payload, sizeof(myMsg->payload))){
 						uint32_t temp=0;
 						case CMD_PING:
-						dbg("genDebug", "Ping packet received: %lu\n", temp);
+						dbg("Project3", "Ping packet received: %lu\n", temp);
+						dbg("Project3", "payload: %s,dest:%lu, weird dest: %lu\n", myMsg->payload,dest,(dest-48)&(0x00FF));
 						memcpy(&createMsg, (myMsg->payload) + PING_CMD_LENGTH, sizeof(myMsg->payload) - PING_CMD_LENGTH);
 						memcpy(&dest, (myMsg->payload)+ PING_CMD_LENGTH-2, sizeof(uint8_t));
 						makePack(&sendPackage, TOS_NODE_ID, (dest-48)&(0x00FF), MAX_TTL, PROTOCOL_PING, sequenceNum++, (uint8_t *)createMsg,
@@ -500,9 +501,29 @@ implementation{
 						delaySendTask();
 	
 						break;
+						case CMD_TEST_CLIENT:
+							dbg("Project3", "Client packet received: %s\n", (myMsg->payload)+CLIENT_CMD_LENGTH+1);
+							memcpy(&dest, (myMsg->payload)+CLIENT_CMD_LENGTH+1, sizeof(uint8_t));
+							memcpy(&srcPort, (myMsg->payload)+ CLIENT_CMD_LENGTH+3, sizeof(uint8_t));
+							memcpy(&destPort, (myMsg->payload)+ CLIENT_CMD_LENGTH+5, sizeof(uint8_t));
+							dbg("Project3", "DEST: %d, srcPort: %d, destPort: %d\n", dest,srcPort,destPort);
+							call tcpLayer.init();
+							mSocket = call tcpLayer.socket();
+							call tcpSocket.bind(mSocket, 99, TOS_NODE_ID);
+							call tcpSocket.connect(mSocket, 4, 29);
+							call ALClient.init(mSocket);
+							break;
+						case CMD_TEST_SERVER:
+							call tcpLayer.init();
+							mSocket = call tcpLayer.socket();
+							call tcpSocket.bind(mSocket, 29, TOS_NODE_ID);
+							call tcpSocket.listen(mSocket, 5);
+							call ALServer.init(mSocket);
+							break;
+						
 						case CMD_KILL:
-						isActive = FALSE;
-						break;
+							isActive = FALSE;
+							break;
 	
 						case CMD_ERROR:
 						break;

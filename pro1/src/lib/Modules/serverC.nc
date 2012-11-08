@@ -130,7 +130,7 @@ implementation{
 			dbg("serverAL", "Connection Closed:\n");
 			dbg("serverAL", "Data Read: %d\n", worker->position);
 			dbg("serverAL", "Close Time: %d\n", closeTime);
-			call TCPManager.freeSocket(worker.socket);
+			call TCPManager.freeSocket(worker->socket);
 			serverWorkerListRemoveValue(&workers, *worker); return;
 		}
 	}
