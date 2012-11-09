@@ -7,7 +7,7 @@ module TCPSocketC{
 	}
 	uses{
 		interface TCPManager<TCPSocketAL, pack> as tcpLayer;
-		interface AMSend;
+		interface node as Node;
 		
 		}
 }
@@ -26,7 +26,7 @@ implementation{
 	
 	async command uint8_t TCPSocket.bind(TCPSocketAL *input, uint8_t localPort, uint16_t address){
 	//For servers, associates a socket with a port and address. For clients, associates a socket with a specific source address.
-	
+	dbg("Project3", "Binding. Current State: %d\n", input->currentState);
 	//call tcpLayer.checkPort(localPort);
 	input->srcPort = localPort;
 	input->srcID = address;
@@ -53,9 +53,11 @@ implementation{
 		transport pckt;
 		if(destPort < 0 || destPort > TRANSPORT_MAX_PORT)
 			return -1;
+		dbg("Project3", "Called connect. Socket State: %d\n",input->currentState);
 		if(input->currentState == CLOSED){
 			//send a syn packet
 			createTransport(&pckt,input->srcPort,destPort,TRANSPORT_SYN,input->highestSeqSent++,0,NULL,0);	
+			call Node.tcpPack(&pckt,&input);
 			input->currentState = SYN_SENT;
 			return 1;
 		}
@@ -116,7 +118,4 @@ implementation{
 	async command void TCPSocket.copy(TCPSocketAL *input, TCPSocketAL *output){
 		}
 
-	event void AMSend.sendDone(message_t *msg, error_t error){
-		// TODO Auto-generated method stub
-	}
 }

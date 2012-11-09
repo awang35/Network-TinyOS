@@ -56,6 +56,7 @@ implementation {
 	tcpSocket.tcpLayer -> tcpLayer;
 	tcpLayer.TCPSocket -> tcpSocket;
 	tcpLayer.Node -> Node;
+	tcpSocket.Node -> Node;
 	//Server and Client
 	Node.ALClient -> client;
 	Node.ALServer -> server;

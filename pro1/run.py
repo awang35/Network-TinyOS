@@ -73,7 +73,7 @@ def runTime(amount):
 msg = pack()
 msg.set_seq(0)
 msg.set_TTL(15)
-msg.set_protocol(4)
+msg.set_protocol(99)
 
 pkt = t.newPacket()
 pkt.setData(msg.data)
@@ -100,9 +100,10 @@ flooding = 1;
 if(flooding == 1):
     runTime(200)
     #sendCMD("1 1 cmd ping 2 hi")
-    #sendCMD("1 1 cmd client 3 10 3")
+    sendCMD("1 1 cmd client 3 5 2")
+    sendCMD("2 2 cmd server 5")
     #sendCMD("5 1 Hi again!")
-    sendCMD("1 5 hi")
+    #sendCMD("1 5 hi")
   #  runTime(200)
    # sendCMD("5 2 Flooding!")
     #sendCMD("1 65535 Flooding!")

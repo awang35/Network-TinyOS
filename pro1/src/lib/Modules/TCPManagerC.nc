@@ -27,6 +27,7 @@ implementation{
 	
 	command TCPSocketAL *TCPManager.socket(){
 		//returns a socket
+		dbg("Project3", "Grab a socket. Socket State: %d\n",activePorts[99].currentState);
 		return &activePorts[99];
 	
 	}

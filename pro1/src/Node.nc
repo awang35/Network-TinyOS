@@ -1,4 +1,4 @@
- /**
+/**
  * ANDES Lab - University of California, Merced
  * This class provides the basic functions of a network node.
  *
@@ -21,6 +21,7 @@
 #include "dataStructures/routingtable.h"
 #include "lib/TCPSocketAL.h"
 #include "transport.h"
+#include <stdlib.h>
 
 module Node{
 	provides interface node;
@@ -56,8 +57,8 @@ implementation{
 	//Ping/PingReply Variables	
 	pingList pings;
 	/**
-	* Adrian's Variable
-	*/
+	 * Adrian's Variable
+	 */
 	transport transportPckt;
 	uint8_t neighborCount;
 	uint8_t helloCount;
@@ -73,8 +74,8 @@ implementation{
 	/**
 	 * End
 	 */ 
-	 
-	 
+ 
+ 
 	error_t send(uint16_t src, uint16_t dest, pack *message);
 	void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t Protocol, uint16_t seq, uint8_t *payload, uint8_t length);
 	task void sendBufferTask();
@@ -92,7 +93,7 @@ implementation{
 			recieveSeq[i] = -1;
 			for(j=0; j<NUMNODES; j++)
 				recieveLsp[i][j].Cost = inf;
-			}	
+		}	
 	}
 
 	event void Boot.booted(){
@@ -101,7 +102,7 @@ implementation{
 		neighborCount = 0;
 		hashmapInit(&Neighbors);
 		intializeList();
-			
+	
 		//dbg("genDebug", "Booted\n");
 	}
 	event void pingTimeoutTimer.fired(){
@@ -135,9 +136,9 @@ implementation{
 		}
 	}
 
-	 void delaySendTask(){
-                call sendDelay.startOneShot( call Random.rand16() % 200);
-     }
+	void delaySendTask(){
+		call sendDelay.startOneShot( call Random.rand16() % 200);
+	}
 	void intializeNeighbors(hashmap *neighbors){
 		pack sendNeighbor;
 		dbg("Project1N", "Intializing Neighbors.\n");
@@ -188,15 +189,15 @@ implementation{
 	}
 
 	lspAlgorithm selectLSP(uint8_t key){
-	uint8_t i = 0;
-	lspAlgorithm entry;
-	entry.nodeid = (uint8_t)(key+1);
-	for(i=0;i<NUMNODES;i++){
-		entry.neighborid[i] = (uint8_t)(i+1);
-		entry.cost[i] =recieveLsp[key][i].Cost ;	
-	}
-	//	lsparrlistPushBack(&recieveLspList,entry);
-	return entry;
+		uint8_t i = 0;
+		lspAlgorithm entry;
+		entry.nodeid = (uint8_t)(key+1);
+		for(i=0;i<NUMNODES;i++){
+			entry.neighborid[i] = (uint8_t)(i+1);
+			entry.cost[i] =recieveLsp[key][i].Cost ;	
+		}
+		//	lsparrlistPushBack(&recieveLspList,entry);
+		return entry;
 	}
 
 	void printTable(int8_t type){
@@ -204,20 +205,20 @@ implementation{
 		Route temp[NUMNODES];
 		if(type == 0){
 			for(i = 0; i< NUMNODES;i++){
-			
-			temp[i] = confirmList[i];
+	
+				temp[i] = confirmList[i];
 			}
-				dbg("Project2p","Printing ConfirmList\n");
-			}
+			dbg("Project2p","Printing ConfirmList\n");
+		}
 		else{
-			for(i = 0; i< NUMNODES;i++){
-			temp[i] = tentList[i];
+				for(i = 0; i< NUMNODES;i++){
+				temp[i] = tentList[i];
 			}
 			dbg("Project2p","Printing tentList\n");	
 		}
 		for(i = 0; i< NUMNODES;i++){
 			dbg("Project2p","Entry %d: Dest: %d, Cost: %d, NextHop: %d, isValid: %d\n",i+1, temp[i].Dest,temp[i].Cost,temp[i].NextHop,temp[i].isValid);
-			
+	
 		}
 	}
 	uint8_t countValid(){
@@ -233,8 +234,8 @@ implementation{
 			dbg("disAlg","All was valid\n");
 			return 1;}
 		else
-		dbg("disAlg","Some was valid. Num valid: %d\n",countForValid);
-			return 2;
+			dbg("disAlg","Some was valid. Num valid: %d\n",countForValid);
+		return 2;
 	}
 	
 	uint8_t getLowCost(){
@@ -242,14 +243,14 @@ implementation{
 		for(i = 0; i< NUMNODES; i++){
 			//dbg("Project2","Checking if tentList[%d] with cost %d is the lowest compared to %d\n",i,tentList[i].Cost,low );
 			if(tentList[i].Cost< low && tentList[i].isValid){
-			low = tentList[i].Cost;
-			node = i; 
+				low = tentList[i].Cost;
+				node = i; 
 			}
 		}
 		//dbg("Project2","Lowest was Node %d", node);
 		return node;
 	}
-		void printRecieveLsp(){
+	void printRecieveLsp(){
 		uint8_t i=0,j=0;
 		dbg("Project2p","------------------------------------\n");
 		dbg("Project2p","Printing Recieved LSP List for Node %d\n",TOS_NODE_ID);
@@ -257,16 +258,16 @@ implementation{
 			dbg("Project2p","Node %d LSP list: ",i+1);
 			for(j=0;j<NUMNODES;j++){
 				dbg("Project2p","%d",recieveLsp[i][j].Cost);
-				}
-				dbg("Project2p","\n");
-				i++;
 			}
-		
+			dbg("Project2p","\n");
+			i++;
+		}
+	
 		dbg("Project2p","------------------------------------\n");
-		
+	
 	}
 	void dijkstra(){
-		
+	
 		Route confirmEntry, tentativeEntry;
 		//Route confirmList[NUMNODES], tentList[NUMNODES];
 		uint8_t i = 0, j=0, infinity = 21, nextNode, counter=0, errorCount=0, path, traceList[NUMNODES];
@@ -284,14 +285,14 @@ implementation{
 		confirmEntry.Dest = TOS_NODE_ID;
 		confirmEntry.isValid = TRUE;
 		confirmList[nextNode] = confirmEntry;
-		
+	
 		dbg("disAlg","Doing Dijkstra Algorithm for node %d\n", nextNode+1); 
 		do{
 			dbg("disAlg","^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
 			counter++;						
-		/**
-		 * Select the LSP Packet relating to this node 
-		 */
+			/**
+			 * Select the LSP Packet relating to this node 
+			 */
 			dbg("disAlg","Node %d was just added to confirmed List.\n", nextNode+1); 
 			//printTable(0);
 			currentLsp = selectLSP(nextNode);
@@ -302,24 +303,24 @@ implementation{
 					dbg("disAlg","To reach Node %d, it cost %d.\n", i+1,tentativeEntry.Cost); 
 					dbg("disAlg","Checking if its not neither list\n"); 
 					if(confirmEntry.Dest!= TOS_NODE_ID)
-							path = confirmEntry.NextHop;
-						else
-							path = i+1;
+						path = confirmEntry.NextHop;
+					else
+						path = i+1;
 					if((confirmList[i].isValid == FALSE) && (tentList[i].isValid == FALSE)){
-						
+	
 						dbg("disAlg","It was not in the list, adding entry to tentative with (%d,%d,%d)\n", i+1,tentativeEntry.Cost,path);
-                    	tentativeEntry.Dest = i+1;
-                        tentativeEntry.NextHop = path;
-                      	tentativeEntry.isValid = TRUE;
-                      	tentList[i]= tentativeEntry;
-						}
+						tentativeEntry.Dest = i+1;
+						tentativeEntry.NextHop = path;
+						tentativeEntry.isValid = TRUE;
+						tentList[i]= tentativeEntry;
+					}
 					if( tentList[i].isValid == TRUE && tentativeEntry.Cost < tentList[i].Cost ){
 						dbg("disAlg","A better entry was found, updating table with entry (%d,%d,%d)\n",currentLsp.neighborid[i],tentativeEntry.Cost,path);
 						tentativeEntry.Dest = i+1;
-                        tentativeEntry.NextHop = path;
-                        tentativeEntry.isValid = TRUE;
-                        tentList[i]= tentativeEntry;
-						}
+						tentativeEntry.NextHop = path;
+						tentativeEntry.isValid = TRUE;
+						tentList[i]= tentativeEntry;
+					}
 				}
 			}
 			//printTable(1);
@@ -334,15 +335,15 @@ implementation{
 			confirmList[nextNode] = confirmEntry;
 			tentList[nextNode].isValid = FALSE;
 			//printTable(1);
-			}while(TRUE);//counter<4);
-		}
+		}while(TRUE);//counter<4);
+	}
 	void storePayload(lspList *payload, uint16_t src ){
 		uint8_t i=0;
 		//uint8_t inf = 21;
 		//dbg("Project2"," Going to store in slot %d\n",src);
 		for(i; i<NUMNODES;i++){
 			recieveLsp[src][i].Cost= payload[i].Cost;
-			}
+		}
 		//printRecieveLsp();
 	}
 	void printPayload(lspList *payload,uint16_t src){
@@ -353,7 +354,7 @@ implementation{
 		dbg("Project2","\tNode\tCost\n");
 		for(i; i<NUMNODES;i++)
 			if(payload[i].Cost<21)
-				dbg("Project2","\t%d\t%d\n",i+1,payload[i].Cost);
+			dbg("Project2","\t%d\t%d\n",i+1,payload[i].Cost);
 		dbg("Project2","*************************************\n");
 	}
 	
@@ -369,7 +370,6 @@ implementation{
 			iterator it;
 			TCPSocketAL *mSocket;
 			logPack(payload);
-			tcp = 'b';
 			if( arrListContains(&Received,myMsg->src,myMsg->seq)){
 				dbg("Project1F", "Packet has been seen before, dropping it.\n");
 				return msg;
@@ -377,7 +377,7 @@ implementation{
 			else//store it in the seen list
 			if(arrListPushBack(&Received,receivedPacket));
 			else{
-				dbg("Project1F", "filled list\n");
+					dbg("Project1F", "filled list\n");
 				//only keep track of recent packets
 				pop_front(&Received);
 				arrListPushBack(&Received,receivedPacket);
@@ -389,7 +389,7 @@ implementation{
 				if(myMsg->protocol==PROTOCOL_CMD)
 					dbg("cmdDebug", "Not meant for me\n");
 				if(myMsg->dest==AM_BROADCAST_ADDR){//should be a broadcast packet
-				
+	
 					switch(myMsg->protocol){
 						case PROTOCOL_PING:
 						if(!strcmp(myMsg->payload,helloMessage)){
@@ -400,7 +400,7 @@ implementation{
 							delaySendTask();
 						}
 						else{
-							dbg("Project1N", "I have been discovered, sending reply.\n");
+								dbg("Project1N", "I have been discovered, sending reply.\n");
 							makePack(&sendPackage, TOS_NODE_ID,myMsg->src, 1, PROTOCOL_PINGREPLY, sequenceNum++, (uint8_t *) broadcastMessage, sizeof(broadcastMessage));
 							//sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, sendPackage.dest);
 							sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, myMsg->src);
@@ -413,13 +413,13 @@ implementation{
 						//logPack(myMsg);
 						//printPayload(myMsg->payload,myMsg->src-1);
 						//dbg("Project2", "Compare Seq. Old %d from New %d\n",recieveSeq[myMsg->src-1] ,myMsg->seq);
-						
+	
 						if(recieveSeq[myMsg->src-1]< myMsg->seq){
 							storePayload(myMsg->payload,myMsg->src-1);
 							recieveSeq[myMsg->src-1]= myMsg->seq;
 						}
 						else{
-							return msg;
+								return msg;
 						}
 						makePack(&sendPackage, myMsg->src,myMsg->dest, myMsg->TTL--, myMsg->protocol, myMsg->seq, myMsg->payload, sizeof(myMsg->payload));
 						sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, AM_BROADCAST_ADDR);
@@ -431,12 +431,12 @@ implementation{
 	
 				}
 				else{
-					dbg("Project1F", "Packet is not meant for me, broadcasting it.\n");
+						dbg("Project1F", "Packet is not meant for me, broadcasting it.\n");
 					dijkstra();
 					printRecieveLsp();
 					printTable(0);
 					dbg("Project2", "Packet is meant for Node %d. Looking up table. Will be routed to Node %d\n", myMsg->dest, confirmList[myMsg->dest-1].NextHop);
-					
+	
 					makePack(&sendPackage, myMsg->src,myMsg->dest, myMsg->TTL, myMsg->protocol, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));					
 					sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, confirmList[myMsg->dest-1].NextHop);
 					//post sendBufferTask();
@@ -482,15 +482,16 @@ implementation{
 						//sendLsp[myMsg->src-1].Cost = 1;
 						//dbg("Project2", "Updating List. Setting %d cost to 1.\n",myMsg->src);
 						//printLsp();
-					
+	
 					}
 					//dbg("genDebug", "WENT PAST");
 					break;
-					
+	
 					case PROTOCOL_CMD:	
-					dbg("Project2", "WENT TO CMD");
+					dbg("Project3", "WENT TO CMD");
 					switch(getCMD((uint8_t *) &myMsg->payload, sizeof(myMsg->payload))){
-						uint32_t temp=0;
+						uint32_t temp=0, i = 0;
+						char * pch;
 						case CMD_PING:
 						dbg("Project3", "Ping packet received: %lu\n", temp);
 						dbg("Project3", "payload: %s,dest:%lu, weird dest: %lu\n", myMsg->payload,dest,(dest-48)&(0x00FF));
@@ -506,29 +507,49 @@ implementation{
 	
 						break;
 						case CMD_TEST_CLIENT:
-							dbg("Project3", "Client packet received: %s\n", (myMsg->payload)+CLIENT_CMD_LENGTH+1);
-							memcpy(&dest, (myMsg->payload)+CLIENT_CMD_LENGTH+1, sizeof(uint8_t));
-							memcpy(&srcPort, (myMsg->payload)+ CLIENT_CMD_LENGTH+3, sizeof(uint8_t));
-							memcpy(&destPort, (myMsg->payload)+ CLIENT_CMD_LENGTH+5, sizeof(uint8_t));
-							dbg("Project3", "DEST: %d, srcPort: %d, destPort: %d\n", dest,srcPort,destPort);
-							call tcpLayer.init();
-							mSocket = call tcpLayer.socket();
-							call tcpLayer.forcePortState(99);
-							call tcpSocket.bind(mSocket, 99, TOS_NODE_ID);
-							call tcpSocket.connect(mSocket, 4, 29);
-							call ALClient.init(mSocket);
-							break;
+						dbg("Project3", "Client packet received: %s\n", (myMsg->payload)+CLIENT_CMD_LENGTH+1);
+						pch = strtok (myMsg->payload," ");
+						i=0;
+						while (pch != NULL){
+							//dbg("Project3", "%s\n",pch);
+							if(i == 2)
+								srcPort = atoi(pch);
+							else if (i ==3)
+								destPort = atoi(pch);
+							else if (i == 4)
+								dest= atoi(pch);
+							pch = strtok (NULL, " ");
+							i++;
+						}
+	
+						dbg("Project3", "DEST: %d, srcPort: %d, destPort: %d\n", dest,srcPort,destPort);
+						call tcpLayer.init();
+						mSocket = call tcpLayer.socket();	
+						//call tcpLayer.forcePortState(99);
+						call tcpSocket.bind(mSocket, srcPort, TOS_NODE_ID);
+						call tcpSocket.connect(mSocket, srcPort, destPort);
+						call ALClient.init(mSocket);
+						break;
 						case CMD_TEST_SERVER:
-							call tcpLayer.init();
-							mSocket = call tcpLayer.socket();
-							call tcpSocket.bind(mSocket, 29, TOS_NODE_ID);
-							call tcpSocket.listen(mSocket, 5);
-							call ALServer.init(mSocket);
-							break;
-						
+						pch = strtok (myMsg->payload," ");
+						i=0;
+						while (pch != NULL){
+							//dbg("Project3", "%s\n",pch);
+							if(i == 2)
+								srcPort = atoi(pch);
+							pch = strtok (NULL, " ");
+							i++;
+						}
+						call tcpLayer.init();
+						mSocket = call tcpLayer.socket();
+						call tcpSocket.bind(mSocket, srcPort, TOS_NODE_ID);
+						call tcpSocket.listen(mSocket, 5);
+						call ALServer.init(mSocket);
+						break;
+	
 						case CMD_KILL:
-							isActive = FALSE;
-							break;
+						isActive = FALSE;
+						break;
 	
 						case CMD_ERROR:
 						break;
@@ -537,11 +558,12 @@ implementation{
 					}
 					break;
 					case PROTOCOL_TCP:
-				
-					createTransport(&transportPckt,0,0,0,0,0, &trans, sizeof(trans));
+	
+					//createTransport(&transportPckt,0,0,0,0,0, &trans, sizeof(trans));
 					//dbg("Project3", "TCP Packet has arrived.\n");
 					//printTransport(&transportPckt);
-					call tcpLayer.handlePacket(&transportPckt);
+					//call tcpLayer.handlePacket(&transportPckt);
+					call tcpLayer.handlePacket(&myMsg->payload);
 					break;
 					default:
 					break;
@@ -618,17 +640,17 @@ implementation{
 
 	event void sendDelay.fired(){
 		// TODO Auto-generated method stub
-		 post sendBufferTask();
+		post sendBufferTask();
 	}
 
 	command void node.tcpPack(transport *payload, TCPSocketAL *sckt){
-			dbg("Project3", "transport preparing to be sent. Type: %d,S\n", payload->type);
-			makePack(&sendPackage, 4,5, MAX_TTL, 4, sequenceNum++, payload, sizeof(payload));
-			//makePack(&sendPackage, sckt->srcID,sckt->destID, MAX_TTL, 4, sequenceNum++, payload, sizeof(payload));
-			dijkstra();
-			sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, confirmList[4].NextHop);
-			delaySendTask();
-		
+		dbg("Project3", "transport preparing to be sent. Type: %d,S\n", payload->type);
+		makePack(&sendPackage, 5,4, MAX_TTL, 4, sequenceNum++, payload, sizeof(payload));
+		//makePack(&sendPackage, sckt->srcID,sckt->destID, MAX_TTL, 4, sequenceNum++, payload, sizeof(payload));
+		dijkstra();
+		sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, confirmList[3].NextHop);
+		delaySendTask();
+	
 	}
 }
 

@@ -24,8 +24,8 @@ enum{
 enum{
 	PING_CMD_LENGTH = 11,
 	DUMP_NEIGHBOR_LENGTH=7,
-	CLIENT_CMD_LENGTH = 10,
-	SERVER_CMD_LENGTH = 10
+	CLIENT_CMD_LENGTH = 11,
+	SERVER_CMD_LENGTH = 11
 };
 
 bool isValidCMD(uint8_t *array, uint8_t size){
