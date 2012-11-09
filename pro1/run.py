@@ -43,6 +43,8 @@ t.addChannel("cmdDebug", sys.stdout);
 #t.addChannel("disAlg", sys.stdout);
 t.addChannel("Project3", sys.stdout);
 t.addChannel("transport", sys.stdout);
+t.addChannel("clientAL", sys.stdout);
+
 print "Setting noise model"
 for i in range(1, numNodes+1):
     t.getNode(i).createNoiseModel()
@@ -71,7 +73,7 @@ def runTime(amount):
 msg = pack()
 msg.set_seq(0)
 msg.set_TTL(15)
-msg.set_protocol(99)
+msg.set_protocol(4)
 
 pkt = t.newPacket()
 pkt.setData(msg.data)
@@ -98,12 +100,13 @@ flooding = 1;
 if(flooding == 1):
     runTime(200)
     #sendCMD("1 1 cmd ping 2 hi")
-    sendCMD("1 1 cmd client 3 10 3")
+    #sendCMD("1 1 cmd client 3 10 3")
     #sendCMD("5 1 Hi again!")
+    sendCMD("1 5 hi")
   #  runTime(200)
    # sendCMD("5 2 Flooding!")
     #sendCMD("1 65535 Flooding!")
 else:
-    runTime(200)
+    runTime(2000)
     sendCMD("1 2 Hello World!")
     

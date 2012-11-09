@@ -23,6 +23,7 @@
 #include "transport.h"
 
 module Node{
+	provides interface node;
 	uses{
 		interface Boot;
 		interface Timer<TMilli> as pingTimeoutTimer;
@@ -40,6 +41,7 @@ module Node{
 		interface client<TCPSocketAL> as ALClient;
 		interface server<TCPSocketAL> as ALServer;
 	}
+	//provides interface Node;
 }
 
 implementation{
@@ -63,6 +65,7 @@ implementation{
 	uint8_t broadcastMessage[PACKET_MAX_PAYLOAD_SIZE] = {"broadc@st"};
 	uint8_t helloMessage[PACKET_MAX_PAYLOAD_SIZE] = {"he!!o"};
 	uint8_t trans[5] = {"abc"};
+	char tcp = 'a';
 	lspList sendLsp[NUMNODES];
 	lspList recieveLsp[NUMNODES][NUMNODES];
 	int8_t recieveSeq[NUMNODES];
@@ -366,6 +369,7 @@ implementation{
 			iterator it;
 			TCPSocketAL *mSocket;
 			logPack(payload);
+			tcp = 'b';
 			if( arrListContains(&Received,myMsg->src,myMsg->seq)){
 				dbg("Project1F", "Packet has been seen before, dropping it.\n");
 				return msg;
@@ -509,6 +513,7 @@ implementation{
 							dbg("Project3", "DEST: %d, srcPort: %d, destPort: %d\n", dest,srcPort,destPort);
 							call tcpLayer.init();
 							mSocket = call tcpLayer.socket();
+							call tcpLayer.forcePortState(99);
 							call tcpSocket.bind(mSocket, 99, TOS_NODE_ID);
 							call tcpSocket.connect(mSocket, 4, 29);
 							call ALClient.init(mSocket);
@@ -614,6 +619,16 @@ implementation{
 	event void sendDelay.fired(){
 		// TODO Auto-generated method stub
 		 post sendBufferTask();
+	}
+
+	command void node.tcpPack(transport *payload, TCPSocketAL *sckt){
+			dbg("Project3", "transport preparing to be sent. Type: %d,S\n", payload->type);
+			makePack(&sendPackage, 4,5, MAX_TTL, 4, sequenceNum++, payload, sizeof(payload));
+			//makePack(&sendPackage, sckt->srcID,sckt->destID, MAX_TTL, 4, sequenceNum++, payload, sizeof(payload));
+			dijkstra();
+			sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, confirmList[4].NextHop);
+			delaySendTask();
+		
 	}
 }
 

@@ -1,21 +1,33 @@
 #include "TCPSocketAL.h"
 #include "transport.h"
+#include "packBuffer.h"
 module TCPSocketC{
 	provides{
 		interface TCPSocket<TCPSocketAL>;
 	}
-	uses interface TCPManager<TCPSocketAL, pack>;
+	uses{
+		interface TCPManager<TCPSocketAL, pack> as tcpLayer;
+		interface AMSend;
+		
+		}
 }
 implementation{	
 	async command void TCPSocket.init(TCPSocketAL *input){
 		input->currentState = CLOSED;
+		input->destPort = -1;
+		input->destID= -1;
+		input->srcPort= -1;
+		input-> srcID= TOS_NODE_ID;
+		input->packetID= -1;
+		input->highestSeqSeen= -1;
+		input->highestSeqSent= -1;
 				
 	}
 	
 	async command uint8_t TCPSocket.bind(TCPSocketAL *input, uint8_t localPort, uint16_t address){
 	//For servers, associates a socket with a port and address. For clients, associates a socket with a specific source address.
 	
-	
+	//call tcpLayer.checkPort(localPort);
 	input->srcPort = localPort;
 	input->srcID = address;
 	
@@ -43,9 +55,9 @@ implementation{
 			return -1;
 		if(input->currentState == CLOSED){
 			//send a syn packet
-			//createTransport(&pckt,0,destPort,TRANSPORT_SYN,0,0,NULL,0);	
-			
-			return input;
+			createTransport(&pckt,input->srcPort,destPort,TRANSPORT_SYN,input->highestSeqSent++,0,NULL,0);	
+			input->currentState = SYN_SENT;
+			return 1;
 		}
 		return -1;
 	}
@@ -103,4 +115,8 @@ implementation{
 	
 	async command void TCPSocket.copy(TCPSocketAL *input, TCPSocketAL *output){
 		}
+
+	event void AMSend.sendDone(message_t *msg, error_t error){
+		// TODO Auto-generated method stub
+	}
 }

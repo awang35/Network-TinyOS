@@ -53,7 +53,9 @@ implementation {
 	client.TCPSocket -> tcpSocket;
 	server.TCPManager -> tcpLayer;
 	server.TCPSocket -> tcpSocket;
-	
+	tcpSocket.tcpLayer -> tcpLayer;
+	tcpLayer.TCPSocket -> tcpSocket;
+	tcpLayer.Node -> Node;
 	//Server and Client
 	Node.ALClient -> client;
 	Node.ALServer -> server;
@@ -62,4 +64,8 @@ implementation {
 	server.ServerTimer -> ServerTimer;
 	server.WorkerTimer -> WorkerTimer;
 	server.Random -> Random;
+	//tcpLayer.ALClient ->client;
+	//tcpLayer.ALServer -> server;
+	//tcpSocket.ALClient -> client;
+	//tcpSocket.ALServer -> server;
 }
