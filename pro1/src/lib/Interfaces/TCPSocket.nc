@@ -1,13 +1,14 @@
+#include "transport.h"
 interface TCPSocket<val_t>{
 	async command void init(val_t *input);
 
 	async command uint8_t bind(val_t *input, uint8_t localPort, uint16_t address);
 	
-	async command uint8_t listen(val_t *input, uint8_t backlog);
+	//async command uint8_t listen(val_t *input, uint8_t backlog);
+	async command uint8_t listen(uint8_t port, uint8_t backlog);
+	async command uint8_t accept(uint8_t srcPort, val_t *output);
 	
-	async command uint8_t accept(val_t *input, val_t *output);
-	
-	async command uint8_t connect(val_t *input, uint16_t destAddr, uint8_t destPort);
+	async command uint8_t connect(uint16_t destAddr, uint8_t destPort,uint8_t port);
 	
 	async command uint8_t close(val_t *input);
 	
@@ -23,6 +24,6 @@ interface TCPSocket<val_t>{
 	async command bool isListening(val_t *input);
 	async command bool isClosed(val_t *input);
 	async command bool isClosing(val_t *input);
-	
+	async command void addToQueue(pack *pckt);
 	async command void copy(val_t *input, val_t *output);
 }

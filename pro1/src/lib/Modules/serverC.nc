@@ -33,7 +33,7 @@ implementation{
 	command void server.init(TCPSocketAL *socket){
 		mServer.socket = socket;
 		mServer.numofWorkers=0;	
-			
+			dbg("Project3", "Server. Current State: %d\n", mServer.socket->currentState);
 		call ServerTimer.startPeriodic(SERVER_TIMER_PERIOD + (uint16_t) ((call Random.rand16())%200));
 		call WorkerTimer.startPeriodic(WORKER_TIMER_PERIOD + (uint16_t) ((call Random.rand16())%200));
 	}
@@ -41,9 +41,9 @@ implementation{
 	event void ServerTimer.fired(){
 		if(! call TCPSocket.isClosed(mServer.socket) ){
 			TCPSocketAL connectedSock;
-
+			dbg("serverAL", "serverAL - Trying to accept.\n");
 			//Attempt to Establish a Connection
-			if(call TCPSocket.accept(mServer.socket, &(connectedSock)) == TCP_ERRMSG_SUCCESS){
+			if(call TCPSocket.accept(mServer.socket->srcPort, &(connectedSock)) == TCP_ERRMSG_SUCCESS){
 				serverWorkerAL newWorker;
 				
 				dbg("serverAL", "serverAL - Connection Accepted.\n");

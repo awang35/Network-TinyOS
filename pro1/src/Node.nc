@@ -239,16 +239,16 @@ implementation{
 	}
 	
 	uint8_t getLowCost(){
-		uint8_t i = 0, low = 21,node = 255;
+		uint8_t i = 0, low = 21, node1;
 		for(i = 0; i< NUMNODES; i++){
 			//dbg("Project2","Checking if tentList[%d] with cost %d is the lowest compared to %d\n",i,tentList[i].Cost,low );
 			if(tentList[i].Cost< low && tentList[i].isValid){
 				low = tentList[i].Cost;
-				node = i; 
+				node1 = i; 
 			}
 		}
 		//dbg("Project2","Lowest was Node %d", node);
-		return node;
+		return node1;
 	}
 	void printRecieveLsp(){
 		uint8_t i=0,j=0;
@@ -493,8 +493,6 @@ implementation{
 						uint32_t temp=0, i = 0;
 						char * pch;
 						case CMD_PING:
-						dbg("Project3", "Ping packet received: %lu\n", temp);
-						dbg("Project3", "payload: %s,dest:%lu, weird dest: %lu\n", myMsg->payload,dest,(dest-48)&(0x00FF));
 						memcpy(&createMsg, (myMsg->payload) + PING_CMD_LENGTH, sizeof(myMsg->payload) - PING_CMD_LENGTH);
 						memcpy(&dest, (myMsg->payload)+ PING_CMD_LENGTH-2, sizeof(uint8_t));
 						makePack(&sendPackage, TOS_NODE_ID, (dest-48)&(0x00FF), MAX_TTL, PROTOCOL_PING, sequenceNum++, (uint8_t *)createMsg,
@@ -524,11 +522,12 @@ implementation{
 	
 						dbg("Project3", "DEST: %d, srcPort: %d, destPort: %d\n", dest,srcPort,destPort);
 						call tcpLayer.init();
-						mSocket = call tcpLayer.socket();	
+						call  tcpLayer.setUpClient(srcPort,destPort,dest);
+						//mSocket = call tcpLayer.socket();	
 						//call tcpLayer.forcePortState(99);
-						call tcpSocket.bind(mSocket, srcPort, TOS_NODE_ID);
-						call tcpSocket.connect(mSocket, srcPort, destPort);
-						call ALClient.init(mSocket);
+						//call tcpSocket.bind(mSocket, srcPort, TOS_NODE_ID);
+						//call tcpSocket.connect(mSocket, srcPort, destPort);
+						//call ALClient.init(mSocket);
 						break;
 						case CMD_TEST_SERVER:
 						pch = strtok (myMsg->payload," ");
@@ -541,10 +540,12 @@ implementation{
 							i++;
 						}
 						call tcpLayer.init();
-						mSocket = call tcpLayer.socket();
-						call tcpSocket.bind(mSocket, srcPort, TOS_NODE_ID);
-						call tcpSocket.listen(mSocket, 5);
-						call ALServer.init(mSocket);
+						call  tcpLayer.setUpServer( srcPort);
+						//mSocket = call tcpLayer.socket();
+						//dbg("Project3","Retrieve a new socket. ID: %d,State: %d\n",mSocket->uniqueID,mSocket->currentState);
+						//call tcpSocket.bind(mSocket, srcPort, TOS_NODE_ID);
+						////call tcpSocket.listen(mSocket, 5);
+						//call ALServer.init(mSocket);
 						break;
 	
 						case CMD_KILL:
@@ -563,7 +564,7 @@ implementation{
 					//dbg("Project3", "TCP Packet has arrived.\n");
 					//printTransport(&transportPckt);
 					//call tcpLayer.handlePacket(&transportPckt);
-					call tcpLayer.handlePacket(&myMsg->payload);
+					call tcpLayer.handlePacket(payload);
 					break;
 					default:
 					break;
@@ -645,7 +646,7 @@ implementation{
 
 	command void node.tcpPack(transport *payload, TCPSocketAL *sckt){
 		dbg("Project3", "transport preparing to be sent. Type: %d,S\n", payload->type);
-		makePack(&sendPackage, 5,4, MAX_TTL, 4, sequenceNum++, payload, sizeof(payload));
+		makePack(&sendPackage,TOS_NODE_ID,2, MAX_TTL, 4, sequenceNum++, payload, sizeof(payload));
 		//makePack(&sendPackage, sckt->srcID,sckt->destID, MAX_TTL, 4, sequenceNum++, payload, sizeof(payload));
 		dijkstra();
 		sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, confirmList[3].NextHop);
