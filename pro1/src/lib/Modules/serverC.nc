@@ -94,14 +94,14 @@ implementation{
 	}
 	
 	command void serverWorker.execute(serverWorkerAL *worker){
-		if(!call TCPSocket.isClosed( (worker->socket) ) ){
+		if(!call TCPSocket.isClosed( (worker->socket->srcPort) ) ){
 			uint16_t bufferIndex, length, count;
 			
 			bufferIndex = (worker->position) % SERVER_WORKER_BUFFER_SIZE + (worker->position/ SERVER_WORKER_BUFFER_SIZE) + 1;
 			
 			length = SERVER_WORKER_BUFFER_SIZE - bufferIndex;			//Amount left on the worker buffer
 			
-			count = call TCPSocket.read( (worker->socket), worker->buffer, worker->position% SERVER_WORKER_BUFFER_SIZE, length);
+			count = call TCPSocket.read( (worker->socket->srcPort), worker->buffer, worker->position% SERVER_WORKER_BUFFER_SIZE, length);
 			
 			if(count == -1){
 				// Socket unable to read, release socket

@@ -117,7 +117,8 @@ implementation{
 			}
 			break;
 			case TRANSPORT_DATA:
-			dbg("Project3", "DATA ");
+			dbg("Project3", "DATA \n");
+			
 			break;
 			default:
 			dbg("Project3", "UNKNOWN");

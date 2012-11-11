@@ -12,7 +12,7 @@
 #include "../packet.h"
 
 enum{
-		BYTES_TO_SEND = 100
+		BYTES_TO_SEND = 7
 };
 
 module clientC{
@@ -88,7 +88,7 @@ implementation{
 				len = mClient.amount;
 			}
 	
-			count = call TCPSocket.write((mClient.socket), mClient.buffer, bufferIndex, len);
+			count = call TCPSocket.write((mClient.socket->srcPort), mClient.buffer, bufferIndex, len);
 	
 			if(count == -1){
 				//Error, release socket immediately.
@@ -104,10 +104,10 @@ implementation{
 	
 			mClient.amount -= count;
 			mClient.position += count;
-		}else if(call TCPSocket.isClosing(mClient.socket)){
+		}else if(call TCPSocket.isClosing(mClient.socket->srcPort)){
 			//Debugging statements
 			//dbg("clientAL", "clientAL ----- CLOSING!\n");
-		}else if(call TCPSocket.isClosed( (mClient.socket) )){
+		}else if(call TCPSocket.isClosed( (mClient.socket->srcPort) )){
 			uint32_t endTime = call ClientTimer.getNow();
 	
 			dbg("clientAL", "clientAL - Conection Closed at time: %lu \n Bytes sent: %lu\n Time Elapsed: %lu\n Bytes per Second %lu\n",

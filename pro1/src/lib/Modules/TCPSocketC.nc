@@ -12,7 +12,7 @@ module TCPSocketC{
 	}
 }
 implementation{	
-
+uint8_t trans[5] = {"abc"};
 	inCon incomingConnections[5];
 	uint8_t max = 1, inital = 0,fairCount = 0;
 	async command void TCPSocket.init(TCPSocketAL *input){
@@ -178,14 +178,26 @@ implementation{
 		return input;
 	}
 
-	async command int16_t TCPSocket.read(TCPSocketAL *input, uint8_t *readBuffer, uint16_t pos, uint16_t len){
-	
-	
-		return input;
+	async command int16_t TCPSocket.read(uint8_t port, uint8_t *readBuffer, uint16_t pos, uint16_t len){
+		TCPSocketAL *input;
+		input = call tcpLayer.getSocket(port);
+		uint16_t i = 0, read = 0;
+		
+		
+		return 0;
 	}
 
-	async command int16_t TCPSocket.write(TCPSocketAL *input, uint8_t *writeBuffer, uint16_t pos, uint16_t len){
-		return input;
+	async command int16_t TCPSocket.write(uint8_t port, uint8_t *writeBuffer, uint16_t pos, uint16_t len){
+		TCPSocketAL *input;
+		transport pckt;
+		uint16_t i = 0, wrote = 0;
+		input = call tcpLayer.getSocket(port);
+		for(i = pos;i<len;i++ ){
+		createTransport(&pckt,input->srcPort,input->destPort,TRANSPORT_DATA,input->adwin,input->highestSeqSent++,NULL,0);	
+		call Node.tcpPack(&pckt,input);
+		wrote++;
+		}
+		return wrote;
 	}
 
 	async command bool TCPSocket.isListening(uint8_t port){

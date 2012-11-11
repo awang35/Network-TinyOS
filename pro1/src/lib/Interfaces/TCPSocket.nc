@@ -14,9 +14,9 @@ interface TCPSocket<val_t>{
 	
 	async command uint8_t release(val_t *input);
 	
-	async command int16_t read(val_t *input, uint8_t *readBuffer, uint16_t pos, uint16_t len);
+	async command int16_t read(uint8_t port, uint8_t *readBuffer, uint16_t pos, uint16_t len);
 	
-	async command int16_t write(val_t *input, uint8_t *writeBuffer, uint16_t pos, uint16_t len);
+	async command int16_t write(uint8_t port, uint8_t *writeBuffer, uint16_t pos, uint16_t len);
 	
 	//Checks
 	async command bool isConnectPending(uint8_t port);
