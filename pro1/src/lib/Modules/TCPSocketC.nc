@@ -114,11 +114,12 @@ implementation{
 	}
 	 */
 	
-	async command uint8_t TCPSocket.accept(uint8_t srcPort, TCPSocketAL *output){
+	async command uint8_t TCPSocket.accept(uint8_t srcPort, uint8_t newPort){
 		//(Server only.) Accepts incoming connection with a client.
 		pack temp = removeFromQueue();
 		transport *pckt;
-		TCPSocketAL *input;
+		transport send;
+		TCPSocketAL *input, *output;
 		if(temp.protocol != 255){
 			dbg("Project3", "Grabing socket at port %d",srcPort);
 			input = call tcpLayer.getSocket(srcPort);
@@ -128,8 +129,14 @@ implementation{
 			output->currentState = ESTABLISHED;
 			output->destID = temp.src;
 			output->destPort = pckt->srcPort;
+			output->srcPort = newPort;
 			dbg("Project3", "Accepted a connection. Socket State: %d\n",output->currentState);
 			dbg("Project3", "After: Output Info: ID: %d,srcID: %d, destID: %d, srcPort: %d, destPort: %d, state: %d\n",output->uniqueID,output->srcID,output->destID,output->srcPort,output->destPort, output->currentState);
+			call tcpLayer.AddSocket(output,output->srcPort);
+			call tcpLayer.checkPort(output->srcPort);
+			
+			createTransport(&send,output->srcPort,output->destPort,TRANSPORT_ACK,output->highestSeqSent++,0,NULL,0);	
+			call Node.tcpPack(&send,output);
 			return 0;
 		}
 		return -1;
@@ -181,31 +188,41 @@ implementation{
 		return input;
 	}
 
-	async command bool TCPSocket.isListening(TCPSocketAL *input){
+	async command bool TCPSocket.isListening(uint8_t port){
+		TCPSocketAL *input;
+		input = call tcpLayer.getSocket(port);
 		if(input->currentState == 1)
 			return TRUE;
 		return FALSE;
 	}
 
-	async command bool TCPSocket.isConnected(TCPSocketAL *input){
+	async command bool TCPSocket.isConnected(uint8_t port){
+		TCPSocketAL *input;
+		input = call tcpLayer.getSocket(port);
 		if(input->currentState == 3)
 			return TRUE;
 		return FALSE;
 	}
 
-	async command bool TCPSocket.isClosing(TCPSocketAL *input){
+	async command bool TCPSocket.isClosing(uint8_t port){
+		TCPSocketAL *input;
+		input = call tcpLayer.getSocket(port);
 		if (input->currentState == 5 )
 			return TRUE;
 		return FALSE;
 	}
 
-	async command bool TCPSocket.isClosed(TCPSocketAL *input){
+	async command bool TCPSocket.isClosed(uint8_t port){
+		TCPSocketAL *input;
+		input = call tcpLayer.getSocket(port);
 		if(input->currentState == 0)
 			return TRUE;
 		return FALSE;
 	}
 
-	async command bool TCPSocket.isConnectPending(TCPSocketAL *input){
+	async command bool TCPSocket.isConnectPending(uint8_t port){
+		TCPSocketAL *input;
+		input = call tcpLayer.getSocket(port);
 		if(input->currentState == 2)
 			return TRUE;
 		return FALSE;	

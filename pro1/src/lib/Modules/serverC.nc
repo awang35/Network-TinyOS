@@ -39,13 +39,19 @@ implementation{
 	}
 	
 	event void ServerTimer.fired(){
-		if(! call TCPSocket.isClosed(mServer.socket) ){
+		if(! call TCPSocket.isClosed(mServer.socket->srcPort) ){
 			TCPSocketAL connectedSock;
+			TCPSocketAL *test;
+			uint8_t newPort;
 			dbg("serverAL", "serverAL - Trying to accept.\n");
 			//Attempt to Establish a Connection
-			if(call TCPSocket.accept(mServer.socket->srcPort, &(connectedSock)) == TCP_ERRMSG_SUCCESS){
+			
+			newPort = call Random.rand16()%255;
+			if(call TCPSocket.accept(mServer.socket->srcPort, newPort) == TCP_ERRMSG_SUCCESS){
 				serverWorkerAL newWorker;
-				
+				test = call TCPManager.getSocket(newPort);
+				connectedSock = *test;
+				dbg("Project3", "ConnectedSock Info: ID: %d,srcID: %d, destID: %d, srcPort: %d, destPort: %d, state: %d\n",connectedSock.uniqueID,connectedSock.srcID,connectedSock.destID,connectedSock.srcPort,connectedSock.destPort, connectedSock.currentState);
 				dbg("serverAL", "serverAL - Connection Accepted.\n");
 								
 				//create a worker.

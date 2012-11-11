@@ -35,14 +35,15 @@ implementation{
 		newSocket[index].uniqueID = uniqueID;
 		call TCPSocket.init(&newSocket[index]);
 		uniqueID++;
-		dbg("Project3","Asked for a new socket. Sending SocketID of : %d\n",newSocket[index].uniqueID);
+		dbg("Project3","Asked for a new socket. Sending SocketID of : %d. Indexed at: %d\n",newSocket[index].uniqueID,index);
 		//shashmapInsert(&activeSockets,);
-		return &newSocket[index];
+		index++;
+		return &newSocket[index-1];
 	
 	}
 	command void TCPManager.AddSocket(TCPSocketAL *sckt, uint8_t port){
 		//activePorts[port] = *sckt;
-		index++;
+		//index++;
 		activeSockets[port] = *sckt;
 		//sarrListPushFront(&activeSockets, *sckt);
 		dbg("Project3","State: %d",sckt->currentState);//activePorts[port].currentState);
@@ -96,11 +97,14 @@ implementation{
 			break;
 			case TRANSPORT_ACK:
 			if(sckt.currentState == SYN_SENT){
-				dbg("Project3", "ACK ");
+				dbg("Project3", "ACK recieved on port %d\n",pckt->destPort);
 				sckt.highestSeqSeen = pckt->seq;
+				sckt.destPort =pckt->srcPort;
 				//createTransport(&responsePckt, sckt.srcPort, sckt.destPort, TRANSPORT_ACK, 0, 0, NULL, 0);
 				//call TCPSocket.bind(&activePorts[pckt->destPort],pckt->destPort,2);	
 				sckt.currentState = ESTABLISHED;
+				call TCPManager.forcePortState(pckt->destPort, ESTABLISHED);
+				call TCPManager.checkPort(3);
 			}
 			break;
 			case TRANSPORT_FIN:
@@ -138,7 +142,7 @@ implementation{
 
 	command void TCPManager.forcePortState(uint8_t port, uint8_t state){
 		// TODO Auto-generated method stub
-		//activePorts[port].currentState = state;
+		activeSockets[port].currentState = state;
 	}
 
 	command TCPSocketAL * TCPManager.getSocket(uint8_t port){

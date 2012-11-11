@@ -6,7 +6,7 @@ interface TCPSocket<val_t>{
 	
 	//async command uint8_t listen(val_t *input, uint8_t backlog);
 	async command uint8_t listen(uint8_t port, uint8_t backlog);
-	async command uint8_t accept(uint8_t srcPort, val_t *output);
+	async command uint8_t accept(uint8_t srcPort,uint8_t newPort);
 	
 	async command uint8_t connect(uint16_t destAddr, uint8_t destPort,uint8_t port);
 	
@@ -19,11 +19,11 @@ interface TCPSocket<val_t>{
 	async command int16_t write(val_t *input, uint8_t *writeBuffer, uint16_t pos, uint16_t len);
 	
 	//Checks
-	async command bool isConnectPending(val_t *input);
-	async command bool isConnected(val_t *input);
-	async command bool isListening(val_t *input);
-	async command bool isClosed(val_t *input);
-	async command bool isClosing(val_t *input);
+	async command bool isConnectPending(uint8_t port);
+	async command bool isConnected(uint8_t port);
+	async command bool isListening(uint8_t port);
+	async command bool isClosed(uint8_t port);
+	async command bool isClosing(uint8_t port);
 	async command void addToQueue(pack *pckt);
 	async command void copy(val_t *input, val_t *output);
 }

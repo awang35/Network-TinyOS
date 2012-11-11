@@ -645,11 +645,11 @@ implementation{
 	}
 
 	command void node.tcpPack(transport *payload, TCPSocketAL *sckt){
-		dbg("Project3", "transport preparing to be sent. Type: %d,S\n", payload->type);
-		makePack(&sendPackage,TOS_NODE_ID,2, MAX_TTL, 4, sequenceNum++, payload, sizeof(payload));
+		dbg("Project3", "transport preparing to be sent. Type: %d\n", payload->type);
+		makePack(&sendPackage,TOS_NODE_ID,sckt->destID, MAX_TTL, 4, sequenceNum++, payload, sizeof(payload));
 		//makePack(&sendPackage, sckt->srcID,sckt->destID, MAX_TTL, 4, sequenceNum++, payload, sizeof(payload));
 		dijkstra();
-		sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, confirmList[3].NextHop);
+		sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, confirmList[(sckt->destID)-1].NextHop);
 		delaySendTask();
 	
 	}
