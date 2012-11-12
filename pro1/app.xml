@@ -2411,7 +2411,7 @@
           <component-ref qname="Atm128AlarmAsyncC"/>
           <type-var size="U:" alignment="U:"><typedef-ref name="precision" scoped="" ref="0x40b9adf8"/></type-var>
         </typedef>
-        <constant name="divider" ref="0x40b94010" loc="23:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128AlarmAsyncC.nc">
+        <constant name="divider" ref="0x40b95010" loc="23:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128AlarmAsyncC.nc">
           <component-ref qname="Atm128AlarmAsyncC"/>
           <type-int cname="int" size="I:4" alignment="I:4"></type-int>
         </constant>
@@ -2507,7 +2507,7 @@
         <long>&#10; An AM send queue that provides a Service Instance pattern for&#10; formatted packets and calls an underlying AMSend in a round-robin&#10; fashion. Used to share L2 bandwidth between different communication&#10; clients.&#10;&#10; @author Philip Levis&#10; @date   Jan 16 2006&#10;</long>
       </documentation>
       <parameters>
-        <constant name="numClients" ref="0x40d23618" loc="45:/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc">
+        <constant name="numClients" ref="0x40cf7618" loc="45:/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc">
           <component-ref qname="AMQueueImplP"/>
           <type-int cname="int" size="I:4" alignment="I:4"></type-int>
         </constant>
@@ -2592,7 +2592,7 @@
         <long>&#10; The virtualized active message send abstraction. Each instantiation&#10; of AMSenderC has its own queue of depth one. Therefore, it does not&#10; have to contend with other AMSenderC instantiations for queue space.&#10; The underlying implementation schedules the packets in these queues&#10; using some form of fair-share queueing.&#10;&#10; @author Philip Levis&#10; @date   Jan 16 2006&#10; @see    TEP 116: Packet Protocols&#10;</long>
       </documentation>
       <parameters>
-        <constant name="AMId" ref="0x40ceaa40" loc="47:/home/adrian/local/tinyos-2.1.1/tos/system/AMSenderC.nc">
+        <constant name="AMId" ref="0x40ceba40" loc="47:/home/adrian/local/tinyos-2.1.1/tos/system/AMSenderC.nc">
           <component-ref qname="AMSenderC"/>
           <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
             <typename><typedef-ref name="am_id_t" ref="0x406e9168"/></typename>
@@ -2741,55 +2741,55 @@
     </interfacedef>
     <interfacedef qname="serverWorker" loc="1:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/serverWorker.nc">
       <parameters>
-        <typedef name="val_t" ref="0x40e33d18" loc="1:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/serverWorker.nc">
+        <typedef name="val_t" ref="0x40e37890" loc="1:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/serverWorker.nc">
           <interfacedef-ref qname="serverWorker"/>
-          <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40e33d18"/></type-var>
+          <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40e37890"/></type-var>
         </typedef>
-        <typedef name="val2_t" ref="0x40e33e60" loc="1:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/serverWorker.nc">
+        <typedef name="val2_t" ref="0x40e379d8" loc="1:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/serverWorker.nc">
           <interfacedef-ref qname="serverWorker"/>
-          <type-var size="U:" alignment="U:"><typedef-ref name="val2_t" scoped="" ref="0x40e33e60"/></type-var>
+          <type-var size="U:" alignment="U:"><typedef-ref name="val2_t" scoped="" ref="0x40e379d8"/></type-var>
         </typedef>
       </parameters>
-      <function command="" provided="0" name="init" ref="0x40e305d0" loc="2:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/serverWorker.nc">
+      <function command="" provided="0" name="init" ref="0x40e33170" loc="2:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/serverWorker.nc">
         <interfacedef-ref qname="serverWorker"/>
         <type-function size="I:1" alignment="I:1">
           <type-void size="I:1" alignment="I:1"></type-void>
           <function-parameters>
             <type-pointer size="I:4" alignment="I:4">
-              <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40e33d18"/></type-var>
+              <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40e37890"/></type-var>
             </type-pointer>
             <type-pointer size="I:4" alignment="I:4">
-              <type-var size="U:" alignment="U:"><typedef-ref name="val2_t" scoped="" ref="0x40e33e60"/></type-var>
+              <type-var size="U:" alignment="U:"><typedef-ref name="val2_t" scoped="" ref="0x40e379d8"/></type-var>
             </type-pointer>
           </function-parameters>
         </type-function>
         <parameters>
-          <variable ref="0x40e302b8" loc="2:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/serverWorker.nc">
+          <variable ref="0x40e37e18" loc="2:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/serverWorker.nc">
             <type-pointer size="I:4" alignment="I:4">
-              <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40e33d18"/></type-var>
+              <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40e37890"/></type-var>
             </type-pointer>
           </variable>
-          <variable ref="0x40e30470" loc="2:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/serverWorker.nc">
+          <variable ref="0x40e33010" loc="2:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/serverWorker.nc">
             <type-pointer size="I:4" alignment="I:4">
-              <type-var size="U:" alignment="U:"><typedef-ref name="val2_t" scoped="" ref="0x40e33e60"/></type-var>
+              <type-var size="U:" alignment="U:"><typedef-ref name="val2_t" scoped="" ref="0x40e379d8"/></type-var>
             </type-pointer>
           </variable>
         </parameters>
       </function>
-      <function command="" provided="0" name="execute" ref="0x40e30aa8" loc="3:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/serverWorker.nc">
+      <function command="" provided="0" name="execute" ref="0x40e33648" loc="3:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/serverWorker.nc">
         <interfacedef-ref qname="serverWorker"/>
         <type-function size="I:1" alignment="I:1">
           <type-void size="I:1" alignment="I:1"></type-void>
           <function-parameters>
             <type-pointer size="I:4" alignment="I:4">
-              <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40e33d18"/></type-var>
+              <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40e37890"/></type-var>
             </type-pointer>
           </function-parameters>
         </type-function>
         <parameters>
-          <variable ref="0x40e30950" loc="3:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/serverWorker.nc">
+          <variable ref="0x40e334f0" loc="3:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/serverWorker.nc">
             <type-pointer size="I:4" alignment="I:4">
-              <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40e33d18"/></type-var>
+              <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40e37890"/></type-var>
             </type-pointer>
           </variable>
         </parameters>
@@ -2947,15 +2947,15 @@
         <parameters>
         </parameters>
       </function>
-      <function command="" provided="0" name="getAssr" ref="0x40ba85b0" loc="21:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128TimerAsync.nc">
+      <function command="" provided="0" name="getAssr" ref="0x40bc85b0" loc="21:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128TimerAsync.nc">
         <documentation loc="17:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128TimerAsync.nc">
           <short>&#10; Read timer0 asynchronous status register (ASSR)&#10; </short>
           <long>&#10; Read timer0 asynchronous status register (ASSR)&#10; @return Current value of ASSR&#10;</long>
         </documentation>
         <interfacedef-ref qname="HplAtm128TimerAsync"/>
         <type-function size="I:1" alignment="I:1">
-          <type-tag size="I:1" alignment="I:1"><union-ref ref="0x40b90200"/>
-            <typename><typedef-ref name="Atm128Assr_t" ref="0x40b90428"/></typename>
+          <type-tag size="I:1" alignment="I:1"><union-ref ref="0x40b91200"/>
+            <typename><typedef-ref name="Atm128Assr_t" ref="0x40b91428"/></typename>
           </type-tag>
           <function-parameters>
           </function-parameters>
@@ -2963,7 +2963,7 @@
         <parameters>
         </parameters>
       </function>
-      <function command="" provided="0" name="setAssr" ref="0x40ba8ba0" loc="27:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128TimerAsync.nc">
+      <function command="" provided="0" name="setAssr" ref="0x40bc8ba0" loc="27:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128TimerAsync.nc">
         <documentation loc="23:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128TimerAsync.nc">
           <short>&#10; Set timer0 asynchronous status register (ASSR)&#10; </short>
           <long>&#10; Set timer0 asynchronous status register (ASSR)&#10; @param x New value for ASSR&#10;</long>
@@ -2972,15 +2972,15 @@
         <type-function size="I:1" alignment="I:1">
           <type-void size="I:1" alignment="I:1"></type-void>
           <function-parameters>
-            <type-tag size="I:1" alignment="I:1"><union-ref ref="0x40b90200"/>
-              <typename><typedef-ref name="Atm128Assr_t" ref="0x40b90428"/></typename>
+            <type-tag size="I:1" alignment="I:1"><union-ref ref="0x40b91200"/>
+              <typename><typedef-ref name="Atm128Assr_t" ref="0x40b91428"/></typename>
             </type-tag>
           </function-parameters>
         </type-function>
         <parameters>
-          <variable name="x" ref="0x40ba8a48" loc="27:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128TimerAsync.nc">
-            <type-tag size="I:1" alignment="I:1"><union-ref ref="0x40b90200"/>
-              <typename><typedef-ref name="Atm128Assr_t" ref="0x40b90428"/></typename>
+          <variable name="x" ref="0x40bc8a48" loc="27:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128TimerAsync.nc">
+            <type-tag size="I:1" alignment="I:1"><union-ref ref="0x40b91200"/>
+              <typename><typedef-ref name="Atm128Assr_t" ref="0x40b91428"/></typename>
             </type-tag>
           </variable>
         </parameters>
@@ -3168,12 +3168,12 @@
         <long>&#10; A LocalTime interface counts time in some units. If you need to detect&#10; time overflow, you should use a component offering the Counter&#10; interface.&#10;&#10; &#60;p>The LocalTime interface is parameterised by its &#34;precision&#34;&#10; (milliseconds, microseconds, etc), identified by a type. This prevents,&#10; e.g., unintentionally mixing components expecting milliseconds with&#10; those expecting microseconds as those interfaces have a different type.&#10;&#10; &#60;p>See TEP102 for more details.&#10;&#10; @param precision_tag A type indicating the precision of this Counter.&#10;&#10; @author Cory Sharp &#60;cssharp@eecs.berkeley.edu>&#10;</long>
       </documentation>
       <parameters>
-        <typedef name="precision_tag" ref="0x40b733d8" loc="53:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/LocalTime.nc">
+        <typedef name="precision_tag" ref="0x40b743d8" loc="53:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/LocalTime.nc">
           <interfacedef-ref qname="LocalTime"/>
-          <type-var size="U:" alignment="U:"><typedef-ref name="precision_tag" scoped="" ref="0x40b733d8"/></type-var>
+          <type-var size="U:" alignment="U:"><typedef-ref name="precision_tag" scoped="" ref="0x40b743d8"/></type-var>
         </typedef>
       </parameters>
-      <function command="" provided="0" name="get" ref="0x40b738b8" loc="61:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/LocalTime.nc">
+      <function command="" provided="0" name="get" ref="0x40b748b8" loc="61:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/LocalTime.nc">
         <documentation loc="55:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/LocalTime.nc">
           <short> &#10; Return current time.</short>
           <long> &#10; Return current time. Time starts counting at boot - some time sources&#10; may stop counting while the processor is in low-power mode.&#10;&#10; @return Current time.&#10;</long>
@@ -3412,7 +3412,7 @@
         <parameters>
         </parameters>
       </function>
-      <function command="" provided="0" name="getInterruptFlag" ref="0x40bcd930" loc="53:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128TimerCtrl8.nc">
+      <function command="" provided="0" name="getInterruptFlag" ref="0x40bce930" loc="53:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128TimerCtrl8.nc">
         <documentation loc="52:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128TimerCtrl8.nc">
           <short>Interrupt flag register: Direct access</short>
         </documentation>
@@ -3442,7 +3442,7 @@
         <parameters>
         </parameters>
       </function>
-      <function command="" provided="0" name="setInterruptMask" ref="0x40bcd480" loc="50:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128TimerCtrl8.nc">
+      <function command="" provided="0" name="setInterruptMask" ref="0x40bce480" loc="50:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128TimerCtrl8.nc">
         <interfacedef-ref qname="HplAtm128TimerCtrl8"/>
         <type-function size="I:1" alignment="I:1">
           <type-void size="I:1" alignment="I:1"></type-void>
@@ -3453,7 +3453,7 @@
           </function-parameters>
         </type-function>
         <parameters>
-          <variable name="mask" ref="0x40bcd328" loc="50:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128TimerCtrl8.nc">
+          <variable name="mask" ref="0x40bce328" loc="50:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128TimerCtrl8.nc">
             <type-tag size="I:1" alignment="I:1"><union-ref ref="0x40b8f950"/>
               <typename><typedef-ref name="Atm128_TIMSK_t" ref="0x40b8fb78"/></typename>
             </type-tag>
@@ -3471,7 +3471,7 @@
           </function-parameters>
         </type-function>
         <parameters>
-          <variable name="flags" ref="0x40bcdde0" loc="54:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128TimerCtrl8.nc">
+          <variable name="flags" ref="0x40bcede0" loc="54:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128TimerCtrl8.nc">
             <type-tag size="I:1" alignment="I:1"><union-ref ref="0x40b8d0c8"/>
               <typename><typedef-ref name="Atm128_TIFR_t" ref="0x40b8d2f0"/></typename>
             </type-tag>
@@ -3538,7 +3538,7 @@
           </variable>
         </parameters>
       </function>
-      <function command="" provided="0" name="getPayload" ref="0x40d02190" loc="125:/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc">
+      <function command="" provided="0" name="getPayload" ref="0x40d03190" loc="125:/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc">
         <documentation loc="115:/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc">
           <short>&#10; Return a pointer to a protocol's payload region in a packet which&#10; at least a certain length.</short>
           <long>&#10; Return a pointer to a protocol's payload region in a packet which&#10; at least a certain length.  If the payload region is smaller than&#10; the len parameter, then getPayload returns NULL. This command&#10; behaves identicallt to &#60;tt>Packet.getPayload&#60;/tt> and is&#10; included in this interface as a convenience.&#10;&#10; @param   'message_t* ONE msg'    the packet&#10; @return  'void* COUNT_NOK(len)'  a pointer to the packet's payload&#10;</long>
@@ -3560,21 +3560,21 @@
           </function-parameters>
         </type-function>
         <parameters>
-          <variable name="msg" ref="0x40d03d78" loc="125:/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc">
+          <variable name="msg" ref="0x40d04d78" loc="125:/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc">
             <type-pointer size="I:4" alignment="I:4">
               <type-tag size="I:41" alignment="I:1"><nx_struct-ref name="message_t" ref="0x406f3838"/>
                 <typename><typedef-ref name="message_t" ref="0x406f2600"/></typename>
               </type-tag>
             </type-pointer>
           </variable>
-          <variable name="len" ref="0x40d02010" loc="125:/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc">
+          <variable name="len" ref="0x40d03010" loc="125:/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc">
             <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
               <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
             </type-int>
           </variable>
         </parameters>
       </function>
-      <function command="" provided="0" name="maxPayloadLength" ref="0x40d03818" loc="112:/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc">
+      <function command="" provided="0" name="maxPayloadLength" ref="0x40d04818" loc="112:/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc">
         <documentation loc="102:/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc">
           <short>&#10; Return the maximum payload length that this communication layer&#10; can provide.</short>
           <long>&#10; Return the maximum payload length that this communication layer&#10; can provide. This command behaves identically to&#10; &#60;tt>Packet.maxPayloadLength&#60;/tt> and is included in this&#10; interface as a convenience.&#10;&#10; @return  the maximum payload length&#10;</long>
@@ -3773,13 +3773,13 @@
         <long>&#10; An Alarm is a low-level interface intended for precise timing.&#10;&#10; &#60;p>An Alarm is parameterised by its &#34;precision&#34; (milliseconds,&#10; microseconds, etc), identified by a type. This prevents, e.g.,&#10; unintentionally mixing components expecting milliseconds with those&#10; expecting microseconds as those interfaces have a different type.&#10;&#10; &#60;p>An Alarm's second parameter is its &#34;width&#34;, i.e., the number of&#10; bits used to represent time values. Width is indicated by including&#10; the appropriate size integer type as an Alarm parameter.&#10;&#10; &#60;p>See TEP102 for more details.&#10;&#10; @param precision_tag A type indicating the precision of this Alarm.&#10; @param size_type An integer type representing time values for this Alarm.&#10;&#10; @author Cory Sharp &#60;cssharp@eecs.berkeley.edu>&#10;</long>
       </documentation>
       <parameters>
-        <typedef name="precision_tag" ref="0x40ba19d8" loc="56:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Alarm.nc">
+        <typedef name="precision_tag" ref="0x40ba29d8" loc="56:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Alarm.nc">
           <interfacedef-ref qname="Alarm"/>
-          <type-var size="U:" alignment="U:"><typedef-ref name="precision_tag" scoped="" ref="0x40ba19d8"/></type-var>
+          <type-var size="U:" alignment="U:"><typedef-ref name="precision_tag" scoped="" ref="0x40ba29d8"/></type-var>
         </typedef>
-        <typedef name="size_type" ref="0x40ba1b40" loc="56:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Alarm.nc">
+        <typedef name="size_type" ref="0x40ba2b40" loc="56:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Alarm.nc">
           <interfacedef-ref qname="Alarm"/>
-          <type-var size="U:" alignment="U:"><typedef-ref name="size_type" scoped="" ref="0x40ba1b40"/></type-var>
+          <type-var size="U:" alignment="U:"><typedef-ref name="size_type" scoped="" ref="0x40ba2b40"/></type-var>
         </typedef>
       </parameters>
       <function command="" provided="0" name="getNow" ref="0x40b9deb0" loc="109:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Alarm.nc">
@@ -3789,14 +3789,14 @@
         </documentation>
         <interfacedef-ref qname="Alarm"/>
         <type-function size="I:1" alignment="I:1">
-          <type-var size="U:" alignment="U:"><typedef-ref name="size_type" scoped="" ref="0x40ba1b40"/></type-var>
+          <type-var size="U:" alignment="U:"><typedef-ref name="size_type" scoped="" ref="0x40ba2b40"/></type-var>
           <function-parameters>
           </function-parameters>
         </type-function>
         <parameters>
         </parameters>
       </function>
-      <function event="" provided="0" name="fired" ref="0x40b9eac8" loc="78:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Alarm.nc">
+      <function event="" provided="0" name="fired" ref="0x40b9fac8" loc="78:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Alarm.nc">
         <documentation loc="75:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Alarm.nc">
           <short>&#10; Signaled when the alarm expires.</short>
           <long>&#10; Signaled when the alarm expires.&#10;</long>
@@ -3819,16 +3819,16 @@
         <type-function size="I:1" alignment="I:1">
           <type-void size="I:1" alignment="I:1"></type-void>
           <function-parameters>
-            <type-var size="U:" alignment="U:"><typedef-ref name="size_type" scoped="" ref="0x40ba1b40"/></type-var>
-            <type-var size="U:" alignment="U:"><typedef-ref name="size_type" scoped="" ref="0x40ba1b40"/></type-var>
+            <type-var size="U:" alignment="U:"><typedef-ref name="size_type" scoped="" ref="0x40ba2b40"/></type-var>
+            <type-var size="U:" alignment="U:"><typedef-ref name="size_type" scoped="" ref="0x40ba2b40"/></type-var>
           </function-parameters>
         </type-function>
         <parameters>
           <variable name="t0" ref="0x40b9d518" loc="103:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Alarm.nc">
-            <type-var size="U:" alignment="U:"><typedef-ref name="size_type" scoped="" ref="0x40ba1b40"/></type-var>
+            <type-var size="U:" alignment="U:"><typedef-ref name="size_type" scoped="" ref="0x40ba2b40"/></type-var>
           </variable>
           <variable name="dt" ref="0x40b9d708" loc="103:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Alarm.nc">
-            <type-var size="U:" alignment="U:"><typedef-ref name="size_type" scoped="" ref="0x40ba1b40"/></type-var>
+            <type-var size="U:" alignment="U:"><typedef-ref name="size_type" scoped="" ref="0x40ba2b40"/></type-var>
           </variable>
         </parameters>
       </function>
@@ -3855,14 +3855,14 @@
         </documentation>
         <interfacedef-ref qname="Alarm"/>
         <type-function size="I:1" alignment="I:1">
-          <type-var size="U:" alignment="U:"><typedef-ref name="size_type" scoped="" ref="0x40ba1b40"/></type-var>
+          <type-var size="U:" alignment="U:"><typedef-ref name="size_type" scoped="" ref="0x40ba2b40"/></type-var>
           <function-parameters>
           </function-parameters>
         </type-function>
         <parameters>
         </parameters>
       </function>
-      <function command="" provided="0" name="start" ref="0x40b9e188" loc="66:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Alarm.nc">
+      <function command="" provided="0" name="start" ref="0x40b9f188" loc="66:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Alarm.nc">
         <documentation loc="59:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Alarm.nc">
           <short>&#10; Set a single-short alarm to some time units in the future.</short>
           <long>&#10; Set a single-short alarm to some time units in the future. Replaces&#10; any current alarm time. Equivalent to start(getNow(), dt). The&#10; &#60;code>fired&#60;/code> will be signaled when the alarm expires.&#10;&#10; @param dt Time until the alarm fires.&#10;</long>
@@ -3871,16 +3871,16 @@
         <type-function size="I:1" alignment="I:1">
           <type-void size="I:1" alignment="I:1"></type-void>
           <function-parameters>
-            <type-var size="U:" alignment="U:"><typedef-ref name="size_type" scoped="" ref="0x40ba1b40"/></type-var>
+            <type-var size="U:" alignment="U:"><typedef-ref name="size_type" scoped="" ref="0x40ba2b40"/></type-var>
           </function-parameters>
         </type-function>
         <parameters>
-          <variable name="dt" ref="0x40b9e030" loc="66:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Alarm.nc">
-            <type-var size="U:" alignment="U:"><typedef-ref name="size_type" scoped="" ref="0x40ba1b40"/></type-var>
+          <variable name="dt" ref="0x40b9f030" loc="66:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Alarm.nc">
+            <type-var size="U:" alignment="U:"><typedef-ref name="size_type" scoped="" ref="0x40ba2b40"/></type-var>
           </variable>
         </parameters>
       </function>
-      <function command="" provided="0" name="stop" ref="0x40b9e668" loc="73:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Alarm.nc">
+      <function command="" provided="0" name="stop" ref="0x40b9f668" loc="73:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Alarm.nc">
         <documentation loc="68:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Alarm.nc">
           <short>&#10; Cancel an alarm.</short>
           <long>&#10; Cancel an alarm. Note that the &#60;code>fired&#60;/code> event may have&#10; already been signaled (even if your code has not yet started&#10; executing).&#10;</long>
@@ -3986,7 +3986,7 @@
         <parameters>
         </parameters>
       </function>
-      <function command="" provided="0" name="isOn" ref="0x40bc81a8" loc="80:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128Compare.nc">
+      <function command="" provided="0" name="isOn" ref="0x40bc91a8" loc="80:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128Compare.nc">
         <documentation loc="76:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128Compare.nc">
           <short> &#10; Is compare interrupt on?&#10; </short>
           <long> &#10; Is compare interrupt on?&#10; @return TRUE if compare enabled, FALSE otherwise&#10;</long>
@@ -4883,7 +4883,7 @@
           </variable>
         </parameters>
       </function>
-      <function command="" provided="0" name="isClosing" ref="0x40aace30" loc="26:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+      <function command="" provided="0" name="isClosing" ref="0x40aacd00" loc="26:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
         <interfacedef-ref qname="TCPSocket"/>
         <type-function size="I:1" alignment="I:1">
           <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
@@ -4896,14 +4896,14 @@
           </function-parameters>
         </type-function>
         <parameters>
-          <variable name="port" ref="0x40aaccd8" loc="26:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+          <variable name="port" ref="0x40aacba8" loc="26:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
             <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
               <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
             </type-int>
           </variable>
         </parameters>
       </function>
-      <function command="" provided="0" name="isConnectPending" ref="0x40aae758" loc="22:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+      <function command="" provided="0" name="isConnectPending" ref="0x40aae648" loc="22:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
         <interfacedef-ref qname="TCPSocket"/>
         <type-function size="I:1" alignment="I:1">
           <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
@@ -4916,34 +4916,34 @@
           </function-parameters>
         </type-function>
         <parameters>
-          <variable name="port" ref="0x40aae600" loc="22:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+          <variable name="port" ref="0x40aae4f0" loc="22:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
             <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
               <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
             </type-int>
           </variable>
         </parameters>
       </function>
-      <function command="" provided="0" name="release" ref="0x40ab08f8" loc="15:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+      <function command="" provided="0" name="release" ref="0x40ab08c8" loc="15:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
         <interfacedef-ref qname="TCPSocket"/>
         <type-function size="I:1" alignment="I:1">
           <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
             <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
           </type-int>
           <function-parameters>
-            <type-pointer size="I:4" alignment="I:4">
-              <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40a92498"/></type-var>
-            </type-pointer>
+            <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+              <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
+            </type-int>
           </function-parameters>
         </type-function>
         <parameters>
-          <variable name="input" ref="0x40ab07a0" loc="15:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
-            <type-pointer size="I:4" alignment="I:4">
-              <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40a92498"/></type-var>
-            </type-pointer>
+          <variable name="port" ref="0x40ab0770" loc="15:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+            <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+              <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
+            </type-int>
           </variable>
         </parameters>
       </function>
-      <function command="" provided="0" name="read" ref="0x40aaf560" loc="17:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+      <function command="" provided="0" name="read" ref="0x40aaf488" loc="17:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
         <interfacedef-ref qname="TCPSocket"/>
         <type-function size="I:1" alignment="I:1">
           <type-int cname="short" size="I:2" alignment="I:2">
@@ -4967,24 +4967,24 @@
           </function-parameters>
         </type-function>
         <parameters>
-          <variable name="port" ref="0x40ab0d08" loc="17:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+          <variable name="port" ref="0x40ab0cd8" loc="17:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
             <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
               <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
             </type-int>
           </variable>
-          <variable name="readBuffer" ref="0x40aaf010" loc="17:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+          <variable name="readBuffer" ref="0x40ab0f20" loc="17:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
             <type-pointer size="I:4" alignment="I:4">
               <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
                 <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
               </type-int>
             </type-pointer>
           </variable>
-          <variable name="pos" ref="0x40aaf200" loc="17:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+          <variable name="pos" ref="0x40aaf128" loc="17:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
             <type-int cname="unsigned short" unsigned="" size="I:2" alignment="I:2">
               <typename><typedef-ref name="uint16_t" ref="0x40219490"/></typename>
             </type-int>
           </variable>
-          <variable name="len" ref="0x40aaf3f0" loc="17:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+          <variable name="len" ref="0x40aaf318" loc="17:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
             <type-int cname="unsigned short" unsigned="" size="I:2" alignment="I:2">
               <typename><typedef-ref name="uint16_t" ref="0x40219490"/></typename>
             </type-int>
@@ -5045,7 +5045,7 @@
           </variable>
         </parameters>
       </function>
-      <function command="" provided="0" name="isClosed" ref="0x40aac830" loc="25:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+      <function command="" provided="0" name="isClosed" ref="0x40aac700" loc="25:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
         <interfacedef-ref qname="TCPSocket"/>
         <type-function size="I:1" alignment="I:1">
           <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
@@ -5058,14 +5058,14 @@
           </function-parameters>
         </type-function>
         <parameters>
-          <variable name="port" ref="0x40aac6d8" loc="25:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+          <variable name="port" ref="0x40aac5a8" loc="25:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
             <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
               <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
             </type-int>
           </variable>
         </parameters>
       </function>
-      <function command="" provided="0" name="addToQueue" ref="0x40aab400" loc="27:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+      <function command="" provided="0" name="addToQueue" ref="0x40aab280" loc="27:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
         <interfacedef-ref qname="TCPSocket"/>
         <type-function size="I:1" alignment="I:1">
           <type-void size="I:1" alignment="I:1"></type-void>
@@ -5078,7 +5078,7 @@
           </function-parameters>
         </type-function>
         <parameters>
-          <variable name="pckt" ref="0x40aab2a8" loc="27:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+          <variable name="pckt" ref="0x40aab128" loc="27:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
             <type-pointer size="I:4" alignment="I:4">
               <type-tag size="I:28" alignment="I:1"><nx_struct-ref name="pack" ref="0x4072fa48"/>
                 <typename><typedef-ref name="pack" ref="0x40744750"/></typename>
@@ -5087,7 +5087,7 @@
           </variable>
         </parameters>
       </function>
-      <function command="" provided="0" name="isListening" ref="0x40aac2b8" loc="24:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+      <function command="" provided="0" name="isListening" ref="0x40aac188" loc="24:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
         <interfacedef-ref qname="TCPSocket"/>
         <type-function size="I:1" alignment="I:1">
           <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
@@ -5100,7 +5100,7 @@
           </function-parameters>
         </type-function>
         <parameters>
-          <variable name="port" ref="0x40aac160" loc="24:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+          <variable name="port" ref="0x40aac030" loc="24:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
             <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
               <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
             </type-int>
@@ -5143,7 +5143,7 @@
           </variable>
         </parameters>
       </function>
-      <function command="" provided="0" name="copy" ref="0x40aabb50" loc="28:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+      <function command="" provided="0" name="copy" ref="0x40aab9d0" loc="28:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
         <interfacedef-ref qname="TCPSocket"/>
         <type-function size="I:1" alignment="I:1">
           <type-void size="I:1" alignment="I:1"></type-void>
@@ -5157,12 +5157,12 @@
           </function-parameters>
         </type-function>
         <parameters>
-          <variable name="input" ref="0x40aab7e0" loc="28:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+          <variable name="input" ref="0x40aab660" loc="28:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
             <type-pointer size="I:4" alignment="I:4">
               <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40a92498"/></type-var>
             </type-pointer>
           </variable>
-          <variable name="output" ref="0x40aab9f0" loc="28:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+          <variable name="output" ref="0x40aab870" loc="28:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
             <type-pointer size="I:4" alignment="I:4">
               <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40a92498"/></type-var>
             </type-pointer>
@@ -5197,7 +5197,7 @@
           </variable>
         </parameters>
       </function>
-      <function command="" provided="0" name="write" ref="0x40aae180" loc="19:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+      <function command="" provided="0" name="write" ref="0x40aae070" loc="19:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
         <interfacedef-ref qname="TCPSocket"/>
         <type-function size="I:1" alignment="I:1">
           <type-int cname="short" size="I:2" alignment="I:2">
@@ -5221,51 +5221,51 @@
           </function-parameters>
         </type-function>
         <parameters>
-          <variable name="port" ref="0x40aaf978" loc="19:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+          <variable name="port" ref="0x40aaf8a0" loc="19:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
             <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
               <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
             </type-int>
           </variable>
-          <variable name="writeBuffer" ref="0x40aafbc8" loc="19:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+          <variable name="writeBuffer" ref="0x40aafaf0" loc="19:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
             <type-pointer size="I:4" alignment="I:4">
               <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
                 <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
               </type-int>
             </type-pointer>
           </variable>
-          <variable name="pos" ref="0x40aafdb8" loc="19:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+          <variable name="pos" ref="0x40aafce0" loc="19:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
             <type-int cname="unsigned short" unsigned="" size="I:2" alignment="I:2">
               <typename><typedef-ref name="uint16_t" ref="0x40219490"/></typename>
             </type-int>
           </variable>
-          <variable name="len" ref="0x40aae010" loc="19:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+          <variable name="len" ref="0x40aafed0" loc="19:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
             <type-int cname="unsigned short" unsigned="" size="I:2" alignment="I:2">
               <typename><typedef-ref name="uint16_t" ref="0x40219490"/></typename>
             </type-int>
           </variable>
         </parameters>
       </function>
-      <function command="" provided="0" name="close" ref="0x40ab0360" loc="13:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+      <function command="" provided="0" name="close" ref="0x40ab0348" loc="13:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
         <interfacedef-ref qname="TCPSocket"/>
         <type-function size="I:1" alignment="I:1">
           <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
             <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
           </type-int>
           <function-parameters>
-            <type-pointer size="I:4" alignment="I:4">
-              <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40a92498"/></type-var>
-            </type-pointer>
+            <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+              <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
+            </type-int>
           </function-parameters>
         </type-function>
         <parameters>
-          <variable name="input" ref="0x40ab0208" loc="13:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
-            <type-pointer size="I:4" alignment="I:4">
-              <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40a92498"/></type-var>
-            </type-pointer>
+          <variable name="port" ref="0x40ab01f0" loc="13:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+            <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+              <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
+            </type-int>
           </variable>
         </parameters>
       </function>
-      <function command="" provided="0" name="isConnected" ref="0x40aaece8" loc="23:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+      <function command="" provided="0" name="isConnected" ref="0x40aaebd8" loc="23:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
         <interfacedef-ref qname="TCPSocket"/>
         <type-function size="I:1" alignment="I:1">
           <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
@@ -5278,7 +5278,7 @@
           </function-parameters>
         </type-function>
         <parameters>
-          <variable name="port" ref="0x40aaeb90" loc="23:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
+          <variable name="port" ref="0x40aaea80" loc="23:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc">
             <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
               <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
             </type-int>
@@ -5446,25 +5446,25 @@
     </interfacedef>
     <interfacedef qname="server" loc="1:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/server.nc">
       <parameters>
-        <typedef name="val_t" ref="0x40aa3010" loc="1:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/server.nc">
+        <typedef name="val_t" ref="0x40aa4cd0" loc="1:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/server.nc">
           <interfacedef-ref qname="server"/>
-          <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40aa3010"/></type-var>
+          <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40aa4cd0"/></type-var>
         </typedef>
       </parameters>
-      <function command="" provided="0" name="init" ref="0x40aa35a8" loc="2:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/server.nc">
+      <function command="" provided="0" name="init" ref="0x40aa3278" loc="2:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/server.nc">
         <interfacedef-ref qname="server"/>
         <type-function size="I:1" alignment="I:1">
           <type-void size="I:1" alignment="I:1"></type-void>
           <function-parameters>
             <type-pointer size="I:4" alignment="I:4">
-              <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40aa3010"/></type-var>
+              <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40aa4cd0"/></type-var>
             </type-pointer>
           </function-parameters>
         </type-function>
         <parameters>
-          <variable ref="0x40aa3450" loc="2:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/server.nc">
+          <variable ref="0x40aa3120" loc="2:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/server.nc">
             <type-pointer size="I:4" alignment="I:4">
-              <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40aa3010"/></type-var>
+              <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40aa4cd0"/></type-var>
             </type-pointer>
           </variable>
         </parameters>
@@ -5525,7 +5525,7 @@
         <parameters>
         </parameters>
       </function>
-      <function command="" provided="0" name="setScale" ref="0x40baa168" loc="104:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128Timer.nc">
+      <function command="" provided="0" name="setScale" ref="0x40bab168" loc="104:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128Timer.nc">
         <documentation loc="100:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128Timer.nc">
           <short> &#10; Turn on the clock.</short>
           <long> &#10; Turn on the clock.&#10; @param scale   Prescaler setting of clock -- see Atm128Timer.h&#10;</long>
@@ -5540,14 +5540,14 @@
           </function-parameters>
         </type-function>
         <parameters>
-          <variable name="scale" ref="0x40baa010" loc="104:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128Timer.nc">
+          <variable name="scale" ref="0x40bab010" loc="104:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128Timer.nc">
             <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
               <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
             </type-int>
           </variable>
         </parameters>
       </function>
-      <function command="" provided="0" name="getScale" ref="0x40baa5f8" loc="110:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128Timer.nc">
+      <function command="" provided="0" name="getScale" ref="0x40bab5f8" loc="110:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128Timer.nc">
         <documentation loc="106:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128Timer.nc">
           <short> &#10; Get prescaler setting.</short>
           <long> &#10; Get prescaler setting.&#10; @return  Prescaler setting of clock -- see Atm128Timer.h&#10;</long>
@@ -6020,25 +6020,25 @@
     </interfacedef>
     <interfacedef qname="client" loc="1:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/client.nc">
       <parameters>
-        <typedef name="val_t" ref="0x40aa8b40" loc="1:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/client.nc">
+        <typedef name="val_t" ref="0x40aa8930" loc="1:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/client.nc">
           <interfacedef-ref qname="client"/>
-          <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40aa8b40"/></type-var>
+          <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40aa8930"/></type-var>
         </typedef>
       </parameters>
-      <function command="" provided="0" name="init" ref="0x40aa4168" loc="2:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/client.nc">
+      <function command="" provided="0" name="init" ref="0x40aa8ec8" loc="2:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/client.nc">
         <interfacedef-ref qname="client"/>
         <type-function size="I:1" alignment="I:1">
           <type-void size="I:1" alignment="I:1"></type-void>
           <function-parameters>
             <type-pointer size="I:4" alignment="I:4">
-              <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40aa8b40"/></type-var>
+              <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40aa8930"/></type-var>
             </type-pointer>
           </function-parameters>
         </type-function>
         <parameters>
-          <variable ref="0x40aa4010" loc="2:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/client.nc">
+          <variable ref="0x40aa8d70" loc="2:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/client.nc">
             <type-pointer size="I:4" alignment="I:4">
-              <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40aa8b40"/></type-var>
+              <type-var size="U:" alignment="U:"><typedef-ref name="val_t" scoped="" ref="0x40aa8930"/></type-var>
             </type-pointer>
           </variable>
         </parameters>
@@ -6273,6 +6273,9 @@
     <enum loc="94:/home/adrian/local/tinyos-2.1.1/tos/lib/serial/Serial.h" ref="0x406e6518" defined="" size="I:4" alignment="I:4">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </enum>
+    <enum loc="52:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128Timer.h" ref="0x40b768e0" defined="" size="I:4" alignment="I:4">
+      <type-int cname="int" size="I:4" alignment="I:4"></type-int>
+    </enum>
     <attribute name="bnd" loc="9:/usr/lib/ncc/deputy_nodeputy.h" ref="0x402100f8" defined="" size="I:8" alignment="I:4">
       <field name="lo" ref="0x40210358" bit-offset="I:0" size="I:4">
         <type-pointer size="I:4" alignment="I:4">
@@ -6342,9 +6345,6 @@
     <enum loc="144:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/adc/Atm128Adc.h" ref="0x4079b9a0" defined="" size="I:4" alignment="I:4">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </enum>
-    <enum loc="14:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/clientC.nc" ref="0x40de61a0" defined="" size="I:4" alignment="I:4">
-      <type-int cname="int" size="I:4" alignment="I:4"></type-int>
-    </enum>
     <struct name="sim_gain_noise" loc="3:/home/adrian/local/tinyos-2.1.1/tos/lib/tossim/sim_gain.c" ref="0x40618db8" defined="" size="I:16" alignment="I:4">
       <field name="mean" ref="0x40617158" bit-offset="I:0" size="I:8">
         <type-float cname="double" size="I:8" alignment="I:8"></type-float>
@@ -6407,9 +6407,6 @@
         </type-int>
       </field>
     </struct>
-    <enum loc="19:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverAL.h" ref="0x40da09f0" defined="" size="I:4" alignment="I:4">
-      <type-int cname="int" size="I:4" alignment="I:4"></type-int>
-    </enum>
     <enum loc="58:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/adc/Atm128Adc.h" ref="0x407a4618" defined="" size="I:4" alignment="I:4">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </enum>
@@ -6435,15 +6432,15 @@
         </type-int>
       </field>
     </struct>
-    <struct name="serverWorkerList" loc="19:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverWorkerList.h" ref="0x40e1d5a8" defined="" size="I:684" alignment="I:4">
-      <field name="values" ref="0x40e1db80" bit-offset="I:0" size="I:680">
+    <struct name="serverWorkerList" loc="19:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverWorkerList.h" ref="0x40e20060" defined="" size="I:684" alignment="I:4">
+      <field name="values" ref="0x40e20638" bit-offset="I:0" size="I:680">
         <type-array elements="I:5" size="I:680" alignment="I:4">
-          <type-tag size="I:136" alignment="I:4"><struct-ref name="serverWorkerAL" ref="0x40e1fbe0"/>
-            <typename><typedef-ref name="workerType" ref="0x40e1ee58"/></typename>
+          <type-tag size="I:136" alignment="I:4"><struct-ref name="serverWorkerAL" ref="0x40e226d0"/>
+            <typename><typedef-ref name="workerType" ref="0x40e21948"/></typename>
           </type-tag>
         </type-array>
       </field>
-      <field name="numValues" ref="0x40e1dbe0" bit-offset="I:5440" size="I:1">
+      <field name="numValues" ref="0x40e20698" bit-offset="I:5440" size="I:1">
         <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
           <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
         </type-int>
@@ -6474,15 +6471,15 @@
         </type-tag>
       </field>
     </union>
-    <struct name="socketEntry" loc="14:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/../dataStructures/socketHash.h" ref="0x40d59228" defined="" size="I:14" alignment="I:2">
-      <field name="key" ref="0x40d59600" bit-offset="I:0" size="I:2">
+    <struct name="socketEntry" loc="14:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/../dataStructures/socketHash.h" ref="0x40d5d9d8" defined="" size="I:14" alignment="I:2">
+      <field name="key" ref="0x40d5ddb0" bit-offset="I:0" size="I:2">
         <type-int cname="unsigned short" unsigned="" size="I:2" alignment="I:2">
           <typename><typedef-ref name="uint16_t" ref="0x40219490"/></typename>
         </type-int>
       </field>
-      <field name="value" ref="0x40d59660" bit-offset="I:16" size="I:11">
+      <field name="value" ref="0x40d5de10" bit-offset="I:16" size="I:11">
         <type-tag size="I:11" alignment="I:1"><struct-ref name="TCPSocketAL" ref="0x40a6edd0"/>
-          <typename><typedef-ref name="sockType" ref="0x40d5abc0"/></typename>
+          <typename><typedef-ref name="sockType" ref="0x40d5d3a0"/></typename>
         </type-tag>
       </field>
     </struct>
@@ -6668,15 +6665,15 @@
         </type-int>
       </field>
     </struct>
-    <struct name="serverAL" loc="14:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverAL.h" ref="0x40da0238" defined="" size="I:8" alignment="I:4">
-      <field name="socket" ref="0x40da0688" bit-offset="I:0" size="I:4">
+    <struct name="serverAL" loc="14:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverAL.h" ref="0x40d40238" defined="" size="I:8" alignment="I:4">
+      <field name="socket" ref="0x40d40e88" bit-offset="I:0" size="I:4">
         <type-pointer size="I:4" alignment="I:4">
           <type-tag size="I:11" alignment="I:1"><struct-ref name="TCPSocketAL" ref="0x40a6edd0"/>
             <typename><typedef-ref name="TCPSocketAL" ref="0x40a6c248"/></typename>
           </type-tag>
         </type-pointer>
       </field>
-      <field name="numofWorkers" ref="0x40da06e8" bit-offset="I:32" size="I:1">
+      <field name="numofWorkers" ref="0x40d40ee8" bit-offset="I:32" size="I:1">
         <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
           <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
         </type-int>
@@ -6718,6 +6715,9 @@
         <type-int cname="unsigned int" unsigned="" size="I:4" alignment="I:4"></type-int>
       </field>
     </struct>
+    <enum loc="5:/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/socketList.h" ref="0x40d42de0" defined="" size="I:4" alignment="I:4">
+      <type-int cname="int" size="I:4" alignment="I:4"></type-int>
+    </enum>
     <enum loc="40:/home/adrian/workspace/Network-TinyOS/pro1/src/packet.h" ref="0x407414c8" defined="" size="I:4" alignment="I:4">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </enum>
@@ -6813,30 +6813,30 @@
         </type-pointer>
       </field>
     </struct>
-    <struct name="clientAL" loc="21:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/clientAL.h" ref="0x40de7380" defined="" size="I:76" alignment="I:4">
-      <field name="socket" ref="0x40de7cb0" bit-offset="I:0" size="I:4">
+    <struct name="clientAL" loc="21:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/clientAL.h" ref="0x40deb458" defined="" size="I:76" alignment="I:4">
+      <field name="socket" ref="0x40debd88" bit-offset="I:0" size="I:4">
         <type-pointer size="I:4" alignment="I:4">
           <type-tag size="I:11" alignment="I:1"><struct-ref name="TCPSocketAL" ref="0x40a6edd0"/>
             <typename><typedef-ref name="TCPSocketAL" ref="0x40a6c248"/></typename>
           </type-tag>
         </type-pointer>
       </field>
-      <field name="startTime" ref="0x40de7d10" bit-offset="I:32" size="I:4">
+      <field name="startTime" ref="0x40debde8" bit-offset="I:32" size="I:4">
         <type-int cname="unsigned int" unsigned="" size="I:4" alignment="I:4">
           <typename><typedef-ref name="uint32_t" ref="0x402196b0"/></typename>
         </type-int>
       </field>
-      <field name="amount" ref="0x40de7d70" bit-offset="I:64" size="I:2">
+      <field name="amount" ref="0x40debe48" bit-offset="I:64" size="I:2">
         <type-int cname="unsigned short" unsigned="" size="I:2" alignment="I:2">
           <typename><typedef-ref name="uint16_t" ref="0x40219490"/></typename>
         </type-int>
       </field>
-      <field name="position" ref="0x40de7dd0" bit-offset="I:80" size="I:2">
+      <field name="position" ref="0x40debea8" bit-offset="I:80" size="I:2">
         <type-int cname="unsigned short" unsigned="" size="I:2" alignment="I:2">
           <typename><typedef-ref name="uint16_t" ref="0x40219490"/></typename>
         </type-int>
       </field>
-      <field name="buffer" ref="0x40de7e30" bit-offset="I:96" size="I:64">
+      <field name="buffer" ref="0x40debf08" bit-offset="I:96" size="I:64">
         <type-array elements="I:64" size="I:64" alignment="I:1">
           <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
             <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
@@ -6849,16 +6849,6 @@
     <enum loc="87:/home/adrian/local/tinyos-2.1.1/tos/lib/serial/Serial.h" ref="0x406e7f40" defined="" size="I:4" alignment="I:4">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </enum>
-    <union loc="120:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128Timer.h" ref="0x40b90200" defined="" size="I:1" alignment="I:1">
-      <field name="flat" ref="0x40b90310" bit-offset="I:0" size="I:1">
-        <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
-          <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
-        </type-int>
-      </field>
-      <field name="bits" ref="0x40b90370" bit-offset="I:0" size="I:1">
-        <type-tag size="I:1" alignment="I:1"><struct-ref ref="0x40b92da8"/></type-tag>
-      </field>
-    </union>
     <union loc="39:/usr/include/i386-linux-gnu/bits/pthreadtypes.h" ref="0x40367040" defined="" size="I:36" alignment="I:4">
       <field name="__size" ref="0x40367150" bit-offset="I:0" size="I:36">
         <type-array elements="I:36" size="I:36" alignment="I:1">
@@ -6906,6 +6896,20 @@
     <enum loc="126:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/adc/Atm128Adc.h" ref="0x4079c6f0" defined="" size="I:4" alignment="I:4">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </enum>
+    <struct name="ports" loc="9:/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/socketList.h" ref="0x40d3f1d8" defined="" size="I:2806" alignment="I:1">
+      <field name="values" ref="0x40d3f698" bit-offset="I:0" size="I:2805">
+        <type-array elements="I:255" size="I:2805" alignment="I:1">
+          <type-tag size="I:11" alignment="I:1"><struct-ref name="TCPSocketAL" ref="0x40a6edd0"/>
+            <typename><typedef-ref name="TCPSocketAL" ref="0x40a6c248"/></typename>
+          </type-tag>
+        </type-array>
+      </field>
+      <field name="numValues" ref="0x40d3f6f8" bit-offset="I:22440" size="I:1">
+        <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+          <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
+        </type-int>
+      </field>
+    </struct>
     <enum loc="30:/home/adrian/workspace/Network-TinyOS/pro1/src/transport.h" ref="0x40a613b0" defined="" size="I:4" alignment="I:4">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </enum>
@@ -6916,9 +6920,6 @@
         </type-pointer>
       </field>
     </struct>
-    <enum loc="10:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/../dataStructures/socketHash.h" ref="0x40d5ae10" defined="" size="I:4" alignment="I:4">
-      <type-int cname="int" size="I:4" alignment="I:4"></type-int>
-    </enum>
     <struct loc="144:/usr/include/i386-linux-gnu/bits/types.h" ref="0x40348810" defined="" size="I:8" alignment="I:4">
       <field name="__val" ref="0x40348920" bit-offset="I:0" size="I:8">
         <type-array elements="I:2" size="I:8" alignment="I:4">
@@ -7312,27 +7313,27 @@
     </struct>
     <attribute name="safe"  loc="NONE" ref="0x40033d90" size="V:" alignment="V:">
     </attribute>
-    <struct name="serverWorkerAL" loc="23:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverAL.h" ref="0x40e1fbe0" defined="" size="I:136" alignment="I:4">
-      <field name="socket" ref="0x40e1e400" bit-offset="I:0" size="I:4">
+    <struct name="serverWorkerAL" loc="23:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverAL.h" ref="0x40e226d0" defined="" size="I:136" alignment="I:4">
+      <field name="socket" ref="0x40e22ed8" bit-offset="I:0" size="I:4">
         <type-pointer size="I:4" alignment="I:4">
           <type-tag size="I:11" alignment="I:1"><struct-ref name="TCPSocketAL" ref="0x40a6edd0"/>
             <typename><typedef-ref name="TCPSocketAL" ref="0x40a6c248"/></typename>
           </type-tag>
         </type-pointer>
       </field>
-      <field name="position" ref="0x40e1e460" bit-offset="I:32" size="I:2">
+      <field name="position" ref="0x40e22f38" bit-offset="I:32" size="I:2">
         <type-int cname="unsigned short" unsigned="" size="I:2" alignment="I:2">
           <typename><typedef-ref name="uint16_t" ref="0x40219490"/></typename>
         </type-int>
       </field>
-      <field name="buffer" ref="0x40e1e4c0" bit-offset="I:48" size="I:128">
+      <field name="buffer" ref="0x40e22f98" bit-offset="I:48" size="I:128">
         <type-array elements="I:128" size="I:128" alignment="I:1">
           <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
             <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
           </type-int>
         </type-array>
       </field>
-      <field name="id" ref="0x40e1e520" bit-offset="I:1072" size="I:1">
+      <field name="id" ref="0x40e21010" bit-offset="I:1072" size="I:1">
         <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
           <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
         </type-int>
@@ -7404,20 +7405,6 @@
         <type-int cname="int" size="I:4" alignment="I:4"></type-int>
       </field>
     </struct>
-    <struct name="arrlist1" loc="9:/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/socketList.h" ref="0x40d3e228" defined="" size="I:1101" alignment="I:1">
-      <field name="values" ref="0x40d3e6c0" bit-offset="I:0" size="I:1100">
-        <type-array elements="I:100" size="I:1100" alignment="I:1">
-          <type-tag size="I:11" alignment="I:1"><struct-ref name="TCPSocketAL" ref="0x40a6edd0"/>
-            <typename><typedef-ref name="dataType5" ref="0x40d41f18"/></typename>
-          </type-tag>
-        </type-array>
-      </field>
-      <field name="numValues" ref="0x40d3e720" bit-offset="I:8800" size="I:1">
-        <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
-          <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
-        </type-int>
-      </field>
-    </struct>
     <struct name="sendInfo" loc="12:/home/adrian/workspace/Network-TinyOS/pro1/src/packBuffer.h" ref="0x40a2aa90" defined="" size="I:32" alignment="I:2">
       <field name="packet" ref="0x40a2af58" bit-offset="I:0" size="I:28">
         <type-tag size="I:28" alignment="I:1"><nx_struct-ref name="pack" ref="0x4072fa48"/>
@@ -7465,9 +7452,6 @@
         <type-int cname="long" size="I:4" alignment="I:4"></type-int>
       </field>
     </union>
-    <enum loc="30:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverAL.h" ref="0x40e1e718" defined="" size="I:4" alignment="I:4">
-      <type-int cname="int" size="I:4" alignment="I:4"></type-int>
-    </enum>
     <enum loc="25:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/sim/atm128_sim.h" ref="0x40741c20" defined="" size="I:4" alignment="I:4">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </enum>
@@ -7690,9 +7674,6 @@
         <type-int cname="int" size="I:4" alignment="I:4"></type-int>
       </field>
     </struct>
-    <enum loc="52:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128Timer.h" ref="0x40b758e0" defined="" size="I:4" alignment="I:4">
-      <type-int cname="int" size="I:4" alignment="I:4"></type-int>
-    </enum>
     <struct name="radio_stats" loc="109:/home/adrian/local/tinyos-2.1.1/tos/lib/serial/Serial.h" ref="0x406f8040" defined="" size="I:18" alignment="I:2">
       <field name="version" ref="0x406f7240" bit-offset="I:0" size="I:1">
         <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
@@ -7958,6 +7939,12 @@
         <type-tag size="I:1" alignment="I:1"><struct-ref ref="0x40ba50f0"/></type-tag>
       </field>
     </union>
+    <enum loc="14:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/clientC.nc" ref="0x40de9280" defined="" size="I:4" alignment="I:4">
+      <type-int cname="int" size="I:4" alignment="I:4"></type-int>
+    </enum>
+    <enum loc="30:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverAL.h" ref="0x40e21208" defined="" size="I:4" alignment="I:4">
+      <type-int cname="int" size="I:4" alignment="I:4"></type-int>
+    </enum>
     <attribute name="one" loc="13:/usr/lib/ncc/deputy_nodeputy.h" ref="0x40212840" defined="" size="I:4" alignment="I:4">
       <field name="dummy" ref="0x40212a18" bit-offset="I:0" size="I:4">
         <type-int cname="int" size="I:4" alignment="I:4"></type-int>
@@ -7989,12 +7976,12 @@
           <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
         </type-int>
       </field>
-      <field name="as0" ref="0x40b90010" bit-offset="I:3" bit-size="I:1">
+      <field name="as0" ref="0x40b91010" bit-offset="I:3" bit-size="I:1">
         <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
           <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
         </type-int>
       </field>
-      <field name="rsvd" ref="0x40b90070" bit-offset="I:4" bit-size="I:4">
+      <field name="rsvd" ref="0x40b91070" bit-offset="I:4" bit-size="I:4">
         <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
           <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
         </type-int>
@@ -8037,30 +8024,43 @@
         <type-int cname="int" size="I:4" alignment="I:4"></type-int>
       </field>
     </union>
+    <union loc="120:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128Timer.h" ref="0x40b91200" defined="" size="I:1" alignment="I:1">
+      <field name="flat" ref="0x40b91310" bit-offset="I:0" size="I:1">
+        <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+          <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
+        </type-int>
+      </field>
+      <field name="bits" ref="0x40b91370" bit-offset="I:0" size="I:1">
+        <type-tag size="I:1" alignment="I:1"><struct-ref ref="0x40b92da8"/></type-tag>
+      </field>
+    </union>
     <enum loc="8:/home/adrian/workspace/Network-TinyOS/pro1/src/protocol.h" ref="0x407127a8" defined="" size="I:4" alignment="I:4">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </enum>
-    <struct name="socketmap" loc="19:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/../dataStructures/socketHash.h" ref="0x40d598f8" defined="" size="I:302" alignment="I:2">
-      <field name="map" ref="0x40d58010" bit-offset="I:0" size="I:280">
+    <struct name="socketmap" loc="19:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/../dataStructures/socketHash.h" ref="0x40d5c0c0" defined="" size="I:302" alignment="I:2">
+      <field name="map" ref="0x40d5c770" bit-offset="I:0" size="I:280">
         <type-array elements="I:20" size="I:280" alignment="I:2">
-          <type-tag size="I:14" alignment="I:2"><struct-ref name="socketEntry" ref="0x40d59228"/>
-            <typename><typedef-ref name="socketEntry" ref="0x40d59718"/></typename>
+          <type-tag size="I:14" alignment="I:2"><struct-ref name="socketEntry" ref="0x40d5d9d8"/>
+            <typename><typedef-ref name="socketEntry" ref="0x40d5dec8"/></typename>
           </type-tag>
         </type-array>
       </field>
-      <field name="keys" ref="0x40d58070" bit-offset="I:2240" size="I:20">
+      <field name="keys" ref="0x40d5c7d0" bit-offset="I:2240" size="I:20">
         <type-array elements="I:20" size="I:20" alignment="I:1">
           <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
             <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
           </type-int>
         </type-array>
       </field>
-      <field name="numofVals" ref="0x40d580d0" bit-offset="I:2400" size="I:1">
+      <field name="numofVals" ref="0x40d5c830" bit-offset="I:2400" size="I:1">
         <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
           <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
         </type-int>
       </field>
     </struct>
+    <enum loc="15:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/clientAL.h" ref="0x40decd90" defined="" size="I:4" alignment="I:4">
+      <type-int cname="int" size="I:4" alignment="I:4"></type-int>
+    </enum>
     <enum loc="12:/home/adrian/workspace/Network-TinyOS/pro1/src/command.h" ref="0x40a0f870" defined="" size="I:4" alignment="I:4">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </enum>
@@ -8076,9 +8076,6 @@
         <type-int cname="long" size="I:4" alignment="I:4"></type-int>
       </field>
     </union>
-    <enum loc="15:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverWorkerList.h" ref="0x40e1d110" defined="" size="I:4" alignment="I:4">
-      <type-int cname="int" size="I:4" alignment="I:4"></type-int>
-    </enum>
     <struct name="iterator" loc="10:/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/iterator.h" ref="0x409f7250" defined="" size="I:24" alignment="I:2">
       <field name="values" ref="0x409f7870" bit-offset="I:0" size="I:20">
         <type-array elements="I:20" size="I:20" alignment="I:1">
@@ -8105,6 +8102,9 @@
         </type-int>
       </field>
     </struct>
+    <enum loc="15:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverWorkerList.h" ref="0x40e21b98" defined="" size="I:4" alignment="I:4">
+      <type-int cname="int" size="I:4" alignment="I:4"></type-int>
+    </enum>
     <enum loc="22:/home/adrian/workspace/Network-TinyOS/pro1/src/transport.h" ref="0x40a62788" defined="" size="I:4" alignment="I:4">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </enum>
@@ -8352,9 +8352,6 @@
         </type-pointer>
       </field>
     </attribute>
-    <enum loc="15:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/clientAL.h" ref="0x40d3fd10" defined="" size="I:4" alignment="I:4">
-      <type-int cname="int" size="I:4" alignment="I:4"></type-int>
-    </enum>
     <union loc="167:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128Timer.h" ref="0x40b8c3f0" defined="" size="I:1" alignment="I:1">
       <field name="flat" ref="0x40b8c500" bit-offset="I:0" size="I:1">
         <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
@@ -8390,6 +8387,9 @@
         <type-tag size="I:1" alignment="I:1"><struct-ref ref="0x40b8eb28"/></type-tag>
       </field>
     </union>
+    <enum loc="19:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverAL.h" ref="0x40e22260" defined="" size="I:4" alignment="I:4">
+      <type-int cname="int" size="I:4" alignment="I:4"></type-int>
+    </enum>
     <nx_struct name="message_t" loc="14:/home/adrian/local/tinyos-2.1.1/tos/types/message.h" ref="0x406f3838" defined="" size="I:41" alignment="I:1">
       <field name="header" ref="0x406f2428" bit-offset="I:0" size="I:7">
         <type-array elements="I:7" size="I:7" alignment="I:1">
@@ -8608,6 +8608,9 @@
         <type-int cname="unsigned int" unsigned="" size="I:4" alignment="I:4"></type-int>
       </field>
     </struct>
+    <enum loc="10:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/../dataStructures/socketHash.h" ref="0x40d5d5f0" defined="" size="I:4" alignment="I:4">
+      <type-int cname="int" size="I:4" alignment="I:4"></type-int>
+    </enum>
     <attribute name="atomic_hwevent"  loc="NONE" ref="0x400335b8" size="V:" alignment="V:">
     </attribute>
     <attribute name="dmemcpy" loc="16:/usr/lib/ncc/deputy_nodeputy.h" ref="0x40213a18" defined="" size="I:12" alignment="I:4">
@@ -8717,15 +8720,15 @@
         </type-pointer>
       </field>
     </struct>
+    <enum loc="71:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc" ref="0x40caf858" defined="" scoped="" size="U:" alignment="U:">
+      <component-ref qname="VirtualizeTimerC"/>
+      <type-int cname="unknown int" size="U:" alignment="U:"></type-int>
+    </enum>
     <enum loc="74:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/AlarmToTimerC.nc" ref="0x40b72a80" defined="" scoped="" size="U:" alignment="U:">
       <component-ref qname="AlarmToTimerC"/>
       <type-int cname="unknown int" size="U:" alignment="U:"></type-int>
     </enum>
-    <enum loc="71:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc" ref="0x40cae858" defined="" scoped="" size="U:" alignment="U:">
-      <component-ref qname="VirtualizeTimerC"/>
-      <type-int cname="unknown int" size="U:" alignment="U:"></type-int>
-    </enum>
-    <enum loc="44:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128AlarmAsyncP.nc" ref="0x40bc71f8" defined="" scoped="" size="I:4" alignment="I:4">
+    <enum loc="44:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128AlarmAsyncP.nc" ref="0x40bc61f8" defined="" scoped="" size="I:4" alignment="I:4">
       <component-ref qname="Atm128AlarmAsyncP"/>
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </enum>
@@ -8761,17 +8764,17 @@
       <component-ref qname="VirtualizeTimerC"/>
       <type-int cname="unknown int" size="U:" alignment="U:"></type-int>
     </enum>
-    <enum loc="126:/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc" ref="0x40d22e08" defined="" scoped="" size="U:" alignment="U:">
-      <component-ref qname="AMQueueImplP"/>
-      <type-int cname="unknown int" size="U:" alignment="U:"></type-int>
-    </enum>
-    <enum loc="169:/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc" ref="0x40d224f0" defined="" scoped="" size="U:" alignment="U:">
+    <enum loc="169:/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc" ref="0x40d234f0" defined="" scoped="" size="U:" alignment="U:">
       <component-ref qname="AMQueueImplP"/>
       <type-int cname="unknown int" size="U:" alignment="U:"></type-int>
     </enum>
     <enum loc="47:/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueP.nc" ref="0x40cf8940" defined="" scoped="" size="I:4" alignment="I:4">
       <component-ref qname="AMQueueP"/>
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
+    </enum>
+    <enum loc="126:/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc" ref="0x40d23e08" defined="" scoped="" size="U:" alignment="U:">
+      <component-ref qname="AMQueueImplP"/>
+      <type-int cname="unknown int" size="U:" alignment="U:"></type-int>
     </enum>
     <struct loc="55:/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc" ref="0x40d1e7a0" defined="" scoped="" size="I:4" alignment="I:4">
       <component-ref qname="AMQueueImplP"/>
@@ -9248,13 +9251,13 @@
         <typename><typedef-ref name="bool" ref="0x40522710"/></typename>
       </type-int>
     </variable>
-    <variable name="pings" ref="0x40aa24f8" loc="58:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
+    <variable name="pings" ref="0x40aa5158" loc="58:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
       <component-ref qname="Node"/>
       <type-tag size="I:844" alignment="I:4"><struct-ref name="pingList" ref="0x40a3e4c0"/>
         <typename><typedef-ref name="pingList" ref="0x40a3ea68"/></typename>
       </type-tag>
     </variable>
-    <variable name="recieveLsp" ref="0x40ac4aa8" loc="71:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
+    <variable name="recieveLsp" ref="0x40ac4760" loc="71:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
       <component-ref qname="Node"/>
       <type-array elements="I:5" size="I:25" alignment="I:1">
         <type-array elements="I:5" size="I:5" alignment="I:1">
@@ -9264,19 +9267,19 @@
         </type-array>
       </type-array>
     </variable>
-    <variable name="packBuffer" ref="0x40aa6d50" loc="54:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
+    <variable name="packBuffer" ref="0x40aa6a18" loc="54:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
       <component-ref qname="Node"/>
       <type-tag size="I:4098" alignment="I:2"><struct-ref name="sendBuffer" ref="0x40a29310"/>
         <typename><typedef-ref name="sendBuffer" ref="0x40a29918"/></typename>
       </type-tag>
     </variable>
-    <variable name="sequenceNum" ref="0x40aa6380" loc="50:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
+    <variable name="sequenceNum" ref="0x40aa6048" loc="50:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
       <component-ref qname="Node"/>
       <type-int cname="unsigned short" unsigned="" size="I:2" alignment="I:2">
         <typename><typedef-ref name="uint16_t" ref="0x40219490"/></typename>
       </type-int>
     </variable>
-    <variable name="trans" ref="0x40aa1eb8" loc="68:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
+    <variable name="trans" ref="0x40aa1b00" loc="68:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
       <component-ref qname="Node"/>
       <type-array elements="I:5" size="I:5" alignment="I:1">
         <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
@@ -9284,41 +9287,49 @@
         </type-int>
       </type-array>
     </variable>
-    <variable name="sendPackage" ref="0x40aa6af8" loc="53:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
+    <variable name="sendPackage" ref="0x40aa67c0" loc="53:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
       <component-ref qname="Node"/>
       <type-tag size="I:28" alignment="I:1"><nx_struct-ref name="pack" ref="0x4072fa48"/>
         <typename><typedef-ref name="pack" ref="0x40744750"/></typename>
       </type-tag>
     </variable>
-    <variable name="pkt" ref="0x40aa68d0" loc="52:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
+    <variable name="pkt" ref="0x40aa6598" loc="52:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
       <component-ref qname="Node"/>
       <type-tag size="I:41" alignment="I:1"><nx_struct-ref name="message_t" ref="0x406f3838"/>
         <typename><typedef-ref name="message_t" ref="0x406f2600"/></typename>
       </type-tag>
     </variable>
-    <variable name="Received" ref="0x40aa2010" loc="55:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
+    <variable name="Received" ref="0x40aa6c40" loc="55:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
       <component-ref qname="Node"/>
       <type-tag size="I:61" alignment="I:1"><struct-ref name="arrlist" ref="0x40a1c758"/>
         <typename><typedef-ref name="arrlist" ref="0x40a1ccf0"/></typename>
       </type-tag>
     </variable>
-    <variable name="tcp" ref="0x40ac4358" loc="69:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
+    <variable name="tcp" ref="0x40ac4010" loc="69:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
       <component-ref qname="Node"/>
       <type-int cname="char" size="I:1" alignment="I:1"></type-int>
     </variable>
-    <variable name="Neighbors" ref="0x40aa2e50" loc="65:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
+    <variable name="Neighbors" ref="0x40aa5ab0" loc="65:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
       <component-ref qname="Node"/>
       <type-tag size="I:102" alignment="I:2"><struct-ref name="hashmap" ref="0x409f0b20"/>
         <typename><typedef-ref name="hashmap" ref="0x409ef3b8"/></typename>
       </type-tag>
     </variable>
-    <variable name="helloCount" ref="0x40aa2c20" loc="64:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
+    <variable name="tentList" ref="0x40ac3010" loc="73:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
+      <component-ref qname="Node"/>
+      <type-array elements="I:5" size="I:60" alignment="I:4">
+        <type-tag size="I:12" alignment="I:4"><struct-ref name="routingEntry2" ref="0x40a6b2c0"/>
+          <typename><typedef-ref name="Route" ref="0x40a6bbb8"/></typename>
+        </type-tag>
+      </type-array>
+    </variable>
+    <variable name="helloCount" ref="0x40aa5880" loc="64:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
       <component-ref qname="Node"/>
       <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
         <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
       </type-int>
     </variable>
-    <variable name="tentList" ref="0x40ac3310" loc="73:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
+    <variable name="confirmList" ref="0x40ac4d50" loc="73:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
       <component-ref qname="Node"/>
       <type-array elements="I:5" size="I:60" alignment="I:4">
         <type-tag size="I:12" alignment="I:4"><struct-ref name="routingEntry2" ref="0x40a6b2c0"/>
@@ -9326,15 +9337,7 @@
         </type-tag>
       </type-array>
     </variable>
-    <variable name="confirmList" ref="0x40ac30b8" loc="73:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
-      <component-ref qname="Node"/>
-      <type-array elements="I:5" size="I:60" alignment="I:4">
-        <type-tag size="I:12" alignment="I:4"><struct-ref name="routingEntry2" ref="0x40a6b2c0"/>
-          <typename><typedef-ref name="Route" ref="0x40a6bbb8"/></typename>
-        </type-tag>
-      </type-array>
-    </variable>
-    <variable name="recieveSeq" ref="0x40ac4da0" loc="72:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
+    <variable name="recieveSeq" ref="0x40ac4a58" loc="72:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
       <component-ref qname="Node"/>
       <type-array elements="I:5" size="I:5" alignment="I:1">
         <type-int cname="signed char" size="I:1" alignment="I:1">
@@ -9342,7 +9345,7 @@
         </type-int>
       </type-array>
     </variable>
-    <variable name="sendLsp" ref="0x40ac46e0" loc="70:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
+    <variable name="sendLsp" ref="0x40ac4398" loc="70:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
       <component-ref qname="Node"/>
       <type-array elements="I:5" size="I:5" alignment="I:1">
         <type-tag size="I:1" alignment="I:1"><struct-ref name="lspList" ref="0x40a6bd80"/>
@@ -9350,7 +9353,7 @@
         </type-tag>
       </type-array>
     </variable>
-    <variable name="helloMessage" ref="0x40aa1958" loc="67:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
+    <variable name="helloMessage" ref="0x40aa15a0" loc="67:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
       <component-ref qname="Node"/>
       <type-array elements="I:20" size="I:20" alignment="I:1">
         <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
@@ -9358,19 +9361,19 @@
         </type-int>
       </type-array>
     </variable>
-    <variable name="busy" ref="0x40aa6610" loc="51:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
+    <variable name="busy" ref="0x40aa62d8" loc="51:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
       <component-ref qname="Node"/>
       <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
         <typename><typedef-ref name="bool" ref="0x40522710"/></typename>
       </type-int>
     </variable>
-    <variable name="isActive" ref="0x40aa2220" loc="56:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
+    <variable name="isActive" ref="0x40aa6e50" loc="56:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
       <component-ref qname="Node"/>
       <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
         <typename><typedef-ref name="bool" ref="0x40522710"/></typename>
       </type-int>
     </variable>
-    <variable name="transportPckt" ref="0x40aa2778" loc="62:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
+    <variable name="transportPckt" ref="0x40aa53d8" loc="62:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
       <documentation loc="59:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
         <short>&#10; Adrian's Variable&#10;</short>
       </documentation>
@@ -9379,7 +9382,7 @@
         <typename><typedef-ref name="transport" ref="0x40a60a58"/></typename>
       </type-tag>
     </variable>
-    <variable name="broadcastMessage" ref="0x40aa1268" loc="66:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
+    <variable name="broadcastMessage" ref="0x40aa5e80" loc="66:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
       <component-ref qname="Node"/>
       <type-array elements="I:20" size="I:20" alignment="I:1">
         <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
@@ -9387,7 +9390,7 @@
         </type-int>
       </type-array>
     </variable>
-    <variable name="neighborCount" ref="0x40aa29e8" loc="63:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
+    <variable name="neighborCount" ref="0x40aa5648" loc="63:/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc">
       <component-ref qname="Node"/>
       <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
         <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
@@ -9399,25 +9402,25 @@
         <typename><typedef-ref name="uint32_t" ref="0x402196b0"/></typename>
       </type-int>
     </variable>
-    <variable name="base" ref="0x40bc70b8" loc="40:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128AlarmAsyncP.nc">
+    <variable name="base" ref="0x40bc60b8" loc="40:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128AlarmAsyncP.nc">
       <component-ref qname="Atm128AlarmAsyncP"/>
       <type-int cname="unsigned int" unsigned="" size="I:4" alignment="I:4">
         <typename><typedef-ref name="uint32_t" ref="0x402196b0"/></typename>
       </type-int>
     </variable>
-    <variable name="t0" ref="0x40bc3d20" loc="39:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128AlarmAsyncP.nc">
+    <variable name="t0" ref="0x40bc4d20" loc="39:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128AlarmAsyncP.nc">
       <component-ref qname="Atm128AlarmAsyncP"/>
       <type-int cname="unsigned int" unsigned="" size="I:4" alignment="I:4">
         <typename><typedef-ref name="uint32_t" ref="0x402196b0"/></typename>
       </type-int>
     </variable>
-    <variable name="set" ref="0x40bc3b28" loc="38:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128AlarmAsyncP.nc">
+    <variable name="set" ref="0x40bc4b28" loc="38:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128AlarmAsyncP.nc">
       <component-ref qname="Atm128AlarmAsyncP"/>
       <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
         <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
       </type-int>
     </variable>
-    <variable name="dt" ref="0x40bc3e70" loc="39:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128AlarmAsyncP.nc">
+    <variable name="dt" ref="0x40bc4e70" loc="39:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128AlarmAsyncP.nc">
       <component-ref qname="Atm128AlarmAsyncP"/>
       <type-int cname="unsigned int" unsigned="" size="I:4" alignment="I:4">
         <typename><typedef-ref name="uint32_t" ref="0x402196b0"/></typename>
@@ -9479,13 +9482,13 @@
         <typename><typedef-ref name="bool" ref="0x40522710"/></typename>
       </type-int>
     </variable>
-    <variable name="m_timers_changed" ref="0x40ca4270" loc="69:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc">
+    <variable name="m_timers_changed" ref="0x40ca5270" loc="69:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc">
       <component-ref qname="VirtualizeTimerC"/>
       <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
         <typename><typedef-ref name="bool" ref="0x40522710"/></typename>
       </type-int>
     </variable>
-    <variable name="m_timers" ref="0x40ca4010" loc="68:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc">
+    <variable name="m_timers" ref="0x40ca5010" loc="68:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc">
       <component-ref qname="VirtualizeTimerC"/>
       <type-array elements="U:" size="U:" alignment="I:4">
         <type-tag size="I:12" alignment="I:4"><struct-ref scoped="" ref="0x40ca6940"/>
@@ -9515,7 +9518,7 @@
         </type-int>
       </type-array>
     </variable>
-    <variable name="activeSockets" ref="0x40d93eb8" loc="16:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc">
+    <variable name="activeSockets" ref="0x40d96758" loc="16:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc">
       <component-ref qname="TCPManagerC"/>
       <type-array elements="I:255" size="I:2805" alignment="I:1">
         <type-tag size="I:11" alignment="I:1"><struct-ref name="TCPSocketAL" ref="0x40a6edd0"/>
@@ -9523,13 +9526,13 @@
         </type-tag>
       </type-array>
     </variable>
-    <variable name="index" ref="0x40d92640" loc="20:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc">
+    <variable name="index" ref="0x40d96ea8" loc="20:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc">
       <component-ref qname="TCPManagerC"/>
       <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
         <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
       </type-int>
     </variable>
-    <variable name="newSocket" ref="0x40d921f0" loc="18:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc">
+    <variable name="newSocket" ref="0x40d96a58" loc="18:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc">
       <component-ref qname="TCPManagerC"/>
       <type-array elements="I:6" size="I:66" alignment="I:1">
         <type-tag size="I:11" alignment="I:1"><struct-ref name="TCPSocketAL" ref="0x40a6edd0"/>
@@ -9537,13 +9540,13 @@
         </type-tag>
       </type-array>
     </variable>
-    <variable name="uniqueID" ref="0x40d92428" loc="20:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc">
+    <variable name="uniqueID" ref="0x40d96c90" loc="20:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc">
       <component-ref qname="TCPManagerC"/>
       <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
         <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
       </type-int>
     </variable>
-    <variable name="trans" ref="0x40d989e0" loc="15:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc">
+    <variable name="trans" ref="0x40d9b2c8" loc="15:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc">
       <component-ref qname="TCPSocketC"/>
       <type-array elements="I:5" size="I:5" alignment="I:1">
         <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
@@ -9551,25 +9554,25 @@
         </type-int>
       </type-array>
     </variable>
-    <variable name="fairCount" ref="0x40dc7660" loc="17:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc">
+    <variable name="fairCount" ref="0x40d9bee8" loc="17:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc">
       <component-ref qname="TCPSocketC"/>
       <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
         <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
       </type-int>
     </variable>
-    <variable name="max" ref="0x40dc7200" loc="17:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc">
+    <variable name="max" ref="0x40d9ba88" loc="17:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc">
       <component-ref qname="TCPSocketC"/>
       <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
         <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
       </type-int>
     </variable>
-    <variable name="inital" ref="0x40dc7420" loc="17:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc">
+    <variable name="inital" ref="0x40d9bca8" loc="17:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc">
       <component-ref qname="TCPSocketC"/>
       <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
         <typename><typedef-ref name="uint8_t" ref="0x40219250"/></typename>
       </type-int>
     </variable>
-    <variable name="incomingConnections" ref="0x40dc7010" loc="16:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc">
+    <variable name="incomingConnections" ref="0x40d9b898" loc="16:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc">
       <component-ref qname="TCPSocketC"/>
       <type-array elements="I:5" size="I:200" alignment="I:1">
         <type-tag size="I:40" alignment="I:1"><struct-ref name="incomingConnect" ref="0x40a6c460"/>
@@ -9577,22 +9580,22 @@
         </type-tag>
       </type-array>
     </variable>
-    <variable name="mClient" ref="0x40e099a0" loc="31:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/clientC.nc">
+    <variable name="mClient" ref="0x40e0ca80" loc="31:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/clientC.nc">
       <component-ref qname="clientC"/>
-      <type-tag size="I:76" alignment="I:4"><struct-ref name="clientAL" ref="0x40de7380"/>
-        <typename><typedef-ref name="clientAL" ref="0x40de7ee8"/></typename>
+      <type-tag size="I:76" alignment="I:4"><struct-ref name="clientAL" ref="0x40deb458"/>
+        <typename><typedef-ref name="clientAL" ref="0x40de9010"/></typename>
       </type-tag>
     </variable>
-    <variable name="workers" ref="0x40e2f010" loc="31:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/serverC.nc">
+    <variable name="workers" ref="0x40e35bd0" loc="31:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/serverC.nc">
       <component-ref qname="serverC"/>
-      <type-tag size="I:684" alignment="I:4"><struct-ref name="serverWorkerList" ref="0x40e1d5a8"/>
-        <typename><typedef-ref name="serverWorkerList" ref="0x40e1dc98"/></typename>
+      <type-tag size="I:684" alignment="I:4"><struct-ref name="serverWorkerList" ref="0x40e20060"/>
+        <typename><typedef-ref name="serverWorkerList" ref="0x40e20750"/></typename>
       </type-tag>
     </variable>
-    <variable name="mServer" ref="0x40e31d38" loc="30:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/serverC.nc">
+    <variable name="mServer" ref="0x40e35958" loc="30:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/serverC.nc">
       <component-ref qname="serverC"/>
-      <type-tag size="I:8" alignment="I:4"><struct-ref name="serverAL" ref="0x40da0238"/>
-        <typename><typedef-ref name="serverAL" ref="0x40da07a0"/></typename>
+      <type-tag size="I:8" alignment="I:4"><struct-ref name="serverAL" ref="0x40d40238"/>
+        <typename><typedef-ref name="serverAL" ref="0x40e22010"/></typename>
       </type-tag>
     </variable>
   </variables>
@@ -9825,7 +9828,7 @@
     <constant cst="I:6" name="DDA6" ref="0x4077b8b0" loc="1112:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/sim/atm128_sim.h">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
-    <constant cst="I:1" name="ATM128_CLK8_NORMAL" ref="0x40b75d10" loc="54:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128Timer.h">
+    <constant cst="I:1" name="ATM128_CLK8_NORMAL" ref="0x40b76d10" loc="54:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128Timer.h">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
     <constant cst="I:3" name="ATM128_COMPARE_SET" ref="0x40b6eec0" loc="94:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128Timer.h">
@@ -9855,7 +9858,7 @@
     <constant cst="I:55" name="ATM128_TIMSK" ref="0x4074fbb8" loc="182:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/sim/atm128_sim.h">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
-    <constant cst="I:64" name="CLIENTAL_BUFFER_SIZE" ref="0x40de71a8" loc="17:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/clientAL.h">
+    <constant cst="I:64" name="CLIENTAL_BUFFER_SIZE" ref="0x40deb280" loc="17:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/clientAL.h">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
     <constant cst="I:46" name="ATM128_TCCR1B" ref="0x40750668" loc="154:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/sim/atm128_sim.h">
@@ -9898,6 +9901,9 @@
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
     <constant cst="I:30" name="ATM128_ADC_SNGL_1_23" ref="0x407a0ad8" loc="89:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/adc/Atm128Adc.h">
+      <type-int cname="int" size="I:4" alignment="I:4"></type-int>
+    </constant>
+    <constant cst="I:255" name="MAX_PORTS" ref="0x40d3f010" loc="6:/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/socketList.h">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
     <constant cst="I:2" name="ATM128_WAVE8_CTC" ref="0x40b6e2e0" loc="85:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128Timer.h">
@@ -10557,7 +10563,7 @@
     <constant cst="I:4" name="MUX4" ref="0x4077c038" loc="1094:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/sim/atm128_sim.h">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
-    <constant cst="I:500" name="CLIENT_TIMER_PERIOD" ref="0x40d3ff20" loc="16:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/clientAL.h">
+    <constant cst="I:500" name="CLIENT_TIMER_PERIOD" ref="0x40deb010" loc="16:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/clientAL.h">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
     <constant cst="I:2" name="ATM128_POWER_EXT_STANDBY" ref="0x407a6cd0" loc="129:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/sim/atm128hardware.h">
@@ -10806,7 +10812,7 @@
     <constant cst="I:2" name="_POSIX_" ref="0x404af190" loc="301:/usr/include/math.h">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
-    <constant cst="I:533" name="WORKER_TIMER_PERIOD" ref="0x40e1eb88" loc="32:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverAL.h">
+    <constant cst="I:533" name="WORKER_TIMER_PERIOD" ref="0x40e21678" loc="32:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverAL.h">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
     <constant cst="I:11" name="CLIENT_CMD_LENGTH" ref="0x40a0d250" loc="27:/home/adrian/workspace/Network-TinyOS/pro1/src/command.h">
@@ -10971,19 +10977,19 @@
     <constant cst="I:6" name="PA6" ref="0x4077caa8" loc="1102:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/sim/atm128_sim.h">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
-    <constant cst="I:20" name="MAX_CONNECTIONS" ref="0x40d59038" loc="11:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/../dataStructures/socketHash.h">
+    <constant cst="I:20" name="MAX_CONNECTIONS" ref="0x40d5d7e8" loc="11:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/../dataStructures/socketHash.h">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
     <constant cst="I:69" name="SERIAL_PROTO_PACKET_NOACK" ref="0x406e5b70" loc="105:/home/adrian/local/tinyos-2.1.1/tos/lib/serial/Serial.h">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
-    <constant cst="I:5" name="SERVER_WORKER_LIST_MAX_SIZE" ref="0x40e1d380" loc="16:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverWorkerList.h">
+    <constant cst="I:5" name="SERVER_WORKER_LIST_MAX_SIZE" ref="0x40e21e08" loc="16:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverWorkerList.h">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
     <constant cst="I:7" name="CHANNEL_BATTERY" ref="0x407b1c58" loc="57:/home/adrian/local/tinyos-2.1.1/tos/platforms/micaz/sim/platform_hardware.h">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
-    <constant cst="I:500" name="SERVER_TIMER_PERIOD" ref="0x40e1e928" loc="31:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverAL.h">
+    <constant cst="I:500" name="SERVER_TIMER_PERIOD" ref="0x40e21418" loc="31:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverAL.h">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
     <constant cst="I:2" name="DDA2" ref="0x4077a010" loc="1116:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/sim/atm128_sim.h">
@@ -11856,7 +11862,7 @@
     <constant cst="I:0" name="IVCE" ref="0x407687b8" loc="823:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/sim/atm128_sim.h">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
-    <constant cst="I:128" name="SERVER_WORKER_BUFFER_SIZE" ref="0x40e1f9d0" loc="20:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverAL.h">
+    <constant cst="I:128" name="SERVER_WORKER_BUFFER_SIZE" ref="0x40e224c0" loc="20:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverAL.h">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
     <constant cst="I:131" name="ATM128_OCR3CH" ref="0x4074a440" loc="274:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/sim/atm128_sim.h">
@@ -11913,7 +11919,7 @@
     <constant cst="I:5" name="COM21" ref="0x40765438" loc="856:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/sim/atm128_sim.h">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
-    <constant cst="I:7" name="BYTES_TO_SEND" ref="0x40de6388" loc="15:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/clientC.nc">
+    <constant cst="I:7" name="BYTES_TO_SEND" ref="0x40de9468" loc="15:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/clientC.nc">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
     <constant cst="I:9" name="EALREADY" ref="0x40681108" loc="61:/home/adrian/local/tinyos-2.1.1/tos/types/TinyError.h">
@@ -11982,7 +11988,7 @@
     <constant cst="I:6" name="FOCB" ref="0x407759d0" loc="928:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/sim/atm128_sim.h">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
-    <constant cst="I:0" name="ATM128_CLK8_OFF" ref="0x40b75ac8" loc="53:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128Timer.h">
+    <constant cst="I:0" name="ATM128_CLK8_OFF" ref="0x40b76ac8" loc="53:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128Timer.h">
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
     <constant cst="I:1" name="TOS_AM_ADDRESS" ref="0x406e9ed0" loc="28:/home/adrian/local/tinyos-2.1.1/tos/types/AM.h">
@@ -12147,11 +12153,11 @@
       <component-ref qname="Node"/>
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
-    <constant cst="I:2" name="MINDT" ref="0x40bc7380" loc="45:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128AlarmAsyncP.nc">
+    <constant cst="I:2" name="MINDT" ref="0x40bc6380" loc="45:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128AlarmAsyncP.nc">
       <component-ref qname="Atm128AlarmAsyncP"/>
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
-    <constant cst="I:230" name="MAXT" ref="0x40bc7550" loc="46:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128AlarmAsyncP.nc">
+    <constant cst="I:230" name="MAXT" ref="0x40bc6550" loc="46:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128AlarmAsyncP.nc">
       <component-ref qname="Atm128AlarmAsyncP"/>
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
@@ -12163,7 +12169,7 @@
       <component-ref qname="VirtualizeTimerC"/>
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
-    <constant cst="U:" name="updateFromTimer" ref="0x40cae748" loc="71:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc">
+    <constant cst="U:" name="updateFromTimer" ref="0x40caf748" loc="71:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc">
       <component-ref qname="VirtualizeTimerC"/>
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
@@ -12175,11 +12181,11 @@
       <component-ref qname="AMQueueP"/>
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
-    <constant cst="U:" name="errorTask" ref="0x40d223e0" loc="169:/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc">
+    <constant cst="U:" name="errorTask" ref="0x40d233e0" loc="169:/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc">
       <component-ref qname="AMQueueImplP"/>
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
-    <constant cst="U:" name="CancelTask" ref="0x40d22cf8" loc="126:/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc">
+    <constant cst="U:" name="CancelTask" ref="0x40d23cf8" loc="126:/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc">
       <component-ref qname="AMQueueImplP"/>
       <type-int cname="int" size="I:4" alignment="I:4"></type-int>
     </constant>
@@ -12371,9 +12377,9 @@
         <typename><typedef-ref name="hashmapEntry" ref="0x409f0958"/></typename>
       </type-tag>
     </typedef>
-    <typedef name="serverWorkerList" ref="0x40e1dc98" loc="22:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverWorkerList.h">
-      <type-tag size="I:684" alignment="I:4"><struct-ref name="serverWorkerList" ref="0x40e1d5a8"/>
-        <typename><typedef-ref name="serverWorkerList" ref="0x40e1dc98"/></typename>
+    <typedef name="serverWorkerList" ref="0x40e20750" loc="22:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverWorkerList.h">
+      <type-tag size="I:684" alignment="I:4"><struct-ref name="serverWorkerList" ref="0x40e20060"/>
+        <typename><typedef-ref name="serverWorkerList" ref="0x40e20750"/></typename>
       </type-tag>
     </typedef>
     <typedef name="nlink_t" ref="0x403554a0" loc="76:/usr/include/i386-linux-gnu/sys/types.h">
@@ -12386,9 +12392,9 @@
         <typename><typedef-ref name="clock_t" ref="0x40359988"/></typename>
       </type-int>
     </typedef>
-    <typedef name="socketEntry" ref="0x40d59718" loc="17:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/../dataStructures/socketHash.h">
-      <type-tag size="I:14" alignment="I:2"><struct-ref name="socketEntry" ref="0x40d59228"/>
-        <typename><typedef-ref name="socketEntry" ref="0x40d59718"/></typename>
+    <typedef name="socketEntry" ref="0x40d5dec8" loc="17:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/../dataStructures/socketHash.h">
+      <type-tag size="I:14" alignment="I:2"><struct-ref name="socketEntry" ref="0x40d5d9d8"/>
+        <typename><typedef-ref name="socketEntry" ref="0x40d5dec8"/></typename>
       </type-tag>
     </typedef>
     <typedef name="Atm128_OCR1BH_t" ref="0x40b81100" loc="277:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128Timer.h">
@@ -12505,13 +12511,13 @@
         <typename><typedef-ref name="__u_int" ref="0x40346338"/></typename>
       </type-int>
     </typedef>
-    <typedef name="sockType" ref="0x40d5abc0" loc="8:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/../dataStructures/socketHash.h">
+    <typedef name="sockType" ref="0x40d5d3a0" loc="8:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/../dataStructures/socketHash.h">
       <documentation loc="1:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/TCPSocketAL.h">
         <short>&#10; ANDES Lab - University of California, Merced&#10; This class provides the basic functions of a network node.</short>
         <long>&#10; ANDES Lab - University of California, Merced&#10; This class provides the basic functions of a network node.&#10;&#10; @author UCM ANDES Lab&#10; @date   October 1 2012&#10; &#10;</long>
       </documentation>
       <type-tag size="I:11" alignment="I:1"><struct-ref name="TCPSocketAL" ref="0x40a6edd0"/>
-        <typename><typedef-ref name="sockType" ref="0x40d5abc0"/></typename>
+        <typename><typedef-ref name="sockType" ref="0x40d5d3a0"/></typename>
       </type-tag>
     </typedef>
     <typedef name="Atm128_TCNT2_t" ref="0x40b92048" loc="115:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128Timer.h">
@@ -12553,13 +12559,13 @@
         <typename><typedef-ref name="__daddr_t" ref="0x4034fcc0"/></typename>
       </type-int>
     </typedef>
-    <typedef name="serverAL" ref="0x40da07a0" loc="17:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverAL.h">
+    <typedef name="serverAL" ref="0x40e22010" loc="17:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverAL.h">
       <documentation loc="1:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/TCPSocketAL.h">
         <short>&#10; ANDES Lab - University of California, Merced&#10; This class provides the basic functions of a network node.</short>
         <long>&#10; ANDES Lab - University of California, Merced&#10; This class provides the basic functions of a network node.&#10;&#10; @author UCM ANDES Lab&#10; @date   October 1 2012&#10; &#10;</long>
       </documentation>
-      <type-tag size="I:8" alignment="I:4"><struct-ref name="serverAL" ref="0x40da0238"/>
-        <typename><typedef-ref name="serverAL" ref="0x40da07a0"/></typename>
+      <type-tag size="I:8" alignment="I:4"><struct-ref name="serverAL" ref="0x40d40238"/>
+        <typename><typedef-ref name="serverAL" ref="0x40e22010"/></typename>
       </type-tag>
     </typedef>
     <typedef name="__ino_t" ref="0x403496c0" loc="137:/usr/include/i386-linux-gnu/bits/types.h">
@@ -12654,13 +12660,13 @@
         <typename><typedef-ref name="fsid_t" ref="0x403566f8"/></typename>
       </type-tag>
     </typedef>
-    <typedef name="clientAL" ref="0x40de7ee8" loc="28:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/clientAL.h">
+    <typedef name="clientAL" ref="0x40de9010" loc="28:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/clientAL.h">
       <documentation loc="1:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/TCPSocketAL.h">
         <short>&#10; ANDES Lab - University of California, Merced&#10; This class provides the basic functions of a network node.</short>
         <long>&#10; ANDES Lab - University of California, Merced&#10; This class provides the basic functions of a network node.&#10;&#10; @author UCM ANDES Lab&#10; @date   October 1 2012&#10; &#10;</long>
       </documentation>
-      <type-tag size="I:76" alignment="I:4"><struct-ref name="clientAL" ref="0x40de7380"/>
-        <typename><typedef-ref name="clientAL" ref="0x40de7ee8"/></typename>
+      <type-tag size="I:76" alignment="I:4"><struct-ref name="clientAL" ref="0x40deb458"/>
+        <typename><typedef-ref name="clientAL" ref="0x40de9010"/></typename>
       </type-tag>
     </typedef>
     <typedef name="sim_packet_t" ref="0x406df5e0" loc="59:/home/adrian/local/tinyos-2.1.1/tos/lib/tossim/sim_packet.h">
@@ -12817,6 +12823,15 @@
         <typename><typedef-ref name="div_t" ref="0x40333dc8"/></typename>
       </type-tag>
     </typedef>
+    <typedef name="ports" ref="0x40d3f7b0" loc="13:/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/socketList.h">
+      <documentation loc="1:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/TCPSocketAL.h">
+        <short>&#10; ANDES Lab - University of California, Merced&#10; This class provides the basic functions of a network node.</short>
+        <long>&#10; ANDES Lab - University of California, Merced&#10; This class provides the basic functions of a network node.&#10;&#10; @author UCM ANDES Lab&#10; @date   October 1 2012&#10; &#10;</long>
+      </documentation>
+      <type-tag size="I:2806" alignment="I:1"><struct-ref name="ports" ref="0x40d3f1d8"/>
+        <typename><typedef-ref name="ports" ref="0x40d3f7b0"/></typename>
+      </type-tag>
+    </typedef>
     <typedef name="sim_gain_noise_t" ref="0x40617270" loc="6:/home/adrian/local/tinyos-2.1.1/tos/lib/tossim/sim_gain.c">
       <type-tag size="I:16" alignment="I:4"><struct-ref name="sim_gain_noise" ref="0x40618db8"/>
         <typename><typedef-ref name="sim_gain_noise_t" ref="0x40617270"/></typename>
@@ -12861,13 +12876,13 @@
         <typename><typedef-ref name="nx_am_id_t" ref="0x406eb8e0"/></typename>
       </type-int>
     </typedef>
-    <typedef name="workerType" ref="0x40e1ee58" loc="14:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverWorkerList.h">
+    <typedef name="workerType" ref="0x40e21948" loc="14:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverWorkerList.h">
       <documentation loc="1:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverAL.h">
         <short>&#10; ANDES Lab - University of California, Merced&#10; This class provides the basic functions of a network node.</short>
         <long>&#10; ANDES Lab - University of California, Merced&#10; This class provides the basic functions of a network node.&#10;&#10; @author UCM ANDES Lab&#10; @date   October 1 2012&#10; &#10;</long>
       </documentation>
-      <type-tag size="I:136" alignment="I:4"><struct-ref name="serverWorkerAL" ref="0x40e1fbe0"/>
-        <typename><typedef-ref name="workerType" ref="0x40e1ee58"/></typename>
+      <type-tag size="I:136" alignment="I:4"><struct-ref name="serverWorkerAL" ref="0x40e226d0"/>
+        <typename><typedef-ref name="workerType" ref="0x40e21948"/></typename>
       </type-tag>
     </typedef>
     <typedef name="message_header_t" ref="0x406f49c8" loc="53:/home/adrian/local/tinyos-2.1.1/tos/lib/tossim/platform_message.h">
@@ -13003,19 +13018,14 @@
         <typename><typedef-ref name="nxle_int32_t" ref="0x40305258"/></typename>
       </type-int>
     </typedef>
-    <typedef name="serverWorkerAL" ref="0x40e1e5d8" loc="28:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverAL.h">
-      <type-tag size="I:136" alignment="I:4"><struct-ref name="serverWorkerAL" ref="0x40e1fbe0"/>
-        <typename><typedef-ref name="serverWorkerAL" ref="0x40e1e5d8"/></typename>
+    <typedef name="serverWorkerAL" ref="0x40e210c8" loc="28:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverAL.h">
+      <type-tag size="I:136" alignment="I:4"><struct-ref name="serverWorkerAL" ref="0x40e226d0"/>
+        <typename><typedef-ref name="serverWorkerAL" ref="0x40e210c8"/></typename>
       </type-tag>
     </typedef>
     <typedef name="pack" ref="0x40744750" loc="27:/home/adrian/workspace/Network-TinyOS/pro1/src/packet.h">
       <type-tag size="I:28" alignment="I:1"><nx_struct-ref name="pack" ref="0x4072fa48"/>
         <typename><typedef-ref name="pack" ref="0x40744750"/></typename>
-      </type-tag>
-    </typedef>
-    <typedef name="arrlist1" ref="0x40d3e7d8" loc="13:/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/socketList.h">
-      <type-tag size="I:1101" alignment="I:1"><struct-ref name="arrlist1" ref="0x40d3e228"/>
-        <typename><typedef-ref name="arrlist1" ref="0x40d3e7d8"/></typename>
       </type-tag>
     </typedef>
     <typedef name="va_list" ref="0x404e3c70" loc="80:/usr/include/stdio.h">
@@ -13220,24 +13230,15 @@
         <typename><typedef-ref name="__useconds_t" ref="0x4034f828"/></typename>
       </type-int>
     </typedef>
-    <typedef name="Atm128Assr_t" ref="0x40b90428" loc="130:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128Timer.h">
-      <type-tag size="I:1" alignment="I:1"><union-ref ref="0x40b90200"/>
-        <typename><typedef-ref name="Atm128Assr_t" ref="0x40b90428"/></typename>
+    <typedef name="Atm128Assr_t" ref="0x40b91428" loc="130:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128Timer.h">
+      <type-tag size="I:1" alignment="I:1"><union-ref ref="0x40b91200"/>
+        <typename><typedef-ref name="Atm128Assr_t" ref="0x40b91428"/></typename>
       </type-tag>
     </typedef>
     <typedef name="Atm128_OCR3BL_t" ref="0x40b802f0" loc="286:/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128Timer.h">
       <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
         <typename><typedef-ref name="Atm128_OCR3BL_t" ref="0x40b802f0"/></typename>
       </type-int>
-    </typedef>
-    <typedef name="dataType5" ref="0x40d41f18" loc="5:/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/socketList.h">
-      <documentation loc="1:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/TCPSocketAL.h">
-        <short>&#10; ANDES Lab - University of California, Merced&#10; This class provides the basic functions of a network node.</short>
-        <long>&#10; ANDES Lab - University of California, Merced&#10; This class provides the basic functions of a network node.&#10;&#10; @author UCM ANDES Lab&#10; @date   October 1 2012&#10; &#10;</long>
-      </documentation>
-      <type-tag size="I:11" alignment="I:1"><struct-ref name="TCPSocketAL" ref="0x40a6edd0"/>
-        <typename><typedef-ref name="dataType5" ref="0x40d41f18"/></typename>
-      </type-tag>
     </typedef>
     <typedef name="__io_read_fn" ref="0x404d8cc8" loc="366:/usr/include/libio.h">
       <type-function size="I:1" alignment="I:1">
@@ -13457,9 +13458,9 @@
         <typename><typedef-ref name="Atm128TimerCtrlClock_t" ref="0x40b84858"/></typename>
       </type-tag>
     </typedef>
-    <typedef name="socketmap" ref="0x40d58188" loc="23:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/../dataStructures/socketHash.h">
-      <type-tag size="I:302" alignment="I:2"><struct-ref name="socketmap" ref="0x40d598f8"/>
-        <typename><typedef-ref name="socketmap" ref="0x40d58188"/></typename>
+    <typedef name="socketmap" ref="0x40d5c8e8" loc="23:/home/adrian/workspace/Network-TinyOS/pro1/src/lib/../dataStructures/socketHash.h">
+      <type-tag size="I:302" alignment="I:2"><struct-ref name="socketmap" ref="0x40d5c0c0"/>
+        <typename><typedef-ref name="socketmap" ref="0x40d5c8e8"/></typename>
       </type-tag>
     </typedef>
     <typedef name="__int8_t" ref="0x403467a8" loc="37:/usr/include/i386-linux-gnu/bits/types.h">
@@ -13887,7 +13888,7 @@
         <type-int cname="int" size="I:4" alignment="I:4"></type-int>
       </type-array>
     </typedef>
-    <typedef name="__nesc_sillytask_updateFromTimer" ref="0x40caea58" loc="71:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc">
+    <typedef name="__nesc_sillytask_updateFromTimer" ref="0x40cafa58" loc="71:/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc">
       <component-ref qname="VirtualizeTimerC"/>
       <type-array elements="U:" size="U:" alignment="I:4">
         <type-int cname="int" size="I:4" alignment="I:4"></type-int>
@@ -13905,13 +13906,13 @@
         <typename><typedef-ref name="queue_entry_t" scoped="" ref="0x40d1e968"/></typename>
       </type-tag>
     </typedef>
-    <typedef name="__nesc_sillytask_errorTask" ref="0x40d226e8" loc="169:/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc">
+    <typedef name="__nesc_sillytask_errorTask" ref="0x40d236e8" loc="169:/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc">
       <component-ref qname="AMQueueImplP"/>
       <type-array elements="U:" size="U:" alignment="I:4">
         <type-int cname="int" size="I:4" alignment="I:4"></type-int>
       </type-array>
     </typedef>
-    <typedef name="__nesc_sillytask_CancelTask" ref="0x40d21010" loc="126:/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc">
+    <typedef name="__nesc_sillytask_CancelTask" ref="0x40d22010" loc="126:/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc">
       <component-ref qname="AMQueueImplP"/>
       <type-array elements="U:" size="U:" alignment="I:4">
         <type-int cname="int" size="I:4" alignment="I:4"></type-int>

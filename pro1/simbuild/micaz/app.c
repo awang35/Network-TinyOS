@@ -4063,24 +4063,24 @@ typedef union __nesc_unnamed4336 {
   } bits;
 } Atm128_ETIFR_t;
 # 5 "/home/adrian/workspace/Network-TinyOS/pro1/src/dataStructures/socketList.h"
-typedef TCPSocketAL dataType5;
-
-
+enum __nesc_unnamed4338 {
+  MAX_PORTS = 255
+};
 
 
 
 
 
 #line 9
-typedef struct arrlist1 {
+typedef struct ports {
 
-  dataType5 values[100];
+  TCPSocketAL values[MAX_PORTS];
   uint8_t numValues;
-} arrlist1;
+} ports;
 # 8 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/../dataStructures/socketHash.h"
 typedef TCPSocketAL sockType;
 
-enum __nesc_unnamed4338 {
+enum __nesc_unnamed4339 {
   MAX_CONNECTIONS = 20
 };
 
@@ -4104,7 +4104,7 @@ typedef struct socketmap {
   uint8_t numofVals;
 } socketmap;
 # 15 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/clientAL.h"
-enum __nesc_unnamed4339 {
+enum __nesc_unnamed4340 {
   CLIENT_TIMER_PERIOD = 500, 
   CLIENTAL_BUFFER_SIZE = 64
 };
@@ -4127,7 +4127,7 @@ typedef struct clientAL {
   uint8_t buffer[CLIENTAL_BUFFER_SIZE];
 } clientAL;
 # 14 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/clientC.nc"
-enum __nesc_unnamed4340 {
+enum __nesc_unnamed4341 {
   BYTES_TO_SEND = 7
 };
 # 17 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverAL.h"
@@ -4137,7 +4137,7 @@ typedef struct serverAL {
   uint8_t numofWorkers;
 } serverAL;
 
-enum __nesc_unnamed4341 {
+enum __nesc_unnamed4342 {
   SERVER_WORKER_BUFFER_SIZE = 128
 };
 
@@ -4154,13 +4154,13 @@ typedef struct serverWorkerAL {
   uint8_t id;
 } serverWorkerAL;
 
-enum __nesc_unnamed4342 {
+enum __nesc_unnamed4343 {
   SERVER_TIMER_PERIOD = 500, 
   WORKER_TIMER_PERIOD = 533
 };
 # 14 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverWorkerList.h"
 typedef serverWorkerAL workerType;
-enum __nesc_unnamed4343 {
+enum __nesc_unnamed4344 {
   SERVER_WORKER_LIST_MAX_SIZE = 5
 };
 
@@ -4222,7 +4222,7 @@ typedef TMilli /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC$0$preci
 typedef /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC$0$precision_tag /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC$0$LocalTime$precision_tag;
 typedef /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC$0$precision_tag /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC$0$Counter$precision_tag;
 typedef uint32_t /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC$0$Counter$size_type;
-enum AMQueueP$__nesc_unnamed4344 {
+enum AMQueueP$__nesc_unnamed4345 {
   AMQueueP$NUM_CLIENTS = 1U
 };
 typedef TCPSocketAL TCPManagerC$TCPManager$val_t;
@@ -4579,15 +4579,15 @@ static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$TimerFrom$fire
 #line 136
 static uint32_t /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$getNow(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x40cac3a8);
+uint8_t arg_0x40cad3a8);
 # 83 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$default$fired(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x40cac3a8);
+uint8_t arg_0x40cad3a8);
 # 64 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$startPeriodic(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x40cac3a8, 
+uint8_t arg_0x40cad3a8, 
 # 64 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 uint32_t dt);
 
@@ -4600,7 +4600,7 @@ uint32_t dt);
 
 static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$startOneShot(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x40cac3a8, 
+uint8_t arg_0x40cad3a8, 
 # 73 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 uint32_t dt);
 
@@ -4609,7 +4609,7 @@ uint32_t dt);
 
 static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$stop(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x40cac3a8);
+uint8_t arg_0x40cad3a8);
 # 82 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Counter.nc"
 static void /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC$0$Counter$overflow(void );
 # 80 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/AMSend.nc"
@@ -4636,7 +4636,7 @@ error_t error);
 # 110 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/AMSend.nc"
 static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$AMSend$sendDone(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc"
-am_id_t arg_0x40d20730, 
+am_id_t arg_0x40d21730, 
 # 103 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/AMSend.nc"
 message_t * msg, 
 
@@ -4649,7 +4649,7 @@ error_t error);
 # 75 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc"
 static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$send(
 # 46 "/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc"
-uint8_t arg_0x40d23cb0, 
+uint8_t arg_0x40cf7cb0, 
 # 67 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc"
 message_t * msg, 
 
@@ -4663,7 +4663,7 @@ uint8_t len);
 #line 100
 static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$default$sendDone(
 # 46 "/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc"
-uint8_t arg_0x40d23cb0, 
+uint8_t arg_0x40cf7cb0, 
 # 96 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc"
 message_t * msg, 
 
@@ -4699,7 +4699,7 @@ static bool TCPSocketC$TCPSocket$isClosing(uint8_t port);
 #line 22
 static bool TCPSocketC$TCPSocket$isConnectPending(uint8_t port);
 #line 15
-static uint8_t TCPSocketC$TCPSocket$release(TCPSocketC$TCPSocket$val_t *input);
+static uint8_t TCPSocketC$TCPSocket$release(uint8_t port);
 
 static int16_t TCPSocketC$TCPSocket$read(uint8_t port, uint8_t *readBuffer, uint16_t pos, uint16_t len);
 #line 3
@@ -4727,7 +4727,7 @@ static uint8_t TCPSocketC$TCPSocket$accept(uint8_t srcPort, uint8_t newPort);
 
 static int16_t TCPSocketC$TCPSocket$write(uint8_t port, uint8_t *writeBuffer, uint16_t pos, uint16_t len);
 #line 13
-static uint8_t TCPSocketC$TCPSocket$close(TCPSocketC$TCPSocket$val_t *input);
+static uint8_t TCPSocketC$TCPSocket$close(uint8_t port);
 
 
 
@@ -4741,16 +4741,16 @@ static bool TCPSocketC$TCPSocket$isConnected(uint8_t port);
 # 83 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 static void clientC$ClientTimer$fired(void );
 # 2 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/client.nc"
-static void clientC$client$init(clientC$client$val_t *arg_0x40aa4010);
+static void clientC$client$init(clientC$client$val_t *arg_0x40aa8d70);
 # 83 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 static void serverC$ServerTimer$fired(void );
 # 2 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/serverWorker.nc"
-static void serverC$serverWorker$init(serverC$serverWorker$val_t *arg_0x40e302b8, serverC$serverWorker$val2_t *arg_0x40e30470);
-static void serverC$serverWorker$execute(serverC$serverWorker$val_t *arg_0x40e30950);
+static void serverC$serverWorker$init(serverC$serverWorker$val_t *arg_0x40e37e18, serverC$serverWorker$val2_t *arg_0x40e33010);
+static void serverC$serverWorker$execute(serverC$serverWorker$val_t *arg_0x40e334f0);
 # 83 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 static void serverC$WorkerTimer$fired(void );
 # 2 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/server.nc"
-static void serverC$server$init(serverC$server$val_t *arg_0x40aa3450);
+static void serverC$server$init(serverC$server$val_t *arg_0x40aa3120);
 # 62 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Init.nc"
 static error_t PlatformP$MoteInit$init(void );
 #line 62
@@ -4799,7 +4799,7 @@ uint8_t arg_0x407111b8);
 
 
 
-enum SimSchedulerBasicP$__nesc_unnamed4345 {
+enum SimSchedulerBasicP$__nesc_unnamed4346 {
 
   SimSchedulerBasicP$NUM_TASKS = 8U, 
   SimSchedulerBasicP$NO_TASK = 255
@@ -5136,7 +5136,7 @@ double reverseGain);
 static bool TossimPacketModelC$GainRadioModel$clearChannel(void );
 static void TossimPacketModelC$GainRadioModel$setPendingTransmission(void );
 # 96 "/home/adrian/local/tinyos-2.1.1/tos/lib/tossim/TossimPacketModelC.nc"
-enum TossimPacketModelC$__nesc_unnamed4346 {
+enum TossimPacketModelC$__nesc_unnamed4347 {
 #line 96
   TossimPacketModelC$startDoneTask = 0U
 };
@@ -5146,14 +5146,14 @@ typedef int TossimPacketModelC$__nesc_sillytask_startDoneTask[TossimPacketModelC
 
 
 
-enum TossimPacketModelC$__nesc_unnamed4347 {
+enum TossimPacketModelC$__nesc_unnamed4348 {
 #line 101
   TossimPacketModelC$stopDoneTask = 1U
 };
 #line 101
 typedef int TossimPacketModelC$__nesc_sillytask_stopDoneTask[TossimPacketModelC$stopDoneTask];
 #line 145
-enum TossimPacketModelC$__nesc_unnamed4348 {
+enum TossimPacketModelC$__nesc_unnamed4349 {
 #line 145
   TossimPacketModelC$sendDoneTask = 2U
 };
@@ -5433,7 +5433,7 @@ static void Node$neighborDiscovey$startPeriodic(uint32_t dt);
 
 static void Node$neighborDiscovey$startOneShot(uint32_t dt);
 # 81 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
-enum Node$__nesc_unnamed4349 {
+enum Node$__nesc_unnamed4350 {
 #line 81
   Node$sendBufferTask = 3U
 };
@@ -5638,7 +5638,7 @@ uint32_t /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128AlarmAs
 
 
 
-enum /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128AlarmAsyncP$0$__nesc_unnamed4350 {
+enum /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128AlarmAsyncP$0$__nesc_unnamed4351 {
   Atm128AlarmAsyncP$0$MINDT = 2, 
   Atm128AlarmAsyncP$0$MAXT = 230
 };
@@ -5876,7 +5876,7 @@ static void /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC$0$Alarm$stop(void );
 # 83 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 static void /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC$0$Timer$fired(void );
 # 74 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/AlarmToTimerC.nc"
-enum /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC$0$__nesc_unnamed4351 {
+enum /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC$0$__nesc_unnamed4352 {
 #line 74
   AlarmToTimerC$0$fired = 4U
 };
@@ -5918,16 +5918,16 @@ static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$TimerFrom$stop
 
 static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$fired(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x40cac3a8);
+uint8_t arg_0x40cad3a8);
 #line 71
-enum /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$__nesc_unnamed4352 {
+enum /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$__nesc_unnamed4353 {
 #line 71
   VirtualizeTimerC$0$updateFromTimer = 5U
 };
 #line 71
 typedef int /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$__nesc_sillytask_updateFromTimer[/*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$updateFromTimer];
 #line 53
-enum /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$__nesc_unnamed4353 {
+enum /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$__nesc_unnamed4354 {
 
   VirtualizeTimerC$0$NUM_TIMERS = 7U, 
   VirtualizeTimerC$0$END_OF_LIST = 255
@@ -5941,7 +5941,7 @@ enum /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$__nesc_unnamed4353 {
 
 
 #line 59
-typedef struct /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$__nesc_unnamed4354 {
+typedef struct /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$__nesc_unnamed4355 {
 
   uint32_t t0;
   uint32_t dt;
@@ -6047,7 +6047,7 @@ static inline void /*NodeC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP$0$Send
 # 80 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/AMSend.nc"
 static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$AMSend$send(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc"
-am_id_t arg_0x40d20730, 
+am_id_t arg_0x40d21730, 
 # 80 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/AMSend.nc"
 am_addr_t addr, 
 #line 71
@@ -6064,7 +6064,7 @@ uint8_t len);
 # 100 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc"
 static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$sendDone(
 # 46 "/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc"
-uint8_t arg_0x40d23cb0, 
+uint8_t arg_0x40cf7cb0, 
 # 96 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc"
 message_t * msg, 
 
@@ -6094,14 +6094,14 @@ static am_id_t /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$AMPacket$type(
 #line 143
 message_t * amsg);
 # 126 "/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc"
-enum /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$__nesc_unnamed4355 {
+enum /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$__nesc_unnamed4356 {
 #line 126
   AMQueueImplP$0$CancelTask = 6U
 };
 #line 126
 typedef int /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$__nesc_sillytask_CancelTask[/*AMQueueP.AMQueueImplP*/AMQueueImplP$0$CancelTask];
 #line 169
-enum /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$__nesc_unnamed4356 {
+enum /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$__nesc_unnamed4357 {
 #line 169
   AMQueueImplP$0$errorTask = 7U
 };
@@ -6109,7 +6109,7 @@ enum /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$__nesc_unnamed4356 {
 typedef int /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$__nesc_sillytask_errorTask[/*AMQueueP.AMQueueImplP*/AMQueueImplP$0$errorTask];
 #line 57
 #line 55
-typedef struct /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$__nesc_unnamed4357 {
+typedef struct /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$__nesc_unnamed4358 {
   message_t * msg;
 } /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$queue_entry_t;
 
@@ -6143,9 +6143,9 @@ static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$AMSend$sendDone(am_id_t id, 
 #line 215
 static inline void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$default$sendDone(uint8_t id, message_t *msg, error_t err);
 # 2 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/client.nc"
-static void TCPManagerC$ALClient$init(TCPManagerC$ALClient$val_t *arg_0x40aa4010);
+static void TCPManagerC$ALClient$init(TCPManagerC$ALClient$val_t *arg_0x40aa8d70);
 # 2 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/server.nc"
-static void TCPManagerC$ALServer$init(TCPManagerC$ALServer$val_t *arg_0x40aa3450);
+static void TCPManagerC$ALServer$init(TCPManagerC$ALServer$val_t *arg_0x40aa3120);
 # 8 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc"
 static uint8_t TCPManagerC$TCPSocket$listen(uint8_t port, uint8_t backlog);
 #line 3
@@ -6263,7 +6263,7 @@ static inline uint8_t TCPSocketC$TCPSocket$accept(uint8_t srcPort, uint8_t newPo
 #line 145
 static inline uint8_t TCPSocketC$TCPSocket$connect(uint16_t destAddr, uint8_t destPort, uint8_t port);
 #line 168
-static inline uint8_t TCPSocketC$TCPSocket$close(TCPSocketAL *input);
+static inline uint8_t TCPSocketC$TCPSocket$close(uint8_t port);
 
 
 
@@ -6272,7 +6272,12 @@ static inline uint8_t TCPSocketC$TCPSocket$close(TCPSocketAL *input);
 
 
 
-static inline uint8_t TCPSocketC$TCPSocket$release(TCPSocketAL *input);
+
+static inline uint8_t TCPSocketC$TCPSocket$release(uint8_t port);
+
+
+
+
 
 
 
@@ -6286,7 +6291,7 @@ static inline int16_t TCPSocketC$TCPSocket$read(uint8_t port, uint8_t *readBuffe
 
 
 static inline int16_t TCPSocketC$TCPSocket$write(uint8_t port, uint8_t *writeBuffer, uint16_t pos, uint16_t len);
-#line 211
+#line 218
 static inline bool TCPSocketC$TCPSocket$isConnected(uint8_t port);
 
 
@@ -6334,7 +6339,7 @@ static bool clientC$TCPSocket$isClosing(uint8_t port);
 #line 22
 static bool clientC$TCPSocket$isConnectPending(uint8_t port);
 #line 15
-static uint8_t clientC$TCPSocket$release(clientC$TCPSocket$val_t *input);
+static uint8_t clientC$TCPSocket$release(uint8_t port);
 
 
 
@@ -6348,7 +6353,7 @@ static bool clientC$TCPSocket$isClosed(uint8_t port);
 #line 19
 static int16_t clientC$TCPSocket$write(uint8_t port, uint8_t *writeBuffer, uint16_t pos, uint16_t len);
 #line 13
-static uint8_t clientC$TCPSocket$close(clientC$TCPSocket$val_t *input);
+static uint8_t clientC$TCPSocket$close(uint8_t port);
 
 
 
@@ -6391,7 +6396,7 @@ static void serverC$WorkerTimer$startPeriodic(uint32_t dt);
 #line 78
 static void serverC$WorkerTimer$stop(void );
 # 15 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc"
-static uint8_t serverC$TCPSocket$release(serverC$TCPSocket$val_t *input);
+static uint8_t serverC$TCPSocket$release(uint8_t port);
 
 static int16_t serverC$TCPSocket$read(uint8_t port, uint8_t *readBuffer, uint16_t pos, uint16_t len);
 
@@ -7026,9 +7031,9 @@ static inline void serverC$server$init(TCPSocketAL *socket)
 }
 
 # 2 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/server.nc"
-inline static void TCPManagerC$ALServer$init(TCPManagerC$ALServer$val_t *arg_0x40aa3450){
+inline static void TCPManagerC$ALServer$init(TCPManagerC$ALServer$val_t *arg_0x40aa3120){
 #line 2
-  serverC$server$init(arg_0x40aa3450);
+  serverC$server$init(arg_0x40aa3120);
 #line 2
 }
 #line 2
@@ -7180,9 +7185,9 @@ static inline void clientC$client$init(TCPSocketAL *socket)
 }
 
 # 2 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/client.nc"
-inline static void TCPManagerC$ALClient$init(TCPManagerC$ALClient$val_t *arg_0x40aa4010){
+inline static void TCPManagerC$ALClient$init(TCPManagerC$ALClient$val_t *arg_0x40aa8d70){
 #line 2
-  clientC$client$init(arg_0x40aa4010);
+  clientC$client$init(arg_0x40aa8d70);
 #line 2
 }
 #line 2
@@ -8696,9 +8701,9 @@ static inline void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$default$sendDone
 }
 
 # 100 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc"
-inline static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$sendDone(uint8_t arg_0x40d23cb0, message_t * msg, error_t error){
+inline static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$sendDone(uint8_t arg_0x40cf7cb0, message_t * msg, error_t error){
 #line 100
-  switch (arg_0x40d23cb0) {
+  switch (arg_0x40cf7cb0) {
 #line 100
     case 0U:
 #line 100
@@ -8708,7 +8713,7 @@ inline static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$sendDone(uint8_t
 #line 100
     default:
 #line 100
-      /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$default$sendDone(arg_0x40d23cb0, msg, error);
+      /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$default$sendDone(arg_0x40cf7cb0, msg, error);
 #line 100
       break;
 #line 100
@@ -8830,13 +8835,13 @@ inline static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$errorTask$postTask
 }
 #line 67
 # 80 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/AMSend.nc"
-inline static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$AMSend$send(am_id_t arg_0x40d20730, am_addr_t addr, message_t * msg, uint8_t len){
+inline static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$AMSend$send(am_id_t arg_0x40d21730, am_addr_t addr, message_t * msg, uint8_t len){
 #line 80
   unsigned char __nesc_result;
 #line 80
 
 #line 80
-  __nesc_result = TossimActiveMessageC$AMSend$send(arg_0x40d20730, addr, msg, len);
+  __nesc_result = TossimActiveMessageC$AMSend$send(arg_0x40d21730, addr, msg, len);
 #line 80
 
 #line 80
@@ -9817,21 +9822,25 @@ inline static void serverC$WorkerTimer$stop(void ){
 #line 78
 }
 #line 78
-# 177 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
-static inline uint8_t TCPSocketC$TCPSocket$release(TCPSocketAL *input)
-#line 177
+# 178 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+static inline uint8_t TCPSocketC$TCPSocket$release(uint8_t port)
+#line 178
 {
+  TCPSocketAL *input;
+
+
+
   return input;
 }
 
 # 15 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc"
-inline static uint8_t serverC$TCPSocket$release(serverC$TCPSocket$val_t *input){
+inline static uint8_t serverC$TCPSocket$release(uint8_t port){
 #line 15
   unsigned char __nesc_result;
 #line 15
 
 #line 15
-  __nesc_result = TCPSocketC$TCPSocket$release(input);
+  __nesc_result = TCPSocketC$TCPSocket$release(port);
 #line 15
 
 #line 15
@@ -10066,7 +10075,7 @@ static inline void serverC$ServerTimer$fired(void )
 
       sim_log_debug(314U, "serverAL", "serverAL - Server Shutdown\n");
 
-      serverC$TCPSocket$release(serverC$mServer[sim_node()].socket);
+      serverC$TCPSocket$release(serverC$mServer[sim_node()].socket->srcPort);
       serverC$WorkerTimer$stop();
       serverC$ServerTimer$stop();
     }
@@ -10100,13 +10109,13 @@ inline static uint32_t serverC$ServerTimer$getNow(void ){
 #line 136
 }
 #line 136
-# 181 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+# 186 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static inline int16_t TCPSocketC$TCPSocket$read(uint8_t port, uint8_t *readBuffer, uint16_t pos, uint16_t len)
-#line 181
+#line 186
 {
   TCPSocketAL *input;
 
-#line 183
+#line 188
   input = TCPSocketC$tcpLayer$getSocket(port);
 
 
@@ -10150,7 +10159,7 @@ static inline void serverC$serverWorker$execute(serverWorkerAL *worker)
 
           sim_log_debug(316U, "serverAL", "serverAL - Releasing socket\n");
           sim_log_debug(317U, "serverAL", "Position: %lu\n", worker->position);
-          serverC$TCPSocket$release(worker->socket);
+          serverC$TCPSocket$release(worker->socket->srcPort);
 
           serverWorkerListRemoveValue(&serverC$workers[sim_node()], *worker);
           return;
@@ -10164,7 +10173,7 @@ static inline void serverC$serverWorker$execute(serverWorkerAL *worker)
               if (worker->buffer[(i + worker->position) % SERVER_WORKER_BUFFER_SIZE] != (0x00FF & (i + bufferIndex))) {
                   sim_log_debug(318U, "serverAL", "Releasing socket\n");
                   sim_log_debug(319U, "serverAL", "Buffer Index: %lu Position: %lu\n", i + bufferIndex, worker->position);
-                  serverC$TCPSocket$release(worker->socket);
+                  serverC$TCPSocket$release(worker->socket->srcPort);
                   serverWorkerListRemoveValue(&serverC$workers[sim_node()], *worker);
 
                   return;
@@ -10231,13 +10240,13 @@ inline static void clientC$ClientTimer$stop(void ){
 }
 #line 78
 # 15 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc"
-inline static uint8_t clientC$TCPSocket$release(clientC$TCPSocket$val_t *input){
+inline static uint8_t clientC$TCPSocket$release(uint8_t port){
 #line 15
   unsigned char __nesc_result;
 #line 15
 
 #line 15
-  __nesc_result = TCPSocketC$TCPSocket$release(input);
+  __nesc_result = TCPSocketC$TCPSocket$release(port);
 #line 15
 
 #line 15
@@ -10275,18 +10284,18 @@ inline static bool clientC$TCPSocket$isClosed(uint8_t port){
 #line 25
 }
 #line 25
-# 219 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+# 226 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static inline bool TCPSocketC$TCPSocket$isClosing(uint8_t port)
-#line 219
+#line 226
 {
   TCPSocketAL *input;
 
-#line 221
+#line 228
   input = TCPSocketC$tcpLayer$getSocket(port);
   if (input->currentState == 5) {
     return TRUE;
     }
-#line 224
+#line 231
   return FALSE;
 }
 
@@ -10305,22 +10314,24 @@ inline static bool clientC$TCPSocket$isClosing(uint8_t port){
 #line 26
 }
 #line 26
-# 190 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+# 195 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static inline int16_t TCPSocketC$TCPSocket$write(uint8_t port, uint8_t *writeBuffer, uint16_t pos, uint16_t len)
-#line 190
+#line 195
 {
   TCPSocketAL *input;
   transport pckt;
   uint16_t i = 0;
-#line 193
+#line 198
   uint16_t wrote = 0;
 
-#line 194
+#line 199
   input = TCPSocketC$tcpLayer$getSocket(port);
-  for (i = pos; i < len; i++) {
-      createTransport(&pckt, input->srcPort, input->destPort, TRANSPORT_DATA, input->adwin, input->highestSeqSent++, (void *)0, 0);
-      TCPSocketC$Node$tcpPack(&pckt, input);
-      wrote++;
+  if (input->currentState == ESTABLISHED) {
+      for (i = pos; i < len; i++) {
+          createTransport(&pckt, input->srcPort, input->destPort, TRANSPORT_DATA, input->adwin, input->highestSeqSent++, (void *)0, 0);
+          TCPSocketC$Node$tcpPack(&pckt, input);
+          wrote++;
+        }
     }
   return wrote;
 }
@@ -10341,13 +10352,14 @@ inline static int16_t clientC$TCPSocket$write(uint8_t port, uint8_t *writeBuffer
 }
 #line 19
 # 168 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
-static inline uint8_t TCPSocketC$TCPSocket$close(TCPSocketAL *input)
+static inline uint8_t TCPSocketC$TCPSocket$close(uint8_t port)
 #line 168
 {
 
+  TCPSocketAL *input;
   transport pckt;
 
-#line 171
+#line 172
   createTransport(&pckt, input->srcPort, input->destPort, TRANSPORT_FIN, input->highestSeqSent++, 0, (void *)0, 0);
   TCPSocketC$Node$tcpPack(&pckt, input);
 
@@ -10355,13 +10367,13 @@ static inline uint8_t TCPSocketC$TCPSocket$close(TCPSocketAL *input)
 }
 
 # 13 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc"
-inline static uint8_t clientC$TCPSocket$close(clientC$TCPSocket$val_t *input){
+inline static uint8_t clientC$TCPSocket$close(uint8_t port){
 #line 13
   unsigned char __nesc_result;
 #line 13
 
 #line 13
-  __nesc_result = TCPSocketC$TCPSocket$close(input);
+  __nesc_result = TCPSocketC$TCPSocket$close(port);
 #line 13
 
 #line 13
@@ -10369,18 +10381,18 @@ inline static uint8_t clientC$TCPSocket$close(clientC$TCPSocket$val_t *input){
 #line 13
 }
 #line 13
-# 211 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+# 218 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static inline bool TCPSocketC$TCPSocket$isConnected(uint8_t port)
-#line 211
+#line 218
 {
   TCPSocketAL *input;
 
-#line 213
+#line 220
   input = TCPSocketC$tcpLayer$getSocket(port);
   if (input->currentState == 3) {
     return TRUE;
     }
-#line 216
+#line 223
   return FALSE;
 }
 
@@ -10399,18 +10411,18 @@ inline static bool clientC$TCPSocket$isConnected(uint8_t port){
 #line 23
 }
 #line 23
-# 235 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+# 242 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static inline bool TCPSocketC$TCPSocket$isConnectPending(uint8_t port)
-#line 235
+#line 242
 {
   TCPSocketAL *input;
 
-#line 237
+#line 244
   input = TCPSocketC$tcpLayer$getSocket(port);
   if (input->currentState == 2) {
     return TRUE;
     }
-#line 240
+#line 247
   return FALSE;
 }
 
@@ -10541,9 +10553,9 @@ static inline void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$d
 }
 
 # 83 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
-inline static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$fired(uint8_t arg_0x40cac3a8){
+inline static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$fired(uint8_t arg_0x40cad3a8){
 #line 83
-  switch (arg_0x40cac3a8) {
+  switch (arg_0x40cad3a8) {
 #line 83
     case 0U:
 #line 83
@@ -10589,7 +10601,7 @@ inline static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$f
 #line 83
     default:
 #line 83
-      /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$default$fired(arg_0x40cac3a8);
+      /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$default$fired(arg_0x40cad3a8);
 #line 83
       break;
 #line 83
@@ -13719,18 +13731,18 @@ static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$fireTimers(uin
   /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$updateFromTimer$postTask();
 }
 
-# 227 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+# 234 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static bool TCPSocketC$TCPSocket$isClosed(uint8_t port)
-#line 227
+#line 234
 {
   TCPSocketAL *input;
 
-#line 229
+#line 236
   input = TCPSocketC$tcpLayer$getSocket(port);
   if (input->currentState == 0) {
     return TRUE;
     }
-#line 232
+#line 239
   return FALSE;
 }
 
@@ -13750,9 +13762,9 @@ static bool serverWorkerListRemoveValue(serverWorkerList *list, workerType newVa
   return FALSE;
 }
 
-# 244 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+# 251 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static void TCPSocketC$TCPSocket$copy(TCPSocketAL *input, TCPSocketAL *output)
-#line 244
+#line 251
 {
 
 
