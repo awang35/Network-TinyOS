@@ -12,7 +12,7 @@ module TCPSocketC{
 	}
 }
 implementation{	
-uint8_t trans[5] = {"abc"};
+	uint8_t trans[5] = {"abc"};
 	inCon incomingConnections[5];
 	uint8_t max = 1, inital = 0,fairCount = 0;
 	async command void TCPSocket.init(TCPSocketAL *input){
@@ -134,7 +134,7 @@ uint8_t trans[5] = {"abc"};
 			dbg("Project3", "After: Output Info: ID: %d,srcID: %d, destID: %d, srcPort: %d, destPort: %d, state: %d\n",output->uniqueID,output->srcID,output->destID,output->srcPort,output->destPort, output->currentState);
 			call tcpLayer.AddSocket(output,output->srcPort);
 			call tcpLayer.checkPort(output->srcPort);
-			
+	
 			createTransport(&send,output->srcPort,output->destPort,TRANSPORT_ACK,output->highestSeqSent++,0,NULL,0);	
 			call Node.tcpPack(&send,output);
 			return 0;
@@ -165,8 +165,9 @@ uint8_t trans[5] = {"abc"};
 		return -1;
 	}
 
-	async command uint8_t TCPSocket.close(TCPSocketAL *input){
+	async command uint8_t TCPSocket.close(uint8_t port){
 		//Terminates a network connection.
+		TCPSocketAL *input;
 		transport pckt;
 		createTransport(&pckt,input->srcPort,input->destPort,TRANSPORT_FIN,input->highestSeqSent++,0,NULL,0);	
 		call Node.tcpPack(&pckt,input);
@@ -174,16 +175,20 @@ uint8_t trans[5] = {"abc"};
 		return 0;
 	}
 
-	async command uint8_t TCPSocket.release(TCPSocketAL *input){
+	async command uint8_t TCPSocket.release(uint8_t port){
+		TCPSocketAL *input;
+		//transport pckt;
+		//createTransport(&pckt,input->srcPort,input->destPort,TRANSPORT_FIN,input->highestSeqSent++,0,NULL,0);	
+	
 		return input;
 	}
 
 	async command int16_t TCPSocket.read(uint8_t port, uint8_t *readBuffer, uint16_t pos, uint16_t len){
 		TCPSocketAL *input;
 		input = call tcpLayer.getSocket(port);
-		uint16_t i = 0, read = 0;
-		
-		
+		//uint16_t i = 0, read = 0;
+	
+	
 		return 0;
 	}
 
@@ -192,10 +197,12 @@ uint8_t trans[5] = {"abc"};
 		transport pckt;
 		uint16_t i = 0, wrote = 0;
 		input = call tcpLayer.getSocket(port);
-		for(i = pos;i<len;i++ ){
-		createTransport(&pckt,input->srcPort,input->destPort,TRANSPORT_DATA,input->adwin,input->highestSeqSent++,NULL,0);	
-		call Node.tcpPack(&pckt,input);
-		wrote++;
+		if(input->currentState == ESTABLISHED){
+			for(i = pos;i<len;i++ ){
+				createTransport(&pckt,input->srcPort,input->destPort,TRANSPORT_DATA,input->adwin,input->highestSeqSent++,NULL,0);	
+				call Node.tcpPack(&pckt,input);
+				wrote++;
+			}
 		}
 		return wrote;
 	}

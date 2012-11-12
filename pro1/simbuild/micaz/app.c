@@ -4745,8 +4745,8 @@ static void clientC$client$init(clientC$client$val_t *arg_0x40aa4010);
 # 83 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 static void serverC$ServerTimer$fired(void );
 # 2 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/serverWorker.nc"
-static void serverC$serverWorker$init(serverC$serverWorker$val_t *arg_0x40e33b10, serverC$serverWorker$val2_t *arg_0x40e33cc8);
-static void serverC$serverWorker$execute(serverC$serverWorker$val_t *arg_0x40e301c0);
+static void serverC$serverWorker$init(serverC$serverWorker$val_t *arg_0x40e302b8, serverC$serverWorker$val2_t *arg_0x40e30470);
+static void serverC$serverWorker$execute(serverC$serverWorker$val_t *arg_0x40e30950);
 # 83 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 static void serverC$WorkerTimer$fired(void );
 # 2 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/server.nc"
@@ -6206,7 +6206,7 @@ static inline void TCPManagerC$TCPManager$setUpClient(uint8_t srcPort, uint8_t d
 
 
 static inline void TCPManagerC$TCPManager$handlePacket(void *msg);
-#line 129
+#line 130
 static inline void TCPManagerC$TCPManager$freeSocket(TCPSocketAL *input);
 
 
@@ -6283,8 +6283,10 @@ static inline int16_t TCPSocketC$TCPSocket$read(uint8_t port, uint8_t *readBuffe
 
 
 
+
+
 static inline int16_t TCPSocketC$TCPSocket$write(uint8_t port, uint8_t *writeBuffer, uint16_t pos, uint16_t len);
-#line 209
+#line 211
 static inline bool TCPSocketC$TCPSocket$isConnected(uint8_t port);
 
 
@@ -6828,9 +6830,9 @@ static __inline  uint8_t __nesc_hton_uint8(void * target, uint8_t value)
   return value;
 }
 
-# 133 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
+# 134 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
 static inline void TCPManagerC$TCPManager$checkPort(uint8_t port)
-#line 133
+#line 134
 {
 
 
@@ -6842,7 +6844,7 @@ static inline void TCPManagerC$TCPManager$checkPort(uint8_t port)
 }
 
 static inline void TCPManagerC$TCPManager$forcePortState(uint8_t port, uint8_t state)
-#line 143
+#line 144
 {
 
   TCPManagerC$activeSockets[sim_node()][port].currentState = state;
@@ -6962,7 +6964,8 @@ static inline void TCPManagerC$TCPManager$handlePacket(void *msg)
           }
       break;
       case TRANSPORT_DATA: 
-        sim_log_debug(284U, "Project3", "DATA ");
+        sim_log_debug(284U, "Project3", "DATA \n");
+
       break;
       default: 
         sim_log_debug(285U, "Project3", "UNKNOWN");
@@ -7029,9 +7032,9 @@ inline static void TCPManagerC$ALServer$init(TCPManagerC$ALServer$val_t *arg_0x4
 #line 2
 }
 #line 2
-# 148 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
+# 149 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
 static inline TCPSocketAL *TCPManagerC$TCPManager$getSocket(uint8_t port)
-#line 148
+#line 149
 {
   int i = 0;
 
@@ -10069,9 +10072,9 @@ static inline void serverC$ServerTimer$fired(void )
     }
 }
 
-# 129 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
+# 130 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
 static inline void TCPManagerC$TCPManager$freeSocket(TCPSocketAL *input)
-#line 129
+#line 130
 {
 }
 
@@ -10105,6 +10108,8 @@ static inline int16_t TCPSocketC$TCPSocket$read(uint8_t port, uint8_t *readBuffe
 
 #line 183
   input = TCPSocketC$tcpLayer$getSocket(port);
+
+
 
   return 0;
 }
@@ -10270,18 +10275,18 @@ inline static bool clientC$TCPSocket$isClosed(uint8_t port){
 #line 25
 }
 #line 25
-# 217 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+# 219 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static inline bool TCPSocketC$TCPSocket$isClosing(uint8_t port)
-#line 217
+#line 219
 {
   TCPSocketAL *input;
 
-#line 219
+#line 221
   input = TCPSocketC$tcpLayer$getSocket(port);
   if (input->currentState == 5) {
     return TRUE;
     }
-#line 222
+#line 224
   return FALSE;
 }
 
@@ -10300,17 +10305,17 @@ inline static bool clientC$TCPSocket$isClosing(uint8_t port){
 #line 26
 }
 #line 26
-# 188 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+# 190 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static inline int16_t TCPSocketC$TCPSocket$write(uint8_t port, uint8_t *writeBuffer, uint16_t pos, uint16_t len)
-#line 188
+#line 190
 {
   TCPSocketAL *input;
   transport pckt;
   uint16_t i = 0;
-#line 191
+#line 193
   uint16_t wrote = 0;
 
-#line 192
+#line 194
   input = TCPSocketC$tcpLayer$getSocket(port);
   for (i = pos; i < len; i++) {
       createTransport(&pckt, input->srcPort, input->destPort, TRANSPORT_DATA, input->adwin, input->highestSeqSent++, (void *)0, 0);
@@ -10364,18 +10369,18 @@ inline static uint8_t clientC$TCPSocket$close(clientC$TCPSocket$val_t *input){
 #line 13
 }
 #line 13
-# 209 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+# 211 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static inline bool TCPSocketC$TCPSocket$isConnected(uint8_t port)
-#line 209
+#line 211
 {
   TCPSocketAL *input;
 
-#line 211
+#line 213
   input = TCPSocketC$tcpLayer$getSocket(port);
   if (input->currentState == 3) {
     return TRUE;
     }
-#line 214
+#line 216
   return FALSE;
 }
 
@@ -10394,18 +10399,18 @@ inline static bool clientC$TCPSocket$isConnected(uint8_t port){
 #line 23
 }
 #line 23
-# 233 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+# 235 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static inline bool TCPSocketC$TCPSocket$isConnectPending(uint8_t port)
-#line 233
+#line 235
 {
   TCPSocketAL *input;
 
-#line 235
+#line 237
   input = TCPSocketC$tcpLayer$getSocket(port);
   if (input->currentState == 2) {
     return TRUE;
     }
-#line 238
+#line 240
   return FALSE;
 }
 
@@ -13714,18 +13719,18 @@ static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$fireTimers(uin
   /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$updateFromTimer$postTask();
 }
 
-# 225 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+# 227 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static bool TCPSocketC$TCPSocket$isClosed(uint8_t port)
-#line 225
+#line 227
 {
   TCPSocketAL *input;
 
-#line 227
+#line 229
   input = TCPSocketC$tcpLayer$getSocket(port);
   if (input->currentState == 0) {
     return TRUE;
     }
-#line 230
+#line 232
   return FALSE;
 }
 
@@ -13745,9 +13750,9 @@ static bool serverWorkerListRemoveValue(serverWorkerList *list, workerType newVa
   return FALSE;
 }
 
-# 242 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+# 244 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static void TCPSocketC$TCPSocket$copy(TCPSocketAL *input, TCPSocketAL *output)
-#line 242
+#line 244
 {
 
 

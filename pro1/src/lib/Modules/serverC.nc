@@ -64,7 +64,7 @@ implementation{
 			//Socket is closed, shutdown
 			dbg("serverAL", "serverAL - Server Shutdown\n" );
 			
-			call TCPSocket.release( mServer.socket );			
+			call TCPSocket.release( mServer.socket->srcPort );			
 			call WorkerTimer.stop();
 			call ServerTimer.stop();
 		}
@@ -107,7 +107,7 @@ implementation{
 				// Socket unable to read, release socket
 				dbg("serverAL", "serverAL - Releasing socket\n");
 				dbg("serverAL", "Position: %lu\n", worker->position);
-				call TCPSocket.release( (worker->socket) );
+				call TCPSocket.release( (worker->socket->srcPort) );
 				
 				serverWorkerListRemoveValue(&workers, *worker);
 				return;
@@ -119,7 +119,7 @@ implementation{
 					if( worker->buffer[ (i+worker->position)%SERVER_WORKER_BUFFER_SIZE] != (0x00FF&(i+bufferIndex))){ // Makes a 16 bit into a byte.(8 bits);
 						dbg("serverAL", "Releasing socket\n");
 						dbg("serverAL", "Buffer Index: %lu Position: %lu\n", i+bufferIndex, worker->position);
-						call TCPSocket.release( (worker->socket) );
+						call TCPSocket.release( (worker->socket->srcPort) );
 						serverWorkerListRemoveValue(&workers, *worker);
 						
 						return;

@@ -10,9 +10,9 @@ interface TCPSocket<val_t>{
 	
 	async command uint8_t connect(uint16_t destAddr, uint8_t destPort,uint8_t port);
 	
-	async command uint8_t close(val_t *input);
+	async command uint8_t close(uint8_t port);
 	
-	async command uint8_t release(val_t *input);
+	async command uint8_t release(uint8_t port);
 	
 	async command int16_t read(uint8_t port, uint8_t *readBuffer, uint16_t pos, uint16_t len);
 	
