@@ -521,14 +521,15 @@ implementation{
 							pch = strtok (NULL, " ");
 							i++;
 						}
-	
+
 						dbg("Project3", "DEST: %d, srcPort: %d, destPort: %d\n", dest,srcPort,destPort);
 						call tcpLayer.init();
-						mSocket = call tcpLayer.socket();	
+						call  tcpLayer.setUpClient(srcPort,destPort,dest);
+						//mSocket = call tcpLayer.socket();	
 						//call tcpLayer.forcePortState(99);
-						call tcpSocket.bind(mSocket, srcPort, TOS_NODE_ID);
-						call tcpSocket.connect(mSocket, srcPort, destPort);
-						call ALClient.init(mSocket);
+						//call tcpSocket.bind(mSocket, srcPort, TOS_NODE_ID);
+						//call tcpSocket.connect(mSocket, srcPort, destPort);
+						//call ALClient.init(mSocket);
 						break;
 						case CMD_TEST_SERVER:
 						pch = strtok (myMsg->payload," ");
@@ -541,10 +542,12 @@ implementation{
 							i++;
 						}
 						call tcpLayer.init();
-						mSocket = call tcpLayer.socket();
-						call tcpSocket.bind(mSocket, srcPort, TOS_NODE_ID);
-						call tcpSocket.listen(mSocket, 5);
-						call ALServer.init(mSocket);
+						call  tcpLayer.setUpServer( srcPort);
+						//mSocket = call tcpLayer.socket();
+						//dbg("Project3","Retrieve a new socket. ID: %d,State: %d\n",mSocket->uniqueID,mSocket->currentState);
+						//call tcpSocket.bind(mSocket, srcPort, TOS_NODE_ID);
+						////call tcpSocket.listen(mSocket, 5);
+						//call ALServer.init(mSocket);
 						break;
 	
 						case CMD_KILL:
@@ -563,7 +566,7 @@ implementation{
 					//dbg("Project3", "TCP Packet has arrived.\n");
 					//printTransport(&transportPckt);
 					//call tcpLayer.handlePacket(&transportPckt);
-					call tcpLayer.handlePacket(&myMsg->payload);
+					call tcpLayer.handlePacket(payload);
 					break;
 					default:
 					break;
