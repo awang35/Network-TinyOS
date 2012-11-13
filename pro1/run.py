@@ -104,7 +104,7 @@ if(flooding == 1):
     sendCMD("2 2 cmd server 5")
     runTime(200)
     sendCMD("1 1 cmd client 3 5 2")
-    runTime(200)
+    runTime(400)
    # sendCMD("3 3 cmd client 3 5 2")
     #sendCMD("5 1 Hi again!")
     #sendCMD("1 5 hi")

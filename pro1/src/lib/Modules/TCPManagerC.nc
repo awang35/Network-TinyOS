@@ -98,7 +98,7 @@ implementation{
 			case TRANSPORT_ACK:
 			if(sckt.currentState == SYN_SENT){
 				dbg("Project3", "ACK recieved on port %d\n",pckt->destPort);
-				sckt.highestSeqSeen = pckt->seq;
+				//sckt.highestSeqSeen = pckt->seq;
 				sckt.destPort =pckt->srcPort;
 				//createTransport(&responsePckt, sckt.srcPort, sckt.destPort, TRANSPORT_ACK, 0, 0, NULL, 0);
 				//call TCPSocket.bind(&activePorts[pckt->destPort],pckt->destPort,2);	
@@ -117,8 +117,14 @@ implementation{
 			}
 			break;
 			case TRANSPORT_DATA:
-			dbg("Project3", "DATA \n");
-			
+			dbg("Project3", "DATA RECIEVED. HIGHEST SEQ SEEN: %d. THIS PCKT SEQ IS: %d\n",sckt.highestSeqSeen,pckt->seq);
+			if(sckt.highestSeqSeen == 0){
+				sckt.highestSeqSeen = pckt->seq;
+				}
+			if(sckt.currentState == ESTABLISHED){
+				createTransport(&responsePckt, sckt.srcPort, sckt.destPort, TRANSPORT_ACK, 0, 0, NULL, 0);
+				call Node.tcpPack(&responsePckt,&sckt);
+			}
 			break;
 			default:
 			dbg("Project3", "UNKNOWN");

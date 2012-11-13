@@ -12,7 +12,7 @@
 #include "../packet.h"
 
 enum{
-		BYTES_TO_SEND = 7
+		BYTES_TO_SEND = 100
 };
 
 module clientC{
@@ -41,6 +41,7 @@ implementation{
 	event void ClientTimer.fired(){
 		TCPSocketAL connectedSock;
 		TCPSocketAL *test;
+		bool testa;
 		uint8_t newPort;
 		dbg("Project3", "ClientSocket Info: ID: %d,srcID: %d, destID: %d, srcPort: %d, destPort: %d, state: %d\n",mClient.socket->uniqueID,mClient.socket->srcID,mClient.socket->destID,mClient.socket->srcPort,mClient.socket->destPort, mClient.socket->currentState);
 
@@ -62,7 +63,7 @@ implementation{
 				dbg("clientAL", "clientAL - Sending Completed at time: %lu\n",closeTime);
 				dbg("clientAL", "Connection Closing...\n");
 	
-				call TCPSocket.close( (mClient.socket) );
+				call TCPSocket.close( (mClient.socket->srcPort) );
 				return;
 			}
 	
@@ -112,9 +113,10 @@ implementation{
 	
 			dbg("clientAL", "clientAL - Conection Closed at time: %lu \n Bytes sent: %lu\n Time Elapsed: %lu\n Bytes per Second %lu\n",
 					endTime, mClient.position, (endTime - mClient.startTime), (mClient.position * 1000 / (endTime - mClient.startTime)) );
-	
+		
 			call TCPSocket.release(mClient.socket);
 			call ClientTimer.stop();
+
 			return;
 		}
 	}	

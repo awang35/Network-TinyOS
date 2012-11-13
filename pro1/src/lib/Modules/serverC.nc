@@ -92,7 +92,9 @@ implementation{
 		//worker->socket->addr, worker->socket->destAddr);		
 		dbg("serverAL", "serverAL - Worker Intilized\n");
 	}
-	
+	//command void serverWorker.Buffer(){
+		
+	//}
 	command void serverWorker.execute(serverWorkerAL *worker){
 		if(!call TCPSocket.isClosed( (worker->socket->srcPort) ) ){
 			uint16_t bufferIndex, length, count;
@@ -100,7 +102,7 @@ implementation{
 			bufferIndex = (worker->position) % SERVER_WORKER_BUFFER_SIZE + (worker->position/ SERVER_WORKER_BUFFER_SIZE) + 1;
 			
 			length = SERVER_WORKER_BUFFER_SIZE - bufferIndex;			//Amount left on the worker buffer
-			
+			dbg("serverAL", "Trying to read\n");
 			count = call TCPSocket.read( (worker->socket->srcPort), worker->buffer, worker->position% SERVER_WORKER_BUFFER_SIZE, length);
 			
 			if(count == -1){

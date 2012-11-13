@@ -12,19 +12,19 @@ module TCPSocketC{
 	}
 }
 implementation{	
-	uint8_t trans[5] = {"abc"};
+	uint8_t trans;
 	inCon incomingConnections[5];
 	uint8_t max = 1, inital = 0,fairCount = 0;
 	async command void TCPSocket.init(TCPSocketAL *input){
 		int i = 0;
 		input->currentState = CLOSED;
-		input->destPort = -1;
-		input->destID= -1;
-		input->srcPort= -1;
+		input->destPort = 0;
+		input->destID= 0;
+		input->srcPort= 0;
 		input-> srcID= TOS_NODE_ID;
-		input->packetID= -1;
-		input->highestSeqSeen= -1;
-		input->highestSeqSent= -1;
+		input->packetID= 0;
+		input->highestSeqSeen= 0;
+		input->highestSeqSent= 0;
 		for(i =0;i< 5;i++)
 			incomingConnections[i].free = TRUE;
 	}
@@ -171,7 +171,9 @@ implementation{
 		transport pckt;
 		createTransport(&pckt,input->srcPort,input->destPort,TRANSPORT_FIN,input->highestSeqSent++,0,NULL,0);	
 		call Node.tcpPack(&pckt,input);
-	
+		input -> currentState = CLOSED;
+		call tcpLayer.forcePortState(port, CLOSED);
+		call tcpLayer.checkPort(input->srcPort);
 		return 0;
 	}
 
@@ -185,21 +187,30 @@ implementation{
 
 	async command int16_t TCPSocket.read(uint8_t port, uint8_t *readBuffer, uint16_t pos, uint16_t len){
 		TCPSocketAL *input;
+		uint16_t i = 0, read = 0;
 		input = call tcpLayer.getSocket(port);
-		//uint16_t i = 0, read = 0;
-	
-	
-		return 0;
+		
+		if(input->currentState == ESTABLISHED){
+			for(i = pos;i<len;i++ ){
+				dbg("Project3", "Data being Read: %d\n",readBuffer[i]);
+				read++;
+			}
+		}
+		return read;
 	}
 
 	async command int16_t TCPSocket.write(uint8_t port, uint8_t *writeBuffer, uint16_t pos, uint16_t len){
 		TCPSocketAL *input;
 		transport pckt;
+		//uint8_t trans;
 		uint16_t i = 0, wrote = 0;
 		input = call tcpLayer.getSocket(port);
 		if(input->currentState == ESTABLISHED){
 			for(i = pos;i<len;i++ ){
-				createTransport(&pckt,input->srcPort,input->destPort,TRANSPORT_DATA,input->adwin,input->highestSeqSent++,NULL,0);	
+				dbg("Project3", "Data being sent: %d\n",writeBuffer[i]);
+				trans = writeBuffer[i];
+				createTransport(&pckt,input->srcPort,input->destPort,TRANSPORT_DATA,input->adwin,input->highestSeqSent++,&trans,sizeof(trans));	
+				//dbg("Project3", "Data being sent: %d\n",writeBuffer[i]);
 				call Node.tcpPack(&pckt,input);
 				wrote++;
 			}
