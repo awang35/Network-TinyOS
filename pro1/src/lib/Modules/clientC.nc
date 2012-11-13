@@ -12,7 +12,7 @@
 #include "../packet.h"
 
 enum{
-		BYTES_TO_SEND = 10
+		BYTES_TO_SEND = 100
 };
 
 module clientC{

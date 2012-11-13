@@ -10,43 +10,25 @@ module TCPManagerC{
 		interface client<TCPSocketAL> as ALClient;
 		interface server<TCPSocketAL> as ALServer;
 		interface node as Node;
+		interface Timer<TMilli> as closing;
 	}
 }
 implementation{
 	TCPSocketAL activeSockets[TRANSPORT_MAX_PORT];
-	//TCPSocketAL activePorts[TRANSPORT_MAX_PORT];
-	TCPSocketAL newSocket[6];
-	//bool ports[TRANSPORT_MAX_PORT];
-	uint8_t uniqueID = 1,index =0;
-	command void TCPManager.init(){
-		//int i = 0;
-		//for(i;i<20;i++){
-		//call TCPSocket.init(&activePorts[i]);
-		//ports[i]= FALSE;
-		//}
-		//shashmapInit(&activeSockets);
-	
-	}
+	TCPSocketAL newSocket[30];
+	uint8_t uniqueID = 1,index =0, socketClosed;
+	command void TCPManager.init(){}
 	
 	command TCPSocketAL *TCPManager.socket(){
-		//returns a socket
-		//activePorts[0];
-	
 		newSocket[index].uniqueID = uniqueID;
 		call TCPSocket.init(&newSocket[index]);
 		uniqueID++;
-		//dbg("Project3","Asked for a new socket. Sending SocketID of : %d. Indexed at: %d\n",newSocket[index].uniqueID,index);
-		//shashmapInsert(&activeSockets,);
 		index++;
 		return &newSocket[index-1];
 	
 	}
 	command void TCPManager.AddSocket(TCPSocketAL *sckt, uint8_t port){
-		//activePorts[port] = *sckt;
-		//index++;
 		activeSockets[port] = *sckt;
-		//sarrListPushFront(&activeSockets, *sckt);
-		//dbg("Project3","State: %d",sckt->currentState);//activePorts[port].currentState);
 	}
 	command void TCPManager.setUpServer(uint8_t srcPort){
 		TCPSocketAL *mSocket;
@@ -87,12 +69,7 @@ implementation{
 			//dbg("Project3", "SYN RECIEVED. What is the status of port %d: %d\n",pckt->destPort,activePorts[pckt->destPort].currentState);
 			if(sckt.currentState == LISTEN){
 				dbg("Project3", "SYN. CONNECTION ADDED TO QUEUE \n");
-				//activeSockets[pckt->destPort].highestSeqSeen = pckt->seq;
 				call TCPSocket.addToQueue(msg);
-				//createTransport(&responsePckt, sckt.srcPort, sckt.destPort, TRANSPORT_ACK, 0, 0, NULL, 0);
-				//call Node.tcpPack(&responsePckt,&sckt);
-				//call TCPSocket.bind(&activePorts[pckt->destPort],pckt->destPort,2);	
-				//sckt.currentState = ESTABLISHED;
 			}
 			break;
 			case TRANSPORT_ACK:
@@ -113,11 +90,13 @@ implementation{
 			break;
 			case TRANSPORT_FIN:
 			if(sckt.currentState == ESTABLISHED){
-				dbg("Project3", "FIN: SOCKET IS NOW CLOSED\n");
+				dbg("Project3", "FIN: SOCKET WILL BE CLOSED SOON\n");
 				//sckt.highestSeqSeen = pckt->seq;
-				createTransport(&responsePckt, sckt.srcPort, sckt.destPort, TRANSPORT_FIN, 0, 0, NULL, 0);
+				call closing.startOneShot(1200);
+				socketClosed = pckt->destPort;
+				//createTransport(&responsePckt, sckt.srcPort, sckt.destPort, TRANSPORT_FIN, 0, 0, NULL, 0);
 				//call TCPSocket.bind(&activePorts[pckt->destPort],pckt->destPort,2);	
-				activeSockets[pckt->destPort].currentState = CLOSED;
+				//activeSockets[pckt->destPort].currentState = CLOSING;
 			}
 			break;
 			case TRANSPORT_DATA:
@@ -126,17 +105,19 @@ implementation{
 				sckt.highestSeqSeen = pckt->seq;
 				activeSockets[pckt->destPort].highestSeqSeen = pckt->seq;
 			}
-			if((activeSockets[pckt->destPort].highestSeqSeen+1)==pckt->seq){
+			//if((activeSockets[pckt->destPort].highestSeqSeen+1)==pckt->seq){
 				dbg("Project3", "Data recieved in order.\n");
 				activeSockets[pckt->destPort].highestSeqSeen++;
-	
 				//dbg("Project3", "DATA RECIEVED. HIGHEST SEQ SEEN: %d. THIS PCKT SEQ IS: %d, DATA: %d \n",sckt.highestSeqSeen,pckt->seq, pckt->payload[0]);
-				call ALServer.Buffer(pckt->destPort,pckt->payload[0]);
+				call ALServer.Buffer(pckt->destPort,pckt->payload[0],0);
 				if(sckt.currentState == ESTABLISHED){
 					createTransport(&responsePckt, sckt.srcPort, sckt.destPort, TRANSPORT_ACK, 0, 0, NULL, 0);
 					//call Node.tcpPack(&responsePckt,&sckt);
 				}
-			}
+			//}
+		//	else{
+			//	dbg("Project3", "Data recieved OUT OF ORDER. Expected Seq: %d, Recieved: %d\n",(activeSockets[pckt->destPort].highestSeqSeen+1),pckt->seq);
+				//}
 			break;
 			default:
 			dbg("Project3", "UNKNOWN");
@@ -150,12 +131,6 @@ implementation{
 
 
 	command void TCPManager.checkPort(uint8_t port){
-		//if(activePorts[port].currentState == CLOSED){
-		//	dbg("Project3", "Free to use port.\n");
-		//	return TRUE;
-		//}
-		//dbg("Project3", "Port was not in state closed.\n");
-		//return FALSE;
 		dbg("Project3", "Port %d is in state: %d.\n",port,activeSockets[port].currentState);
 	}
 
@@ -169,13 +144,12 @@ implementation{
 	}
 
 	command TCPSocketAL * TCPManager.getSocket(uint8_t port){
-		int i =0;
-		/*for(i;i <TRANSPORT_MAX_PORT;i++){
-		if(activePorts[i].currentState == CLOSED)
-		return &activePorts[i];
-		}*/
-
-	
 		return &activeSockets[port];
+	}
+
+	event void closing.fired(){
+		// TODO Auto-generated method stub
+		dbg("Project3", "Port %d is now closed.",socketClosed);
+		activeSockets[socketClosed].currentState = CLOSED;
 	}
 }

@@ -23,6 +23,7 @@ implementation {
 	components new TimerMilliC() as sendDelay;
 	components new TimerMilliC() as ServerTimer;
 	components new TimerMilliC() as WorkerTimer;
+	components new TimerMilliC() as closing;
 	components ActiveMessageC;
 	components new AMSenderC(6);
 	components new AMReceiverC(6);
@@ -40,7 +41,7 @@ implementation {
 	Node.neighborMap-> neighborMap;
 	//Node.neighborDiscovey -> TimerMilliC;
 	Node.Random->Random;
-	
+	tcpLayer.closing -> closing;
 	Node.Packet->AMSenderC;
 	Node.AMPacket->AMSenderC;
 	Node.AMSend->AMSenderC;
@@ -70,6 +71,6 @@ implementation {
 	server.Random -> Random;
 	//tcpLayer.ALClient ->client;
 	//tcpLayer.ALServer -> server;
-	//tcpSocket.ALClient -> client;
-	//tcpSocket.ALServer -> server;
+	tcpSocket.ALClient -> client;
+	tcpSocket.ALServer -> server;
 }

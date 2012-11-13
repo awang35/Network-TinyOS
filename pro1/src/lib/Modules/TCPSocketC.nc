@@ -1,6 +1,7 @@
 #include "TCPSocketAL.h"
 #include "transport.h"
 #include "packBuffer.h"
+#include "serverWorkerList.h"
 module TCPSocketC{
 	provides{
 		interface TCPSocket<TCPSocketAL>;
@@ -8,7 +9,8 @@ module TCPSocketC{
 	uses{
 		interface TCPManager<TCPSocketAL, pack> as tcpLayer;
 		interface node as Node;
-	
+		interface client<TCPSocketAL> as ALClient;
+		interface server<TCPSocketAL> as ALServer;
 	}
 }
 implementation{	
@@ -189,12 +191,14 @@ implementation{
 	async command int16_t TCPSocket.read(uint8_t port, uint8_t *readBuffer, uint16_t pos, uint16_t len){
 		TCPSocketAL *input;
 		uint16_t i = 0, read = 0;
+		serverWorkerAL *currentWorker;
+		currentWorker = call ALServer.GrabWorker();
 		input = call tcpLayer.getSocket(port);
-		
+		dbg("Project3", "Server worker Buffer amount: %d, currentLength: %d, sizeOfBuffer: %d\n", currentWorker->amountToRead,pos,len);		
 		if(input->currentState == ESTABLISHED){
-			for(i = pos;i<len;i++ ){
-				//dbg("Project3", "Data being Read: %d\n",readBuffer[i]);
-				//read++;
+			for(i = pos;i<currentWorker->amountToRead;i++ ){
+				dbg("Project3", "Data being Read: %d\n",readBuffer[i]);
+				read++;
 			}
 		}
 		return read;

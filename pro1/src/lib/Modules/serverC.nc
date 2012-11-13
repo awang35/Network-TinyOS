@@ -88,23 +88,31 @@ implementation{
 	command void serverWorker.init(serverWorkerAL *worker, TCPSocketAL *inputSocket){
 		worker->position = 0;
 		worker->socket = call TCPManager.socket();
-		
+		worker->amountToRead = 0;
 		call TCPSocket.copy(inputSocket, worker->socket);
 		
 		//worker->socket->addr, worker->socket->destAddr);		
 		dbg("serverAL", "serverAL - Worker Intilized\n");
 	}
-	command void server.Buffer(uint8_t port, uint8_t data){
+	command serverWorkerAL * server.GrabWorker(){
+		serverWorkerAL *currentWorker;
+		currentWorker = serverWorkerListGet(&workers, 0);
+		return currentWorker;
+	}
+	command uint16_t server.Buffer(uint8_t port, uint8_t data, uint8_t requestedAction){
 		uint16_t i;
 		serverWorkerAL *currentWorker;
 		dbg("serverAL","Size of worker: %d. Port %d, Data: %lu\n",serverWorkerListSize(&workers),port, data);
 		for(i=0; i<serverWorkerListSize(&workers); i++){
 			currentWorker = serverWorkerListGet(&workers, i);
 			dbg("serverAL", "currentWorker port %d, workerID: %d, bufferSize: \n", currentWorker->socket->srcPort,currentWorker->socket->workerID);
-			if(currentWorker->socket->srcPort == port)
+			if(currentWorker->socket->srcPort == port){
+				
+				currentWorker->buffer[currentWorker->amountToRead] = data;
 				currentWorker->amountToRead++;
+				}
 		}
-		
+		return 0;
 	}
 	command void serverWorker.execute(serverWorkerAL *worker){
 		if(!call TCPSocket.isClosed( (worker->socket->srcPort) ) ){
