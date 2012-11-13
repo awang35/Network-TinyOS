@@ -20,12 +20,20 @@ enum{
 	SERVER_WORKER_BUFFER_SIZE = 128 // 128 bytes
 };
 
+typedef struct buffer{
+	uint8_t buffer[SERVER_WORKER_BUFFER_SIZE];
+	uint16_t amountToRead;
+	//uint16_t currentPos;
+}serverBuffer;
+
 typedef struct serverWorkerAL{
 	TCPSocketAL *socket;
 	uint16_t position;
 	uint8_t buffer[SERVER_WORKER_BUFFER_SIZE];
 	uint8_t id;
+	uint16_t amountToRead;
 }serverWorkerAL;
+
 
 enum{
 	SERVER_TIMER_PERIOD=500, //500 ms

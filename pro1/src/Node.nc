@@ -369,7 +369,7 @@ implementation{
 			uint8_t i = 0;
 			iterator it;
 			TCPSocketAL *mSocket;
-			logPack(payload);
+			//logPack(payload);
 			if( arrListContains(&Received,myMsg->src,myMsg->seq)){
 				dbg("Project1F", "Packet has been seen before, dropping it.\n");
 				return msg;
@@ -382,12 +382,12 @@ implementation{
 				pop_front(&Received);
 				arrListPushBack(&Received,receivedPacket);
 			}
-			if(myMsg->protocol==PROTOCOL_CMD)
-				dbg("cmdDebug", "CMD packet has arrive\n");
+			//if(myMsg->protocol==PROTOCOL_CMD)
+			//	dbg("cmdDebug", "CMD packet has arrive\n");
 			if(TOS_NODE_ID!=myMsg->dest){
 				//dbg("Project1F", "Broadcasting to Neighbors\n");
-				if(myMsg->protocol==PROTOCOL_CMD)
-					dbg("cmdDebug", "Not meant for me\n");
+				//if(myMsg->protocol==PROTOCOL_CMD)
+				//	dbg("cmdDebug", "Not meant for me\n");
 				if(myMsg->dest==AM_BROADCAST_ADDR){//should be a broadcast packet
 	
 					switch(myMsg->protocol){
@@ -488,7 +488,7 @@ implementation{
 					break;
 	
 					case PROTOCOL_CMD:	
-					dbg("Project3", "WENT TO CMD");
+					//dbg("Project3", "WENT TO CMD");
 					switch(getCMD((uint8_t *) &myMsg->payload, sizeof(myMsg->payload))){
 						uint32_t temp=0, i = 0;
 						char * pch;
@@ -505,7 +505,7 @@ implementation{
 	
 						break;
 						case CMD_TEST_CLIENT:
-						dbg("Project3", "Client packet received: %s\n", (myMsg->payload)+CLIENT_CMD_LENGTH+1);
+						dbg("Project3", "Client is now being set up\n");
 						pch = strtok (myMsg->payload," ");
 						i=0;
 						while (pch != NULL){
@@ -520,7 +520,7 @@ implementation{
 							i++;
 						}
 	
-						dbg("Project3", "DEST: %d, srcPort: %d, destPort: %d\n", dest,srcPort,destPort);
+						//dbg("Project3", "DEST: %d, srcPort: %d, destPort: %d\n", dest,srcPort,destPort);
 						call tcpLayer.init();
 						call  tcpLayer.setUpClient(srcPort,destPort,dest);
 						//mSocket = call tcpLayer.socket();	
@@ -530,6 +530,7 @@ implementation{
 						//call ALClient.init(mSocket);
 						break;
 						case CMD_TEST_SERVER:
+						dbg("Project3", "Server is now being set up\n");
 						pch = strtok (myMsg->payload," ");
 						i=0;
 						while (pch != NULL){
@@ -644,9 +645,9 @@ implementation{
 		post sendBufferTask();
 	}
 
-	command void node.tcpPack(transport *payload, TCPSocketAL *sckt){
-		dbg("Project3", "transport preparing to be sent. Type: %d\n", payload->type);
-		makePack(&sendPackage,TOS_NODE_ID,sckt->destID, MAX_TTL, 4, sequenceNum++, payload, sizeof(payload));
+	command void node.tcpPack(transport payload, TCPSocketAL *sckt){
+		//dbg("Project3", "transport preparing to be sent.DestID: %d, DestPort: %d, Type: %d. Seq being sent: %d. Data: %d, payload size: %d \n", sckt->destID, sckt->destPort,payload.type, payload.seq,payload.payload[0],sizeof(payload));
+		makePack(&sendPackage,TOS_NODE_ID,sckt->destID, MAX_TTL, 4, sequenceNum++, &payload, sizeof(payload));
 		//makePack(&sendPackage, sckt->srcID,sckt->destID, MAX_TTL, 4, sequenceNum++, payload, sizeof(payload));
 		dijkstra();
 		sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, confirmList[(sckt->destID)-1].NextHop);

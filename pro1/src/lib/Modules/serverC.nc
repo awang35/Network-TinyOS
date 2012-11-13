@@ -53,11 +53,13 @@ implementation{
 				connectedSock = *test;
 				dbg("Project3", "ConnectedSock Info: ID: %d,srcID: %d, destID: %d, srcPort: %d, destPort: %d, state: %d\n",connectedSock.uniqueID,connectedSock.srcID,connectedSock.destID,connectedSock.srcPort,connectedSock.destPort, connectedSock.currentState);
 				dbg("serverAL", "serverAL - Connection Accepted.\n");
-								
+				dbg("serverAL", "serverAL - New worker. ID: %d.\n",mServer.numofWorkers);				
 				//create a worker.
 				call serverWorker.init(&newWorker, &connectedSock);
 				newWorker.id= mServer.numofWorkers;
 				mServer.numofWorkers++;
+				test->workerID = newWorker.id;
+				newWorker.socket->workerID = newWorker.id;
 				serverWorkerListPushBack(&workers, newWorker);
 			}
 		}else{ //Shutdown
@@ -92,9 +94,18 @@ implementation{
 		//worker->socket->addr, worker->socket->destAddr);		
 		dbg("serverAL", "serverAL - Worker Intilized\n");
 	}
-	//command void serverWorker.Buffer(){
+	command void server.Buffer(uint8_t port, uint8_t data){
+		uint16_t i;
+		serverWorkerAL *currentWorker;
+		dbg("serverAL","Size of worker: %d. Port %d, Data: %lu\n",serverWorkerListSize(&workers),port, data);
+		for(i=0; i<serverWorkerListSize(&workers); i++){
+			currentWorker = serverWorkerListGet(&workers, i);
+			dbg("serverAL", "currentWorker port %d, workerID: %d, bufferSize: \n", currentWorker->socket->srcPort,currentWorker->socket->workerID);
+			if(currentWorker->socket->srcPort == port)
+				currentWorker->amountToRead++;
+		}
 		
-	//}
+	}
 	command void serverWorker.execute(serverWorkerAL *worker){
 		if(!call TCPSocket.isClosed( (worker->socket->srcPort) ) ){
 			uint16_t bufferIndex, length, count;

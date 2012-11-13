@@ -34,6 +34,7 @@ typedef struct TCPSocketAL {
 	nx_uint16_t highestSeqSent;
 	uint8_t cdwin;
 	uint8_t adwin;
+	uint8_t workerID;
 } TCPSocketAL;
 
 typedef struct incomingConnect{

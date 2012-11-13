@@ -14,6 +14,7 @@ void createTransport(transport *output, uint8_t srcPort, uint8_t destPort, uint8
 		dbg("error", "Error: Transport - Invalid arguments It is type, %d and length %d.\n", type, packetLength);
 		return;
 	}
+	//dbg("Project3", "IN TRANSPORT C Seq: %d\n",seq);
 	output->srcPort=srcPort;
 	output->destPort=destPort;
 	output->type =type;
