@@ -101,13 +101,14 @@ flooding = 1;
 if(flooding == 1):
     runTime(200)
     #sendCMD("1 1 cmd ping 2 hi")
-    sendCMD("2 2 cmd server 5")
+   
     sendCMD("1 1 cmd client 3 5 2")
-    runTime(200)
-   # sendCMD("3 3 cmd client 3 5 2")
+    #runTime(200)
+    #sendCMD("3 3 cmd client 3 5 2")
+    sendCMD("2 2 cmd server 5")
     #sendCMD("5 1 Hi again!")
     #sendCMD("1 5 hi")
-  #  runTime(200)
+    runTime(200)
    # sendCMD("5 2 Flooding!")
     #sendCMD("1 65535 Flooding!")
 else:

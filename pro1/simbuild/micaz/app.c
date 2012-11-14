@@ -7045,7 +7045,7 @@ static inline void TCPManagerC$TCPManager$handlePacket(void *msg)
         if (sckt.currentState == ESTABLISHED) {
             sim_log_debug(274U, "Project3", "FIN: SOCKET WILL BE CLOSED SOON\n");
 
-            TCPManagerC$closing$startOneShot(800);
+            TCPManagerC$closing$startOneShot(1200);
             TCPManagerC$socketClosed[sim_node()] = __nesc_ntoh_uint8(pckt->destPort.nxdata);
           }
 
