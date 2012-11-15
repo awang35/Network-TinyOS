@@ -29,11 +29,11 @@ typedef struct TCPSocketAL {
 	uint8_t destID;
 	uint8_t srcPort;
 	uint8_t srcID;
-	uint8_t packetID;
+	uint16_t sent;
 	nx_uint16_t highestSeqSeen;
 	nx_uint16_t highestSeqSent;
-	uint8_t cdwin;
-	uint8_t adwin;
+	uint16_t cdwin;
+	uint16_t adwin;
 	uint8_t workerID;
 } TCPSocketAL;
 

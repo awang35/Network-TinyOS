@@ -24,6 +24,9 @@ implementation {
 	components new TimerMilliC() as ServerTimer;
 	components new TimerMilliC() as WorkerTimer;
 	components new TimerMilliC() as closing;
+	components new TimerMilliC() as resend;
+	components new TimerMilliC() as resendPacket;
+	components new TimerMilliC() as pckResend;
 	components ActiveMessageC;
 	components new AMSenderC(6);
 	components new AMReceiverC(6);
@@ -73,4 +76,7 @@ implementation {
 	//tcpLayer.ALServer -> server;
 	tcpSocket.ALClient -> client;
 	tcpSocket.ALServer -> server;
+	tcpSocket.resendBuffer -> resend;
+	tcpSocket.resendPacket ->resendPacket;
+	tcpLayer.pckResend -> pckResend;
 }

@@ -11,13 +11,20 @@ module TCPSocketC{
 		interface node as Node;
 		interface client<TCPSocketAL> as ALClient;
 		interface server<TCPSocketAL> as ALServer;
+		interface Timer<TMilli> as resendBuffer;
+		interface Timer<TMilli> as resendPacket;
 	}
 }
 implementation{	
 	uint8_t trans;
 	inCon incomingConnections[5];
-	uint8_t max = 1, inital = 0,fairCount = 0;
-	transport pckt;
+	uint8_t max = 1, inital = 0,fairCount = 0,bufferCount = 0, startHere, buffMax =0;
+	transport pcktt;
+	transport buffer[64];
+	transport retramsit;
+	TCPSocketAL retramsitSock;
+	TCPSocketAL bufferSock;
+	bool allowed = TRUE;
 	async command void TCPSocket.init(TCPSocketAL *input){
 		int i = 0;
 		input->currentState = CLOSED;
@@ -25,9 +32,10 @@ implementation{
 		input->destID= 0;
 		input->srcPort= 0;
 		input-> srcID= TOS_NODE_ID;
-		input->packetID= 0;
+		//input->packetID= 0;
 		input->highestSeqSeen= 0;
 		input->highestSeqSent= 0;
+		input->cdwin =1;
 		for(i =0;i< 5;i++)
 			incomingConnections[i].free = TRUE;
 	}
@@ -78,7 +86,7 @@ implementation{
 		input->srcPort = localPort;
 		input->srcID = address;
 		//dbg("Project3", "Binding socket ID %d. Current State: %d. Socket binded to port: %d\n",input->uniqueID, input->currentState, localPort);
-	//	dbg("Project3", "SocketInfo: ID: %d,srcID: %d, destID: %d, srcPort: %d, destPort: %d, state: %d\n",input->uniqueID,input->srcID,input->destID,input->srcPort,input->destPort, input->currentState);
+		//	dbg("Project3", "SocketInfo: ID: %d,srcID: %d, destID: %d, srcPort: %d, destPort: %d, state: %d\n",input->uniqueID,input->srcID,input->destID,input->srcPort,input->destPort, input->currentState);
 	
 		//input->currentState = 0;
 		//input = call tcpLayer.getSocket(localPort);
@@ -124,7 +132,8 @@ implementation{
 		transport send;
 		TCPSocketAL *input, *output;
 		if(temp.protocol != 255){
-			//dbg("Project3", "Grabing socket at port %d",srcPort);
+			//dbg("Project3", "Grabbing socket at port %d",srcPort);
+	
 			input = call tcpLayer.getSocket(srcPort);
 			output = call tcpLayer.socket();
 			call TCPSocket.copy(input,output);
@@ -137,32 +146,40 @@ implementation{
 			//dbg("Project3", "After: Output Info: ID: %d,srcID: %d, destID: %d, srcPort: %d, destPort: %d, state: %d\n",output->uniqueID,output->srcID,output->destID,output->srcPort,output->destPort, output->currentState);
 			call tcpLayer.AddSocket(output,output->srcPort);
 			//call tcpLayer.checkPort(output->srcPort);
+			//call call ALServer.Buffer(output, uint8_t data, uint8_t requestedAction)
+			//output->adwin = call ALServer.Buffer(output->srcPort, 0, 1);
+			call tcpLayer.window(output->srcPort, 4);
+			//output->adwin = SERVER_WORKER_BUFFER_SIZE;
+			createTransport(&send,output->srcPort,output->destPort,TRANSPORT_ACK,SERVER_WORKER_BUFFER_SIZE,0,NULL,0);	
+			call Node.tcpPack(send,*output);
 	
-			createTransport(&send,output->srcPort,output->destPort,TRANSPORT_ACK,output->highestSeqSent++,0,NULL,0);	
-			call Node.tcpPack(send,output);
+			retramsit = send;
+			retramsitSock = *output;
+	
+			call resendPacket.startPeriodic(1000);
 			return 0;
 		}
 		return -1;
 	}
-
+	
 	async command uint8_t TCPSocket.connect(uint16_t destAddr, uint8_t destPort,uint8_t port){
 		//(Client only.) Establishes a network connection on a socket.
 		TCPSocketAL *input;
-		transport pckt;
 		dbg("Project3", "Atempting to connect from port %d to destID %d on port %d.\n",port,destAddr,destPort);
 		input = call tcpLayer.getSocket(port);
 		if(destPort < 0 || destPort > TRANSPORT_MAX_PORT)
 			return -1;
-		//dbg("Project3", "Called connect. Socket State: %d\n",input->currentState);
-		//input->currentState = CLOSED;
 		if(input->currentState == CLOSED){
 			//send a syn packet
 			input->destID = destAddr;
 			input->destPort = destPort;
 			input->currentState = SYN_SENT;
 			//dbg("Project3", "SocketInfo: ID: %d,srcID: %d, destID: %d, srcPort: %d, destPort: %d, state: %d\n",input->uniqueID,input->srcID,input->destID,input->srcPort,input->destPort, input->currentState);
-			createTransport(&pckt,input->srcPort,destPort,TRANSPORT_SYN,input->highestSeqSent++,0,NULL,0);	
-			call Node.tcpPack(pckt,input);
+			createTransport(&pcktt,input->srcPort,destPort,TRANSPORT_SYN,input->highestSeqSent++,0,NULL,0);	
+			retramsit = pcktt;
+			retramsitSock = *input;
+			call Node.tcpPack(pcktt,*input);
+			call resendPacket.startPeriodic(1500);
 			return 0;
 		}
 		return -1;
@@ -172,10 +189,14 @@ implementation{
 		//Terminates a network connection.
 		TCPSocketAL *input;
 		input = call tcpLayer.getSocket(port);
-		createTransport(&pckt,input->srcPort,input->destPort,TRANSPORT_FIN,input->highestSeqSent++,0,NULL,0);	
-		call Node.tcpPack(pckt,input);
+		createTransport(&pcktt,input->srcPort,input->destPort,TRANSPORT_FIN,input->highestSeqSent++,0,NULL,0);	
+		retramsit = pcktt;
+		retramsitSock = *input;
+		call Node.tcpPack(pcktt,*input);
 		input -> currentState = CLOSED;
-		call tcpLayer.forcePortState(port, CLOSED);
+		//TODO TIMER FOR CLOSED
+		//call resendPacket.startPeriodic(700);
+		//call tcpLayer.forcePortState(port, CLOSED);
 		//call tcpLayer.checkPort(input->srcPort);
 		return 0;
 	}
@@ -185,48 +206,92 @@ implementation{
 		//transport pckt;
 		//createTransport(&pckt,input->srcPort,input->destPort,TRANSPORT_FIN,input->highestSeqSent++,0,NULL,0);	
 	
-		return input;
+		return 0;
 	}
 
 	async command int16_t TCPSocket.read(uint8_t port, uint8_t *readBuffer, uint16_t pos, uint16_t len){
 		TCPSocketAL *input;
 		uint16_t i = 0, read = 0;
 		serverWorkerAL *currentWorker;
-		currentWorker = call ALServer.GrabWorker();
+		currentWorker = call ALServer.GrabWorker(port);
 		input = call tcpLayer.getSocket(port);
-		dbg("Project3", "Server worker Buffer amount: %d, currentLength: %d, sizeOfBuffer: %d\n", currentWorker->amountToRead,pos,len);		
+		//dbg("Project3", "Server worker Buffer amount: %d, currentLength: %d, sizeOfBuffer: %d\n", currentWorker->amountToRead,pos,len);		
 		if(input->currentState == ESTABLISHED){
 			for(i = pos;i<currentWorker->amountToRead;i++ ){
 				dbg("Project3", "Data being Read: %d\n",readBuffer[i]);
 				read++;
+				
+				//currentWorker->amountToRead = currentWorker->amountToRead-1;
 			}
 		}
 		return read;
 	}
-
-	async command int16_t TCPSocket.write(uint8_t port, uint8_t *writeBuffer, uint16_t pos, uint16_t len){
-		TCPSocketAL *input;
-		int16_t nextSeq;
-		
-		//uint8_t trans;
-		uint16_t i = 0, wrote = 0;
-		input = call tcpLayer.getSocket(port);
-		if(input->currentState == ESTABLISHED){
-			for(i = pos;i<len;i++ ){
-				dbg("Project3", "Data being sent: %d\n",writeBuffer[i]);
-				trans = writeBuffer[i];
-				nextSeq = call tcpLayer.increaseSEQ(input->srcPort);
-				//dbg("Project3", "Seq: %d\n",input->highestSeqSent);
-				createTransport(&pckt,input->srcPort,input->destPort,TRANSPORT_DATA,input->adwin,input->highestSeqSent,&trans,sizeof(trans));	
-				//dbg("Project3", "Packet Seq: %d\n",pckt.seq);
-				//dbg("Project3", "Data being sent: %d\n",writeBuffer[i]);
-				call Node.tcpPack(pckt,input);
-				wrote++;
-			}
-		}
-		return wrote;
+	void addtosendbuffer(transport me){
+		//printTransport(&me);
+		//dbg_clear("Project3", "A packet is stored at index: %d in the resendBuffer.\nThis packet is: ", bufferCount);
+				//printTransport(&me);
+		buffer[bufferCount] = me;
+		bufferCount++;
+	}
+	bool allowedToSend(){
+		return FALSE;
 	}
 
+	async command int16_t TCPSocket.write(uint8_t port, uint8_t *writeBuffer, uint16_t pos, uint16_t len){
+		// TODO Reliable connection and Window
+		TCPSocketAL *input;
+		int16_t nextSeq;
+		//uint8_t trans;
+		uint16_t i = 0, wrote = 0, numPackets;
+		input = call tcpLayer.getSocket(port);
+		//allowed = allowedToSend();
+		bufferSock = *input;
+		numPackets = ((len - pos)/13)+1;
+		//input->cdwin = 10;
+		dbg("Project3", "ADWIN: %d, CDWIN: %d, ALLOWED: %d\n",input->adwin, input->cdwin,allowed);
+		if(input->currentState == ESTABLISHED && allowed) {//&& (wrote > input->cdwin)){
+			bufferSock = *input;
+			input->highestSeqSeen =input->highestSeqSent;
+			//dbg("Project3","pos: %d,len: %d, wrote: %d, cdwin: %d\n",pos,len,wrote,input->cdwin);
+			for(i = pos;i<(pos+len)&&(wrote<(input->cdwin));i++ ){
+				//TODO cdwin was here
+				//if(wrote > ((input->cdwin)-1))
+					//if(wrote > 10)
+				//	break;
+				//dbg("Project3", "ADWIN: %d, CDWIN: %d\n",input->adwin, input->cdwin);
+				dbg("Project3", "Data being sent: %d\n",writeBuffer[i]);
+				trans = writeBuffer[i];
+				//(wrote < input->cdwin)
+				//dbg("Project3", "Seq: %d\n",input->highestSeqSent);
+				createTransport(&pcktt,input->srcPort,input->destPort,TRANSPORT_DATA,input->cdwin,input->highestSeqSent,&trans,sizeof(trans));	
+				nextSeq = call tcpLayer.increaseSEQ(input->srcPort);
+				//call tcpLayer.window(input->srcPort,0);
+				//dbg("Project3", "Packet Seq: %d\n",pckt.seq);
+				//dbg("Project3", "Data being sent: %d\n",writeBuffer[i]);
+				addtosendbuffer(pcktt);
+				call Node.tcpPack(pcktt,*input);
+				wrote++;
+				buffMax++;
+				//dbg("Project3", "WROTE HAS CHANGE TO: %d\n",wrote);
+			}
+			//TODO allow will always be true
+			allowed = FALSE;	
+		}
+		else 
+			dbg("Project3", "No data will be sent\n");
+		return wrote;
+	
+	}
+	
+	command void TCPSocket.resetBuffer(){
+		//dbg("Project3","BUFFER HAS BEEN RESET\n");
+		bufferCount = 0;
+		allowed = TRUE;
+		buffMax =0;
+	}
+	//command void TCPSocket.sendAgain(){
+		
+	//}
 	async command bool TCPSocket.isListening(uint8_t port){
 		TCPSocketAL *input;
 		input = call tcpLayer.getSocket(port);
@@ -281,5 +346,35 @@ implementation{
 	
 	}
 
-
+	event void resendPacket.fired(){
+		// TODO Auto-generated method stub
+		dbg("Project3", "A packet must have been lost. Resending.\n");
+		dbg_clear("Project3", "Packet that was lost:\n");
+		printTransport(&retramsit);
+		call Node.tcpPack(retramsit,retramsitSock);
+	}
+	command void TCPSocket.startBufferTimmer(uint8_t start){
+		dbg("Project3","RESENDING BUFFER STARTING AT: %d\n",start);
+		startHere = start;
+		call resendBuffer.startOneShot(100);
+	}
+	event void resendBuffer.fired(){
+		dbg("Project3","Resending buffer. Start: %d, End: %d \n",0,buffMax);
+		for (startHere=0; startHere<buffMax; startHere++){
+				//printTransport(&buffer[startHere]);
+				dbg_clear("Project3", "Packet that was lost:\n");
+				printTransport(&buffer[startHere]);
+				call Node.tcpPack(buffer[startHere],bufferSock);
+			}
+	}
+	async command bool TCPSocket.TimerStop(uint8_t num){
+		if(num==1){
+			call resendBuffer.stop();
+		}
+		else if(num==2){
+			call resendPacket.stop();
+		}
+	
+		return TRUE;
+	}		
 }

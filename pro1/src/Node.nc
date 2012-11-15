@@ -645,12 +645,12 @@ implementation{
 		post sendBufferTask();
 	}
 
-	command void node.tcpPack(transport payload, TCPSocketAL *sckt){
-		//dbg("Project3", "transport preparing to be sent.DestID: %d, DestPort: %d, Type: %d. Seq being sent: %d. Data: %d, payload size: %d \n", sckt->destID, sckt->destPort,payload.type, payload.seq,payload.payload[0],sizeof(payload));
-		makePack(&sendPackage,TOS_NODE_ID,sckt->destID, MAX_TTL, 4, sequenceNum++, &payload, sizeof(payload));
+	command void node.tcpPack(transport payload, TCPSocketAL sckt){
+		//dbg("Project3", "transport preparing to be sent.DestID: %d, DestPort: %d, Type: %d. Seq being sent: %d. Data: %d, payload size: %d \n", sckt.destID, sckt.destPort,payload.type, payload.seq,payload.payload[0],sizeof(payload));
+		makePack(&sendPackage,TOS_NODE_ID,sckt.destID, MAX_TTL, 4, sequenceNum++, &payload, sizeof(payload));
 		//makePack(&sendPackage, sckt->srcID,sckt->destID, MAX_TTL, 4, sequenceNum++, payload, sizeof(payload));
 		dijkstra();
-		sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, confirmList[(sckt->destID)-1].NextHop);
+		sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, confirmList[(sckt.destID)-1].NextHop);
 		delaySendTask();
 	
 	}

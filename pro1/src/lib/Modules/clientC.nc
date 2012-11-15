@@ -12,7 +12,7 @@
 #include "../packet.h"
 
 enum{
-		BYTES_TO_SEND = 100
+		BYTES_TO_SEND = 40
 };
 
 module clientC{
@@ -43,7 +43,7 @@ implementation{
 		TCPSocketAL *test;
 		bool testa;
 		uint8_t newPort;
-		dbg("Project3", "ClientSocket Info: ID: %d,srcID: %d, destID: %d, srcPort: %d, destPort: %d, state: %d\n",mClient.socket->uniqueID,mClient.socket->srcID,mClient.socket->destID,mClient.socket->srcPort,mClient.socket->destPort, mClient.socket->currentState);
+		//dbg("Project3", "ClientSocket Info: ID: %d,srcID: %d, destID: %d, srcPort: %d, destPort: %d, state: %d\n",mClient.socket->uniqueID,mClient.socket->srcID,mClient.socket->destID,mClient.socket->srcPort,mClient.socket->destPort, mClient.socket->currentState);
 
 		if(call TCPSocket.isConnectPending( (mClient.socket->srcPort) )){
 			dbg("clientAL", "clientAL - Connection Pending...\n");
@@ -72,7 +72,7 @@ implementation{
 			if(bufferIndex == 0){ // Out of data, time to create more.
 				uint16_t i, offset;
 	
-				dbg("clientAL", "clientAL - Creating additional data.");
+				dbg("clientAL", "clientAL - Creating additional data.\n");
 	
 				offset = mClient.position/255 + 1; //Offset to remove any 0s from the data.
 				for(i=0; i< CLIENTAL_BUFFER_SIZE; i++){
@@ -85,7 +85,10 @@ implementation{
 			//Which is the min, the number of bytes in the buffer or the total number of bytes to be sent.
 			if(CLIENTAL_BUFFER_SIZE - bufferIndex < mClient.amount){
 				len = CLIENTAL_BUFFER_SIZE - bufferIndex;
+				//len = CLIENTAL_BUFFER_SIZE;
+				dbg("clientAL", "buffer-index was least\n");
 			}else{
+				dbg("clientAL", "amount was least\n");
 				len = mClient.amount;
 			}
 	

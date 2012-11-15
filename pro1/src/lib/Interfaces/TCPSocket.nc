@@ -26,4 +26,7 @@ interface TCPSocket<val_t>{
 	async command bool isClosing(uint8_t port);
 	async command void addToQueue(pack *pckt);
 	async command void copy(val_t *input, val_t *output);
+	async command bool TimerStop(uint8_t num);
+	command void resetBuffer(); 
+	command void startBufferTimmer(uint8_t start);
 }

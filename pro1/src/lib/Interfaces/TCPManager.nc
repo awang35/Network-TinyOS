@@ -11,4 +11,5 @@ interface TCPManager<val_t, val2_t>{
 	command void setUpServer(uint8_t srcPort);
 	command void setUpClient(uint8_t srcPort, uint8_t destPort, uint8_t destID);
 	command nx_uint16_t increaseSEQ(uint8_t port);
+	command nx_uint16_t window(uint8_t port, uint8_t type);
 }

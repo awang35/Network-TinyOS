@@ -10,18 +10,18 @@ import random
 t = Tossim([])
 r = t.radio()
 print "Creating virtual motes and creating noise trace."
-#noise = open("no_noise.txt", "r")
+noise = open("heavy_noise_10_.txt", "r")
 #Number of nodes that will be in the network
 numNodes = 5
 for i in range(1, numNodes+1):
     for j in range (100):
         t.getNode(i).addNoiseTraceReading(-98)
-#for line in noise:
- # str1 = line.strip()
-  #if str1:
-  #  val = int(str1)
-  #  for i in range(1, 3):
-   #    t.getNode(i).addNoiseTraceReading(val)
+for line in noise:
+  str1 = line.strip()
+  if str1:
+      val = int(str1)
+      for i in range(1, numNodes+1):
+          t.getNode(i).addNoiseTraceReading(val)
       
 print "Creating 'connections' between nodes"
 f = open("topo.txt", "r")
@@ -101,14 +101,16 @@ flooding = 1;
 if(flooding == 1):
     runTime(200)
     #sendCMD("1 1 cmd ping 2 hi")
-   
     sendCMD("1 1 cmd client 3 5 2")
+    sendCMD("2 2 cmd server 5")
+    
+    
     #runTime(200)
     #sendCMD("3 3 cmd client 3 5 2")
-    sendCMD("2 2 cmd server 5")
+   
     #sendCMD("5 1 Hi again!")
     #sendCMD("1 5 hi")
-    runTime(200)
+    runTime(20)
    # sendCMD("5 2 Flooding!")
     #sendCMD("1 65535 Flooding!")
 else:

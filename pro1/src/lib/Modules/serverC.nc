@@ -33,7 +33,7 @@ implementation{
 	command void server.init(TCPSocketAL *socket){
 		mServer.socket = socket;
 		mServer.numofWorkers=0;	
-			dbg("Project3", "Server. Current State: %d\n", mServer.socket->currentState);
+			//dbg("Project3", "Server. Current State: %d\n", mServer.socket->currentState);
 		call ServerTimer.startPeriodic(SERVER_TIMER_PERIOD + (uint16_t) ((call Random.rand16())%200));
 		call WorkerTimer.startPeriodic(WORKER_TIMER_PERIOD + (uint16_t) ((call Random.rand16())%200));
 	}
@@ -51,9 +51,9 @@ implementation{
 				serverWorkerAL newWorker;
 				test = call TCPManager.getSocket(newPort);
 				connectedSock = *test;
-				dbg("Project3", "ConnectedSock Info: ID: %d,srcID: %d, destID: %d, srcPort: %d, destPort: %d, state: %d\n",connectedSock.uniqueID,connectedSock.srcID,connectedSock.destID,connectedSock.srcPort,connectedSock.destPort, connectedSock.currentState);
+				//dbg("Project3", "ConnectedSock Info: ID: %d,srcID: %d, destID: %d, srcPort: %d, destPort: %d, state: %d\n",connectedSock.uniqueID,connectedSock.srcID,connectedSock.destID,connectedSock.srcPort,connectedSock.destPort, connectedSock.currentState);
 				dbg("serverAL", "serverAL - Connection Accepted.\n");
-				dbg("serverAL", "serverAL - New worker. ID: %d.\n",mServer.numofWorkers);				
+				//dbg("serverAL", "serverAL - New worker. ID: %d.\n",mServer.numofWorkers);				
 				//create a worker.
 				call serverWorker.init(&newWorker, &connectedSock);
 				newWorker.id= mServer.numofWorkers;
@@ -94,22 +94,37 @@ implementation{
 		//worker->socket->addr, worker->socket->destAddr);		
 		dbg("serverAL", "serverAL - Worker Intilized\n");
 	}
-	command serverWorkerAL * server.GrabWorker(){
+	command serverWorkerAL * server.GrabWorker(uint8_t port){
+		uint16_t i;
 		serverWorkerAL *currentWorker;
-		currentWorker = serverWorkerListGet(&workers, 0);
+		for(i=0; i<serverWorkerListSize(&workers); i++){
+			currentWorker = serverWorkerListGet(&workers, i);
+			//dbg("serverAL", "currentWorker port %d, workerID: %d, bufferSize: \n", currentWorker->socket->srcPort,currentWorker->socket->workerID);
+			if(currentWorker->socket->srcPort == port){
+				
+				return currentWorker;
+				}
+		}
 		return currentWorker;
 	}
 	command uint16_t server.Buffer(uint8_t port, uint8_t data, uint8_t requestedAction){
 		uint16_t i;
 		serverWorkerAL *currentWorker;
-		dbg("serverAL","Size of worker: %d. Port %d, Data: %lu\n",serverWorkerListSize(&workers),port, data);
+		
 		for(i=0; i<serverWorkerListSize(&workers); i++){
 			currentWorker = serverWorkerListGet(&workers, i);
-			dbg("serverAL", "currentWorker port %d, workerID: %d, bufferSize: \n", currentWorker->socket->srcPort,currentWorker->socket->workerID);
+			//dbg("serverAL","Size of worker: %d. Port %d, Data: %lu, amountToRead: %d\n",serverWorkerListSize(&workers),port, data,currentWorker->amountToRead);
+			//dbg("serverAL", "currentWorker port %d, workerID: %d, bufferSize: \n", currentWorker->socket->srcPort,currentWorker->socket->workerID);
 			if(currentWorker->socket->srcPort == port){
+				if(requestedAction==0){
+					currentWorker->buffer[currentWorker->amountToRead] = data;
+					currentWorker->amountToRead++;
+				}
+				if(requestedAction==1){
+					dbg("serverAL", "Open spots: %d\n",SERVER_WORKER_BUFFER_SIZE-currentWorker->amountToRead);
+					return (SERVER_WORKER_BUFFER_SIZE-currentWorker->amountToRead);
+					}
 				
-				currentWorker->buffer[currentWorker->amountToRead] = data;
-				currentWorker->amountToRead++;
 				}
 		}
 		return 0;
