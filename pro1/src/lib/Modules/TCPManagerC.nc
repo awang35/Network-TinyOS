@@ -84,8 +84,15 @@ implementation{
 					dbg("Project3", "Dropping syn packet.\n");
 			}
 			else{
-					createTransport(&responsePckt, sckt.srcPort, sckt.destPort, TRANSPORT_FIN, 0, 0, NULL, 0);
+				dbg("Project3", "Port is closed.\n");
+				
+				sckt.destID = myMsg->src;
+				sckt.srcID = myMsg->dest;
+				resendMe = responsePckt;
+				resendPort = sckt.srcPort;
+				createTransport(&responsePckt, pckt->destPort, pckt->srcPort, TRANSPORT_FIN, 0, 0, NULL, 0);
 				call Node.tcpPack(responsePckt,sckt);
+				//call pckResend.startPeriodic(200);
 			}
 			break;
 			case TRANSPORT_ACK:
@@ -142,12 +149,18 @@ implementation{
 				resendMe = responsePckt;
 				resendPort = sckt.srcPort;
 				call Node.tcpPack(responsePckt,sckt);
-				call pckResend.startPeriodic(200);
+				call pckResend.startPeriodic(600);
 				//call TCPSocket.bind(&activePorts[pckt->destPort],pckt->destPort,2);	
 				//activeSockets[pckt->destPort].currentState = CLOSING;
 			}
 			if(sckt.currentState == CLOSING){
 				call TCPSocket.TimerStop(2);
+				activeSockets[pckt->destPort].currentState = CLOSED;
+				//call closing.startOneShot(1200);
+			}
+			if(sckt.currentState == SYN_SENT){
+				call TCPSocket.TimerStop(2);
+				dbg("Project3", "Did you send to the right port?\n");
 				activeSockets[pckt->destPort].currentState = CLOSED;
 				//call closing.startOneShot(1200);
 			}

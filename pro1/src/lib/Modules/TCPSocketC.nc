@@ -18,13 +18,14 @@ module TCPSocketC{
 implementation{	
 	uint8_t trans;
 	inCon incomingConnections[5];
-	uint8_t max = 1, inital = 0,fairCount = 0,bufferCount = 0, startHere, buffMax =0;
+	uint8_t max = 1, inital = 0,fairCount = 0,bufferCount = 0, startHere, buffMax =0, maxListen = 0;
 	transport pcktt;
 	transport buffer[64];
 	transport retramsit;
 	TCPSocketAL retramsitSock;
 	TCPSocketAL bufferSock;
 	bool allowed = TRUE;
+	
 	async command void TCPSocket.init(TCPSocketAL *input){
 		int i = 0;
 		input->currentState = CLOSED;
@@ -58,6 +59,7 @@ implementation{
 			count++;
 		}
 		dbg("Project3", "No waiting connection.\n");
+		maxListen++;
 		temp.protocol = 255;
 		return temp;
 	
@@ -133,7 +135,7 @@ implementation{
 		TCPSocketAL *input, *output;
 		if(temp.protocol != 255){
 			//dbg("Project3", "Grabbing socket at port %d",srcPort);
-	
+			maxListen = 0;
 			input = call tcpLayer.getSocket(srcPort);
 			output = call tcpLayer.socket();
 			call TCPSocket.copy(input,output);
@@ -158,6 +160,11 @@ implementation{
 	
 			call resendPacket.startPeriodic(1000);
 			return 0;
+		}
+		if (maxListen>30){
+			input = call tcpLayer.getSocket(srcPort);
+			input->currentState = CLOSED;
+			dbg("Project3", "Time out. Will now closed.\n");
 		}
 		return -1;
 	}

@@ -112,7 +112,7 @@ if(flooding == 1):
    
     #sendCMD("5 1 Hi again!")
     #sendCMD("1 5 hi")
-    runTime(1000)
+    runTime(1200)
    # sendCMD("5 2 Flooding!")
     #sendCMD("1 65535 Flooding!")
 else:
