@@ -65,8 +65,8 @@ implementation{
 		uint8_t i = 0;
 		TCPSocketAL sckt;
 		//dbg("Project3","Checking TCP packet. srcID: %d, destID: %d,srcPort: %d, destPort: %d\n",myMsg->src, myMsg->dest, pckt->srcPort,pckt->destPort);
-		dbg("Project3","Recieved a TCP packet\n");
-		printTransport(pckt);
+		//dbg("Project3","Recieved a TCP packet\n");
+		//printTransport(pckt);
 
 		sckt = activeSockets[pckt->destPort];
 		switch(pckt->type){
@@ -75,16 +75,16 @@ implementation{
 			//dbg("Project3", "SYN RECIEVED. What is the status of port %d: %d\n",pckt->destPort,activePorts[pckt->destPort].currentState);
 	
 			if(sckt.currentState == LISTEN){
-				if(connectSeen!=pckt->srcPort){
+				if(connectSeen!=myMsg->src){
 					dbg_clear("Project3", "SYN. CONNECTION ADDED TO QUEUE \n");
 					call TCPSocket.addToQueue(msg);
-					connectSeen = pckt->srcPort;
+					connectSeen = myMsg->src;
 				}
 				else
 					dbg("Project3", "Dropping syn packet.\n");
 			}
 			else{
-				createTransport(&responsePckt, sckt.srcPort, sckt.destPort, TRANSPORT_FIN, 0, 0, NULL, 0);
+					createTransport(&responsePckt, sckt.srcPort, sckt.destPort, TRANSPORT_FIN, 0, 0, NULL, 0);
 				call Node.tcpPack(responsePckt,sckt);
 			}
 			break;
@@ -102,27 +102,32 @@ implementation{
 				//dbg("Project3", "ACK for data recieved on port %d\n",pckt->destPort);
 				//dbg("Project3", "Comparing Seq. Expected Seq: %d, Received: %d\n",(activeSockets[pckt->destPort].highestSeqSeen+1),pckt->seq);
 				//dbg("Project3", "Comparing Seq. Highest Seq Sent: %d, Seen: %d\n",(activeSockets[pckt->destPort].highestSeqSent),activeSockets[pckt->destPort].highestSeqSeen);
-				if((activeSockets[pckt->destPort].highestSeqSeen+1)==pckt->seq)
+				if(activeSockets[pckt->destPort].highestSeqSent == pckt->seq){
+					//dbg("Project3", "I recieved an ack that satisfied all the ack before me.!\n");
+					dbg("Project3", "Increasing CDWIN\n");
+					activeSockets[pckt->destPort].cdwin+=2;
+					call TCPSocket.resetBuffer();
+					if(activeSockets[pckt->destPort].cdwin> activeSockets[pckt->destPort].adwin)
+						activeSockets[pckt->destPort].cdwin = activeSockets[pckt->destPort].adwin;
+					activeSockets[pckt->destPort].adwin= pckt->window;
+					activeSockets[pckt->destPort].highestSeqSeen++;
+				}
+				else if((activeSockets[pckt->destPort].highestSeqSeen+1)==pckt->seq)
 				{
 					if(activeSockets[pckt->destPort].highestSeqSent == pckt->seq){
-						dbg("Project3", "Increasing CDWIN\n");
-						activeSockets[pckt->destPort].cdwin+=2;
-						call TCPSocket.resetBuffer();}
+					}
 					//dbg("Project3", "Correct ack received.\n");
 					activeSockets[pckt->destPort].adwin= pckt->window;
 					activeSockets[pckt->destPort].highestSeqSeen++;
-				
-					if(activeSockets[pckt->destPort].cdwin> activeSockets[pckt->destPort].adwin)
-						activeSockets[pckt->destPort].cdwin = activeSockets[pckt->destPort].adwin;
 				}
 				else{	
 						activeSockets[pckt->destPort].cdwin/=2;
-						dbg("Project3", "Incorrect Ack. Sending Data Again.\n");
-						call TCPSocket.startBufferTimmer(activeSockets[pckt->destPort].highestSeqSeen);
+					dbg("Project3", "Incorrect Ack. Sending Data Again.\n");
+					call TCPSocket.startBufferTimmer(activeSockets[pckt->destPort].highestSeqSeen);
 				}
 			}
 			else{
-				createTransport(&responsePckt, sckt.srcPort, sckt.destPort, TRANSPORT_FIN, 0, 0, NULL, 0);
+					createTransport(&responsePckt, sckt.srcPort, sckt.destPort, TRANSPORT_FIN, 0, 0, NULL, 0);
 				call Node.tcpPack(responsePckt,sckt);
 			}
 			break;
@@ -138,6 +143,11 @@ implementation{
 				//call TCPSocket.bind(&activePorts[pckt->destPort],pckt->destPort,2);	
 				//activeSockets[pckt->destPort].currentState = CLOSING;
 			}
+			if(sckt.currentState == CLOSING){
+				call TCPSocket.TimerStop(2);
+				activeSockets[pckt->destPort].currentState = CLOSED;
+				//call closing.startOneShot(1200);
+			}
 			break;
 			case TRANSPORT_DATA:
 	
@@ -147,14 +157,14 @@ implementation{
 				call TCPSocket.TimerStop(2);
 			}
 			if((activeSockets[pckt->destPort].highestSeqSeen+1)==pckt->seq){
-//				if(pckt->payload[0]==3 && three){
-//					three = FALSE;
-//					break;
-//				}
-//				if(pckt->payload[0]==10 && ten){
-//					ten = FALSE;
-//					break;
-//				}
+				//				if(pckt->payload[0]==3 && three){
+				//					three = FALSE;
+				//					break;
+				//				}
+				//				if(pckt->payload[0]==10 && ten){
+				//					ten = FALSE;
+				//					break;
+				//				}
 				call pckResend.stop();
 				//dbg("Project3", "Data recieved in order.\n");
 				activeSockets[pckt->destPort].highestSeqSeen++;
@@ -199,6 +209,9 @@ implementation{
 
 	command TCPSocketAL * TCPManager.getSocket(uint8_t port){
 		return &activeSockets[port];
+	}
+	command TCPSocketAL TCPManager.getCopySocket(uint8_t port){
+		return activeSockets[port];
 	}
 	command nx_uint16_t TCPManager.window(uint8_t port, uint8_t type){
 		if(type==0)

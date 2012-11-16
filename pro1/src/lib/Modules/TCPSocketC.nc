@@ -154,7 +154,7 @@ implementation{
 			call Node.tcpPack(send,*output);
 	
 			retramsit = send;
-			retramsitSock = *output;
+			retramsitSock = call tcpLayer.getCopySocket(newPort);
 	
 			call resendPacket.startPeriodic(1000);
 			return 0;
@@ -177,7 +177,7 @@ implementation{
 			//dbg("Project3", "SocketInfo: ID: %d,srcID: %d, destID: %d, srcPort: %d, destPort: %d, state: %d\n",input->uniqueID,input->srcID,input->destID,input->srcPort,input->destPort, input->currentState);
 			createTransport(&pcktt,input->srcPort,destPort,TRANSPORT_SYN,input->highestSeqSent++,0,NULL,0);	
 			retramsit = pcktt;
-			retramsitSock = *input;
+			retramsitSock = call tcpLayer.getCopySocket(port);
 			call Node.tcpPack(pcktt,*input);
 			call resendPacket.startPeriodic(1500);
 			return 0;
@@ -193,9 +193,9 @@ implementation{
 		retramsit = pcktt;
 		retramsitSock = *input;
 		call Node.tcpPack(pcktt,*input);
-		input -> currentState = CLOSED;
+		input -> currentState = CLOSING;
 		//TODO TIMER FOR CLOSED
-		//call resendPacket.startPeriodic(700);
+		call resendPacket.startPeriodic(933);
 		//call tcpLayer.forcePortState(port, CLOSED);
 		//call tcpLayer.checkPort(input->srcPort);
 		return 0;
@@ -215,12 +215,13 @@ implementation{
 		serverWorkerAL *currentWorker;
 		currentWorker = call ALServer.GrabWorker(port);
 		input = call tcpLayer.getSocket(port);
-		//dbg("Project3", "Server worker Buffer amount: %d, currentLength: %d, sizeOfBuffer: %d\n", currentWorker->amountToRead,pos,len);		
+		//for(i = pos;i<currentWorker->amountToRead;i++ ){
+		dbg("Project3", "Server worker Buffer amount: %d, currentLength: %d, What is left: %d\n", currentWorker->amountToRead,pos,len+pos);		
 		if(input->currentState == ESTABLISHED){
 			for(i = pos;i<currentWorker->amountToRead;i++ ){
 				dbg("Project3", "Data being Read: %d\n",readBuffer[i]);
 				read++;
-				
+				call tcpLayer.window( port, 0);
 				//currentWorker->amountToRead = currentWorker->amountToRead-1;
 			}
 		}
@@ -229,7 +230,7 @@ implementation{
 	void addtosendbuffer(transport me){
 		//printTransport(&me);
 		//dbg_clear("Project3", "A packet is stored at index: %d in the resendBuffer.\nThis packet is: ", bufferCount);
-				//printTransport(&me);
+		//printTransport(&me);
 		buffer[bufferCount] = me;
 		bufferCount++;
 	}
@@ -248,7 +249,7 @@ implementation{
 		bufferSock = *input;
 		numPackets = ((len - pos)/13)+1;
 		//input->cdwin = 10;
-		dbg("Project3", "ADWIN: %d, CDWIN: %d, ALLOWED: %d\n",input->adwin, input->cdwin,allowed);
+		//dbg("Project3", "ADWIN: %d, CDWIN: %d, ALLOWED: %d\n",input->adwin, input->cdwin,allowed);
 		if(input->currentState == ESTABLISHED && allowed) {//&& (wrote > input->cdwin)){
 			bufferSock = *input;
 			input->highestSeqSeen =input->highestSeqSent;
@@ -256,7 +257,7 @@ implementation{
 			for(i = pos;i<(pos+len)&&(wrote<(input->cdwin));i++ ){
 				//TODO cdwin was here
 				//if(wrote > ((input->cdwin)-1))
-					//if(wrote > 10)
+				//if(wrote > 10)
 				//	break;
 				//dbg("Project3", "ADWIN: %d, CDWIN: %d\n",input->adwin, input->cdwin);
 				dbg("Project3", "Data being sent: %d\n",writeBuffer[i]);
@@ -290,7 +291,7 @@ implementation{
 		buffMax =0;
 	}
 	//command void TCPSocket.sendAgain(){
-		
+	
 	//}
 	async command bool TCPSocket.isListening(uint8_t port){
 		TCPSocketAL *input;
@@ -354,18 +355,23 @@ implementation{
 		call Node.tcpPack(retramsit,retramsitSock);
 	}
 	command void TCPSocket.startBufferTimmer(uint8_t start){
-		dbg("Project3","RESENDING BUFFER STARTING AT: %d\n",start);
+		//dbg("Project3","RESENDING BUFFER STARTING AT: %d\n",start);
 		startHere = start;
 		call resendBuffer.startOneShot(100);
 	}
 	event void resendBuffer.fired(){
-		dbg("Project3","Resending buffer. Start: %d, End: %d \n",0,buffMax);
-		for (startHere=0; startHere<buffMax; startHere++){
-				//printTransport(&buffer[startHere]);
+		int i = 0;
+		dbg("Project3","Resending Data.\n");
+	
+	
+		for (i=0; i<buffMax; i++){
+			//printTransport(&buffer[startHere]);
+			if(buffer[i].payload[0]>=startHere){
 				dbg_clear("Project3", "Packet that was lost:\n");
-				printTransport(&buffer[startHere]);
-				call Node.tcpPack(buffer[startHere],bufferSock);
+				printTransport(&buffer[i]);
+				call Node.tcpPack(buffer[i],bufferSock);
 			}
+		}
 	}
 	async command bool TCPSocket.TimerStop(uint8_t num){
 		if(num==1){

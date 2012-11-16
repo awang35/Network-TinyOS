@@ -117,6 +117,7 @@ implementation{
 			//dbg("serverAL", "currentWorker port %d, workerID: %d, bufferSize: \n", currentWorker->socket->srcPort,currentWorker->socket->workerID);
 			if(currentWorker->socket->srcPort == port){
 				if(requestedAction==0){
+					currentWorker->amountToRead=currentWorker->amountToRead%SERVER_WORKER_BUFFER_SIZE;
 					currentWorker->buffer[currentWorker->amountToRead] = data;
 					currentWorker->amountToRead++;
 				}

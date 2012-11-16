@@ -208,16 +208,16 @@ implementation{
 	
 				temp[i] = confirmList[i];
 			}
-			dbg("Project2p","Printing ConfirmList\n");
+			dbg("Project3","Printing ConfirmList\n");
 		}
 		else{
 				for(i = 0; i< NUMNODES;i++){
 				temp[i] = tentList[i];
 			}
-			dbg("Project2p","Printing tentList\n");	
+			dbg("Project3","Printing tentList\n");	
 		}
 		for(i = 0; i< NUMNODES;i++){
-			dbg("Project2p","Entry %d: Dest: %d, Cost: %d, NextHop: %d, isValid: %d\n",i+1, temp[i].Dest,temp[i].Cost,temp[i].NextHop,temp[i].isValid);
+			dbg("Project3","Entry %d: Dest: %d, Cost: %d, NextHop: %d, isValid: %d\n",i+1, temp[i].Dest,temp[i].Cost,temp[i].NextHop,temp[i].isValid);
 	
 		}
 	}
@@ -434,7 +434,7 @@ implementation{
 						dbg("Project1F", "Packet is not meant for me, broadcasting it.\n");
 					dijkstra();
 					printRecieveLsp();
-					printTable(0);
+					//printTable(0);
 					dbg("Project2", "Packet is meant for Node %d. Looking up table. Will be routed to Node %d\n", myMsg->dest, confirmList[myMsg->dest-1].NextHop);
 	
 					makePack(&sendPackage, myMsg->src,myMsg->dest, myMsg->TTL, myMsg->protocol, myMsg->seq, (uint8_t *) myMsg->payload, sizeof(myMsg->payload));					
@@ -456,7 +456,7 @@ implementation{
 					case PROTOCOL_PING:
 					dijkstra();
 					printRecieveLsp();
-					printTable(0);
+					//printTable(0);
 					dbg("Project2", "PingReply Packeted is enroute to Node %d, will be routed to Node %d\n",myMsg->src, confirmList[myMsg->src-1].NextHop);
 					//dest =AM_BROADCAST_ADDR;
 					dbg("Project1F", "Sending Ping Reply to %d! \n", myMsg->src);
@@ -646,10 +646,13 @@ implementation{
 	}
 
 	command void node.tcpPack(transport payload, TCPSocketAL sckt){
-		//dbg("Project3", "transport preparing to be sent.DestID: %d, DestPort: %d, Type: %d. Seq being sent: %d. Data: %d, payload size: %d \n", sckt.destID, sckt.destPort,payload.type, payload.seq,payload.payload[0],sizeof(payload));
+		dijkstra();
+		//printTable(0);
+		//dbg("Project3", "transport preparing to be sent.DestID: %d, DestPort: %d, Type: %d. Next Hop: %d. Data: %d, payload size: %d, Seq Num: %d\n", sckt.destID, sckt.destPort,payload.type, confirmList[(sckt.destID)-1].NextHop,payload.payload[0],sizeof(payload),sequenceNum+1);
 		makePack(&sendPackage,TOS_NODE_ID,sckt.destID, MAX_TTL, 4, sequenceNum++, &payload, sizeof(payload));
 		//makePack(&sendPackage, sckt->srcID,sckt->destID, MAX_TTL, 4, sequenceNum++, payload, sizeof(payload));
-		dijkstra();
+		
+		
 		sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, confirmList[(sckt.destID)-1].NextHop);
 		delaySendTask();
 	
