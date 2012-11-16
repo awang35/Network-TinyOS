@@ -136,10 +136,13 @@ implementation{
 				call pckResend.stop();
 				dbg("Project3", "FIN: SOCKET WILL BE CLOSED SOON\n");
 				//sckt.highestSeqSeen = pckt->seq;
-				call closing.startOneShot(1200);
+				call closing.startOneShot(2500);
 				socketClosed = pckt->destPort;
 				createTransport(&responsePckt, sckt.srcPort, sckt.destPort, TRANSPORT_FIN, 0, 0, NULL, 0);
+				resendMe = responsePckt;
+				resendPort = sckt.srcPort;
 				call Node.tcpPack(responsePckt,sckt);
+				call pckResend.startPeriodic(200);
 				//call TCPSocket.bind(&activePorts[pckt->destPort],pckt->destPort,2);	
 				//activeSockets[pckt->destPort].currentState = CLOSING;
 			}
@@ -227,7 +230,7 @@ implementation{
 		return 0;	
 	}
 	event void closing.fired(){
-	
+		call pckResend.stop();
 		dbg("Project3", "Port %d is now closed.",socketClosed);
 		activeSockets[socketClosed].currentState = CLOSED;
 	}
