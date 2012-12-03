@@ -32,8 +32,10 @@ implementation {
 	components new AMReceiverC(6);
 	components TCPManagerC as tcpLayer;
 	components TCPSocketC as tcpSocket;
-	components clientC as client;
-	components serverC as server;
+	components chatClientC as client;
+	components chatServerC as server;
+	//components clientC as client;
+	//components serverC as server;
 	components new TimerMilliC() as ClientTimer;
 	Node->MainC.Boot;
 

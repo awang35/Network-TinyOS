@@ -9,8 +9,10 @@ module TCPSocketC{
 	uses{
 		interface TCPManager<TCPSocketAL, pack> as tcpLayer;
 		interface node as Node;
-		interface client<TCPSocketAL> as ALClient;
-		interface server<TCPSocketAL> as ALServer;
+		interface chatClient<TCPSocketAL> as ALClient;
+		interface chatServer<TCPSocketAL> as ALServer;
+		//interface client<TCPSocketAL> as ALClient;
+		//interface server<TCPSocketAL> as ALServer;
 		interface Timer<TMilli> as resendBuffer;
 		interface Timer<TMilli> as resendPacket;
 	}

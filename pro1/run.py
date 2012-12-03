@@ -46,7 +46,7 @@ t.addChannel("Project3", sys.stdout);
 t.addChannel("transport", sys.stdout);
 t.addChannel("clientAL", sys.stdout);
 t.addChannel("serverAL", sys.stdout);
-
+t.addChannel("Project4", sys.stdout);
 print "Setting noise model"
 for i in range(1, numNodes+1):
     t.getNode(i).createNoiseModel()
@@ -102,8 +102,9 @@ flooding = 1;
 if(flooding == 1):
     runTime(800)
     #sendCMD("1 1 cmd ping 2 hi")
-    sendCMD("2 2 cmd server 5")
-    sendCMD("3 3 cmd client 3 5 2")
+    sendCMD("1 1 cmd server 41")
+    sendCMD("2 2 cmd hello abc 5\r\n")
+    #sendCMD("3 3 cmd client 3 5 2")
     #sendCMD("1 1 cmd client 3 5 2")
    
     
@@ -113,7 +114,7 @@ if(flooding == 1):
    
     #sendCMD("5 1 Hi again!")
     #sendCMD("1 5 hi")
-    runTime(1500)
+    #runTime(1500)
    # sendCMD("5 2 Flooding!")
     #sendCMD("1 65535 Flooding!")
 else:

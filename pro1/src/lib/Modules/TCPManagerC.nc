@@ -7,8 +7,10 @@ module TCPManagerC{
 	provides interface TCPManager<TCPSocketAL, pack>;
 	uses{ 
 		interface TCPSocket<TCPSocketAL>;	
-		interface client<TCPSocketAL> as ALClient;
-		interface server<TCPSocketAL> as ALServer;
+		//interface client<TCPSocketAL> as ALClient;
+		//interface server<TCPSocketAL> as ALServer;
+		interface chatClient<TCPSocketAL> as ALClient;
+		interface chatServer<TCPSocketAL> as ALServer;
 		interface node as Node;
 		interface Timer<TMilli> as closing;
 		interface Timer<TMilli> as pckResend;

@@ -39,8 +39,10 @@ module Node{
 		interface Receive;
 		interface TCPManager<TCPSocketAL,pack> as tcpLayer;
 		interface TCPSocket<TCPSocketAL> as tcpSocket;
-		interface client<TCPSocketAL> as ALClient;
-		interface server<TCPSocketAL> as ALServer;
+		//interface client<TCPSocketAL> as ALClient;
+		//interface server<TCPSocketAL> as ALServer;
+		interface chatClient<TCPSocketAL> as ALClient;
+		interface chatServer<TCPSocketAL> as ALServer;
 	}
 	//provides interface Node;
 }
@@ -453,6 +455,7 @@ implementation{
 					uint8_t createMsg[PACKET_MAX_PAYLOAD_SIZE];
 					uint8_t zero = 1;
 					uint16_t dest,srcPort,destPort;
+					uint8_t *userName;
 					case PROTOCOL_PING:
 					dijkstra();
 					printRecieveLsp();
@@ -484,79 +487,90 @@ implementation{
 						//printLsp();
 	
 					}
-					//dbg("genDebug", "WENT PAST");
 					break;
 	
 					case PROTOCOL_CMD:	
-					//dbg("Project3", "WENT TO CMD");
-					switch(getCMD((uint8_t *) &myMsg->payload, sizeof(myMsg->payload))){
-						uint32_t temp=0, i = 0;
-						char * pch;
-						case CMD_PING:
-						memcpy(&createMsg, (myMsg->payload) + PING_CMD_LENGTH, sizeof(myMsg->payload) - PING_CMD_LENGTH);
-						memcpy(&dest, (myMsg->payload)+ PING_CMD_LENGTH-2, sizeof(uint8_t));
-						makePack(&sendPackage, TOS_NODE_ID, (dest-48)&(0x00FF), MAX_TTL, PROTOCOL_PING, sequenceNum++, (uint8_t *)createMsg,
-								sizeof(createMsg));	
+						switch(getCMD((uint8_t *) &myMsg->payload, sizeof(myMsg->payload))){
+							uint32_t temp=0, i = 0;
+							char * pch;
+							case CMD_PING:
+							memcpy(&createMsg, (myMsg->payload) + PING_CMD_LENGTH, sizeof(myMsg->payload) - PING_CMD_LENGTH);
+							memcpy(&dest, (myMsg->payload)+ PING_CMD_LENGTH-2, sizeof(uint8_t));
+							makePack(&sendPackage, TOS_NODE_ID, (dest-48)&(0x00FF), MAX_TTL, PROTOCOL_PING, sequenceNum++, (uint8_t *)createMsg,
+									sizeof(createMsg));	
 	
-						//Place in Send Buffer
-						sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, sendPackage.dest);
-						//post sendBufferTask();
-						delaySendTask();
+							//Place in Send Buffer
+							sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, sendPackage.dest);
+							//post sendBufferTask();
+							delaySendTask();
 	
-						break;
+							break;
 						case CMD_TEST_CLIENT:
-						dbg("Project3", "Client is now being set up\n");
-						pch = strtok (myMsg->payload," ");
-						i=0;
-						while (pch != NULL){
-							//dbg("Project3", "%s\n",pch);
-							if(i == 2)
-								srcPort = atoi(pch);
-							else if (i ==3)
-								destPort = atoi(pch);
-							else if (i == 4)
-								dest= atoi(pch);
-							pch = strtok (NULL, " ");
-							i++;
-						}
+							dbg("Project3", "Client is now being set up\n");
+							pch = strtok (myMsg->payload," ");
+							i=0;
+							while (pch != NULL){
+								//dbg("Project3", "%s\n",pch);
+								if(i == 2)
+									srcPort = atoi(pch);
+								else if (i ==3)
+									destPort = atoi(pch);
+								else if (i == 4)
+									dest= atoi(pch);
+								pch = strtok (NULL, " ");
+								i++;
+							}
 	
 						//dbg("Project3", "DEST: %d, srcPort: %d, destPort: %d\n", dest,srcPort,destPort);
-						call tcpLayer.init();
-						call  tcpLayer.setUpClient(srcPort,destPort,dest);
-						//mSocket = call tcpLayer.socket();	
-						//call tcpLayer.forcePortState(99);
-						//call tcpSocket.bind(mSocket, srcPort, TOS_NODE_ID);
-						//call tcpSocket.connect(mSocket, srcPort, destPort);
-						//call ALClient.init(mSocket);
-						break;
+							call tcpLayer.init();
+							call  tcpLayer.setUpClient(srcPort,destPort,dest);
+							break;
 						case CMD_TEST_SERVER:
-						dbg("Project3", "Server is now being set up\n");
-						pch = strtok (myMsg->payload," ");
-						i=0;
-						while (pch != NULL){
-							//dbg("Project3", "%s\n",pch);
-							if(i == 2)
-								srcPort = atoi(pch);
-							pch = strtok (NULL, " ");
-							i++;
-						}
-						call tcpLayer.init();
-						call  tcpLayer.setUpServer( srcPort);
-						//mSocket = call tcpLayer.socket();
-						//dbg("Project3","Retrieve a new socket. ID: %d,State: %d\n",mSocket->uniqueID,mSocket->currentState);
-						//call tcpSocket.bind(mSocket, srcPort, TOS_NODE_ID);
-						////call tcpSocket.listen(mSocket, 5);
-						//call ALServer.init(mSocket);
-						break;
-	
+							dbg("Project3", "Server is now being set up\n");
+							pch = strtok (myMsg->payload," ");
+							i=0;
+							while (pch != NULL){
+								//dbg("Project3", "%s\n",pch);
+								if(i == 2)
+									srcPort = atoi(pch);
+								pch = strtok (NULL, " ");
+								i++;
+							}
+							call tcpLayer.init();
+							call  tcpLayer.setUpServer( srcPort);
+							break;
+					
 						case CMD_KILL:
-						isActive = FALSE;
-						break;
-	
+							isActive = FALSE;
+							break;
+						case CMD_MSG:
+							break;
+						case CMD_HELLO:
+							dbg("Project4", "Hello command received\n");
+							pch = strtok (myMsg->payload," ");
+							i=0;
+							while (pch != NULL){
+								//dbg("Project3", "%s\n",pch);
+								if(i == 2){
+									dbg_clear("Project4", "Welcome user %s.\nConnecting you to server now.\n",pch);
+									userName = pch;
+									//srcPort = atoi(pch);
+									}
+								else if (i ==3)
+									//dbg_clear("Project4", "Port %s\n",pch);
+									srcPort = atoi(pch);
+		
+								pch = strtok (NULL, " ");
+								i++;
+							}
+							//dbg("Project4", "%s wants to connect from port: %d\n", userName,srcPort);
+							call tcpLayer.init();
+							call  tcpLayer.setUpClient(srcPort,41,1);
+							break;
 						case CMD_ERROR:
-						break;
+							break;
 						default:
-						break;
+							break;
 					}
 					break;
 					case PROTOCOL_TCP:
@@ -651,8 +665,8 @@ implementation{
 		//dbg("Project3", "transport preparing to be sent.DestID: %d, DestPort: %d, Type: %d. Next Hop: %d. Data: %d, payload size: %d, Seq Num: %d\n", sckt.destID, sckt.destPort,payload.type, confirmList[(sckt.destID)-1].NextHop,payload.payload[0],sizeof(payload),sequenceNum+1);
 		makePack(&sendPackage,TOS_NODE_ID,sckt.destID, MAX_TTL, 4, sequenceNum++, &payload, sizeof(payload));
 		//makePack(&sendPackage, sckt->srcID,sckt->destID, MAX_TTL, 4, sequenceNum++, payload, sizeof(payload));
-		
-		
+	
+	
 		sendBufferPushBack(&packBuffer, sendPackage, sendPackage.src, confirmList[(sckt.destID)-1].NextHop);
 		delaySendTask();
 	
