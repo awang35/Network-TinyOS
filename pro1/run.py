@@ -10,7 +10,8 @@ import random
 t = Tossim([])
 r = t.radio()
 print "Creating virtual motes and creating noise trace."
-noise = open("heavy_noise_30_.txt", "r")
+noise = open("no_noise.txt", "r")
+#noise = open("heavy_noise_30_.txt", "r")
 #Number of nodes that will be in the network
 numNodes = 5
 for i in range(1, numNodes+1):
@@ -112,7 +113,7 @@ if(flooding == 1):
    
     #sendCMD("5 1 Hi again!")
     #sendCMD("1 5 hi")
-    runTime(1200)
+    runTime(1500)
    # sendCMD("5 2 Flooding!")
     #sendCMD("1 65535 Flooding!")
 else:

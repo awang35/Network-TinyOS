@@ -150,8 +150,6 @@ implementation{
 				resendPort = sckt.srcPort;
 				call Node.tcpPack(responsePckt,sckt);
 				call pckResend.startPeriodic(600);
-				//call TCPSocket.bind(&activePorts[pckt->destPort],pckt->destPort,2);	
-				//activeSockets[pckt->destPort].currentState = CLOSING;
 			}
 			if(sckt.currentState == CLOSING){
 				call TCPSocket.TimerStop(2);
@@ -162,25 +160,18 @@ implementation{
 				call TCPSocket.TimerStop(2);
 				dbg("Project3", "Did you send to the right port?\n");
 				activeSockets[pckt->destPort].currentState = CLOSED;
-				//call closing.startOneShot(1200);
+				//call closing.startOneShot(1200//
 			}
 			break;
 			case TRANSPORT_DATA:
 	
 			if(sckt.highestSeqSeen == 0){
-				sckt.highestSeqSeen = pckt->seq;
+				//++sckt.highestSeqSeen = pckt->seq;
+				dbg("Project3","Packet Seq Receive: %d\n",pckt->seq);
 				activeSockets[pckt->destPort].highestSeqSeen = pckt->seq-1;
 				call TCPSocket.TimerStop(2);
 			}
 			if((activeSockets[pckt->destPort].highestSeqSeen+1)==pckt->seq){
-				//				if(pckt->payload[0]==3 && three){
-				//					three = FALSE;
-				//					break;
-				//				}
-				//				if(pckt->payload[0]==10 && ten){
-				//					ten = FALSE;
-				//					break;
-				//				}
 				call pckResend.stop();
 				//dbg("Project3", "Data recieved in order.\n");
 				activeSockets[pckt->destPort].highestSeqSeen++;
@@ -191,7 +182,6 @@ implementation{
 					createTransport(&responsePckt, sckt.srcPort, sckt.destPort, TRANSPORT_ACK, sckt.adwin, (pckt->seq)+1, NULL, 0);
 					resendMe = responsePckt;
 					resendPort = sckt.srcPort;
-					//TODO removed sending of ack
 					call Node.tcpPack(responsePckt,sckt);
 					call pckResend.startPeriodic(1033);
 				}
