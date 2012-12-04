@@ -216,7 +216,19 @@ __attribute((__leaf__)) __attribute((__nothrow__)) __attribute((__pure__)) __att
 #line 128
 extern char *strcpy(char *__restrict __dest, const char *__restrict __src) 
 __attribute((__leaf__)) __attribute((__nothrow__)) __attribute((__nonnull__(1, 2))) ;
-#line 143
+
+extern char *strncpy(char *__restrict __dest, 
+const char *__restrict __src, size_t __n) 
+__attribute((__leaf__)) __attribute((__nothrow__)) __attribute((__nonnull__(1, 2))) ;
+
+
+
+
+
+
+
+
+
 extern int strcmp(const char *__s1, const char *__s2) 
 __attribute((__leaf__)) __attribute((__nothrow__)) __attribute((__pure__)) __attribute((__nonnull__(1, 2))) ;
 # 40 "/usr/include/xlocale.h" 3
@@ -1310,7 +1322,7 @@ typedef struct sim_log_channel {
 } sim_log_channel_t;
 
 enum __nesc_unnamed4272 {
-  SIM_LOG_OUTPUT_COUNT = 327U
+  SIM_LOG_OUTPUT_COUNT = 330U
 };
 
 sim_log_output_t outputs[SIM_LOG_OUTPUT_COUNT];
@@ -3826,6 +3838,7 @@ serverBuffer;
 
 
 
+
 #line 29
 typedef struct serverWorkerAL {
   TCPSocketAL *socket;
@@ -3833,8 +3846,17 @@ typedef struct serverWorkerAL {
   uint8_t buffer[SERVER_WORKER_BUFFER_SIZE];
   uint8_t id;
   uint16_t amountToRead;
+  uint8_t name[10];
 } serverWorkerAL;
 
+
+
+
+#line 38
+typedef struct userList {
+  uint8_t name[10];
+} 
+userList;
 
 enum __nesc_unnamed4312 {
   SERVER_TIMER_PERIOD = 500, 
@@ -3864,15 +3886,6 @@ static inline bool serverWorkerListPushBack(serverWorkerList *cur, workerType ne
 static inline uint8_t serverWorkerListSize(serverWorkerList *cur);
 
 static inline workerType *serverWorkerListGet(serverWorkerList *cur, __nesc_nxbase_nx_uint8_t i);
-
-static inline void serverWorkerListRemoveKey(serverWorkerList *list, uint8_t i);
-
-
-
-
-
-
-static bool serverWorkerListRemoveValue(serverWorkerList *list, workerType newVal);
 # 52 "/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/Atm128Timer.h"
 enum __nesc_unnamed4314 {
   ATM128_CLK8_OFF = 0x0, 
@@ -4199,19 +4212,17 @@ enum __nesc_unnamed4343 {
 
 
 
+
 #line 21
 typedef struct clientAL {
   TCPSocketAL *socket;
   uint32_t startTime;
   uint16_t amount;
-
+  uint8_t *name;
+  pack payload;
   uint16_t position;
   uint8_t buffer[CLIENTAL_BUFFER_SIZE];
 } clientAL;
-# 14 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatClientC.nc"
-enum __nesc_unnamed4344 {
-  BYTES_TO_SEND = 100
-};
 typedef TCPSocketAL Node$tcpLayer$val_t;
 typedef pack Node$tcpLayer$val2_t;
 typedef TMilli Node$sendDelay$precision_tag;
@@ -4243,7 +4254,7 @@ typedef TMilli /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC$0$preci
 typedef /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC$0$precision_tag /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC$0$LocalTime$precision_tag;
 typedef /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC$0$precision_tag /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC$0$Counter$precision_tag;
 typedef uint32_t /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC$0$Counter$size_type;
-enum AMQueueP$__nesc_unnamed4345 {
+enum AMQueueP$__nesc_unnamed4344 {
   AMQueueP$NUM_CLIENTS = 1U
 };
 typedef TMilli TCPManagerC$closing$precision_tag;
@@ -4606,15 +4617,15 @@ static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$TimerFrom$fire
 #line 136
 static uint32_t /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$getNow(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x40cbd3a8);
+uint8_t arg_0x40cb83a8);
 # 83 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$default$fired(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x40cbd3a8);
+uint8_t arg_0x40cb83a8);
 # 64 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$startPeriodic(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x40cbd3a8, 
+uint8_t arg_0x40cb83a8, 
 # 64 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 uint32_t dt);
 
@@ -4627,7 +4638,7 @@ uint32_t dt);
 
 static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$startOneShot(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x40cbd3a8, 
+uint8_t arg_0x40cb83a8, 
 # 73 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 uint32_t dt);
 
@@ -4636,7 +4647,7 @@ uint32_t dt);
 
 static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$stop(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x40cbd3a8);
+uint8_t arg_0x40cb83a8);
 # 82 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Counter.nc"
 static void /*HilTimerMilliC.CounterToLocalTimeC*/CounterToLocalTimeC$0$Counter$overflow(void );
 # 80 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/AMSend.nc"
@@ -4663,7 +4674,7 @@ error_t error);
 # 110 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/AMSend.nc"
 static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$AMSend$sendDone(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc"
-am_id_t arg_0x40d240a0, 
+am_id_t arg_0x40d4d0a0, 
 # 103 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/AMSend.nc"
 message_t * msg, 
 
@@ -4676,7 +4687,7 @@ error_t error);
 # 75 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc"
 static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$send(
 # 46 "/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc"
-uint8_t arg_0x40d266a8, 
+uint8_t arg_0x40d4e6a8, 
 # 67 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc"
 message_t * msg, 
 
@@ -4690,7 +4701,7 @@ uint8_t len);
 #line 100
 static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$default$sendDone(
 # 46 "/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc"
-uint8_t arg_0x40d266a8, 
+uint8_t arg_0x40d4e6a8, 
 # 96 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc"
 message_t * msg, 
 
@@ -4706,10 +4717,24 @@ static void TCPManagerC$closing$fired(void );
 # 4 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPManager.nc"
 static void TCPManagerC$TCPManager$init(void );
 static TCPManagerC$TCPManager$val_t *TCPManagerC$TCPManager$socket(void );
-static void TCPManagerC$TCPManager$freeSocket(TCPManagerC$TCPManager$val_t *arg_0x40a91568);
 
 
+
+
+
+
+
+static void TCPManagerC$TCPManager$setUpChatClient(uint8_t srcPort, uint8_t destPort, uint8_t destID, void *arg_0x40ab17e0);
+#line 9
 static void TCPManagerC$TCPManager$AddSocket(TCPManagerC$TCPManager$val_t *arg_0x40a906a8, uint8_t arg_0x40a90848);
+
+
+
+
+
+
+
+static void TCPManagerC$TCPManager$turnOffTimer(void );
 #line 8
 static void TCPManagerC$TCPManager$forcePortState(uint8_t arg_0x40a90010, uint8_t arg_0x40a901b0);
 
@@ -4723,16 +4748,16 @@ static void TCPManagerC$TCPManager$handlePacket(void *arg_0x40a91a40);
 
 
 
+
 static TCPSocketAL TCPManagerC$TCPManager$getCopySocket(uint8_t port);
-#line 13
+#line 14
 static __nesc_nxbase_nx_uint16_t TCPManagerC$TCPManager$increaseSEQ(uint8_t port);
 #line 11
 static void TCPManagerC$TCPManager$setUpServer(uint8_t srcPort);
+static void TCPManagerC$TCPManager$setUpClient(uint8_t srcPort, uint8_t destPort, uint8_t destID);
 
 
 static __nesc_nxbase_nx_uint16_t TCPManagerC$TCPManager$window(uint8_t port, uint8_t type);
-#line 12
-static void TCPManagerC$TCPManager$setUpClient(uint8_t srcPort, uint8_t destPort, uint8_t destID);
 # 83 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 static void TCPManagerC$pckResend$fired(void );
 #line 83
@@ -4778,14 +4803,6 @@ static uint8_t TCPSocketC$TCPSocket$accept(uint8_t srcPort, uint8_t newPort);
 
 
 static int16_t TCPSocketC$TCPSocket$write(uint8_t port, uint8_t *writeBuffer, uint16_t pos, uint16_t len);
-#line 13
-static uint8_t TCPSocketC$TCPSocket$close(uint8_t port);
-
-
-
-
-
-
 
 
 
@@ -4793,16 +4810,17 @@ static bool TCPSocketC$TCPSocket$isConnected(uint8_t port);
 # 83 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 static void TCPSocketC$resendPacket$fired(void );
 # 2 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/chatClient.nc"
-static void chatClientC$chatClient$init(chatClientC$chatClient$val_t *arg_0x40abf538);
+static void chatClientC$chatClient$init(chatClientC$chatClient$val_t *arg_0x40abfa80, void *arg_0x40abfbf8);
+static void chatClientC$chatClient$msgCommand(uint8_t *arg_0x40abc130);
 # 83 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 static void chatClientC$ClientTimer$fired(void );
 #line 83
 static void chatServerC$ServerTimer$fired(void );
 # 2 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/serverWorker.nc"
-static void chatServerC$serverWorker$init(chatServerC$serverWorker$val_t *arg_0x40ea4af8, chatServerC$serverWorker$val2_t *arg_0x40ea4cb0);
-static void chatServerC$serverWorker$execute(chatServerC$serverWorker$val_t *arg_0x40ea01b0);
+static void chatServerC$serverWorker$init(chatServerC$serverWorker$val_t *arg_0x40ebd190, chatServerC$serverWorker$val2_t *arg_0x40ebd348);
+static void chatServerC$serverWorker$execute(chatServerC$serverWorker$val_t *arg_0x40ebd828);
 # 3 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/chatServer.nc"
-static void chatServerC$chatServer$init(chatServerC$chatServer$val_t *arg_0x40ad17f0);
+static void chatServerC$chatServer$init(chatServerC$chatServer$val_t *arg_0x40acd010);
 static uint16_t chatServerC$chatServer$Buffer(uint8_t port, uint8_t data, uint8_t requestedAction);
 static serverWorkerAL *chatServerC$chatServer$GrabWorker(uint8_t port);
 # 83 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
@@ -4855,7 +4873,7 @@ uint8_t arg_0x407111b8);
 
 
 
-enum SimSchedulerBasicP$__nesc_unnamed4346 {
+enum SimSchedulerBasicP$__nesc_unnamed4345 {
 
   SimSchedulerBasicP$NUM_TASKS = 8U, 
   SimSchedulerBasicP$NO_TASK = 255
@@ -5192,7 +5210,7 @@ double reverseGain);
 static bool TossimPacketModelC$GainRadioModel$clearChannel(void );
 static void TossimPacketModelC$GainRadioModel$setPendingTransmission(void );
 # 96 "/home/adrian/local/tinyos-2.1.1/tos/lib/tossim/TossimPacketModelC.nc"
-enum TossimPacketModelC$__nesc_unnamed4347 {
+enum TossimPacketModelC$__nesc_unnamed4346 {
 #line 96
   TossimPacketModelC$startDoneTask = 0U
 };
@@ -5202,14 +5220,14 @@ typedef int TossimPacketModelC$__nesc_sillytask_startDoneTask[TossimPacketModelC
 
 
 
-enum TossimPacketModelC$__nesc_unnamed4348 {
+enum TossimPacketModelC$__nesc_unnamed4347 {
 #line 101
   TossimPacketModelC$stopDoneTask = 1U
 };
 #line 101
 typedef int TossimPacketModelC$__nesc_sillytask_stopDoneTask[TossimPacketModelC$stopDoneTask];
 #line 145
-enum TossimPacketModelC$__nesc_unnamed4349 {
+enum TossimPacketModelC$__nesc_unnamed4348 {
 #line 145
   TossimPacketModelC$sendDoneTask = 2U
 };
@@ -5452,6 +5470,14 @@ static uint16_t Node$Random$rand16(void );
 static void Node$tcpLayer$init(void );
 
 
+
+
+
+
+
+
+static void Node$tcpLayer$setUpChatClient(uint8_t srcPort, uint8_t destPort, uint8_t destID, void *arg_0x40ab17e0);
+#line 7
 static void Node$tcpLayer$handlePacket(void *arg_0x40a91a40);
 
 
@@ -5473,7 +5499,9 @@ static void Node$neighborMap$startPeriodic(uint32_t dt);
 
 
 static void Node$neighborMap$startOneShot(uint32_t dt);
-#line 136
+# 3 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/chatClient.nc"
+static void Node$ALClient$msgCommand(uint8_t *arg_0x40abc130);
+# 136 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 static uint32_t Node$pingTimeoutTimer$getNow(void );
 #line 64
 static void Node$pingTimeoutTimer$startPeriodic(uint32_t dt);
@@ -5489,7 +5517,7 @@ static void Node$neighborDiscovey$startPeriodic(uint32_t dt);
 
 static void Node$neighborDiscovey$startOneShot(uint32_t dt);
 # 83 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
-enum Node$__nesc_unnamed4350 {
+enum Node$__nesc_unnamed4349 {
 #line 83
   Node$sendBufferTask = 3U
 };
@@ -5619,11 +5647,11 @@ static void Node$dijkstra(void );
 static inline void Node$storePayload(lspList *payload, uint16_t src);
 #line 363
 static inline message_t *Node$Receive$receive(message_t *msg, void *payload, uint8_t len);
-#line 596
+#line 604
 static inline void Node$sendBufferTask$runTask(void );
-#line 620
+#line 628
 static inline error_t Node$send(uint16_t src, uint16_t dest, pack *message);
-#line 646
+#line 654
 static void Node$makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t protocol, uint16_t seq, uint8_t *payload, uint8_t length);
 
 
@@ -5692,7 +5720,7 @@ uint32_t /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128AlarmAs
 
 
 
-enum /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128AlarmAsyncP$0$__nesc_unnamed4351 {
+enum /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128AlarmAsyncP$0$__nesc_unnamed4350 {
   Atm128AlarmAsyncP$0$MINDT = 2, 
   Atm128AlarmAsyncP$0$MAXT = 230
 };
@@ -5930,7 +5958,7 @@ static void /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC$0$Alarm$stop(void );
 # 83 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 static void /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC$0$Timer$fired(void );
 # 74 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/AlarmToTimerC.nc"
-enum /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC$0$__nesc_unnamed4352 {
+enum /*HilTimerMilliC.AlarmToTimerC*/AlarmToTimerC$0$__nesc_unnamed4351 {
 #line 74
   AlarmToTimerC$0$fired = 4U
 };
@@ -5972,16 +6000,16 @@ static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$TimerFrom$stop
 
 static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$fired(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/VirtualizeTimerC.nc"
-uint8_t arg_0x40cbd3a8);
+uint8_t arg_0x40cb83a8);
 #line 71
-enum /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$__nesc_unnamed4353 {
+enum /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$__nesc_unnamed4352 {
 #line 71
   VirtualizeTimerC$0$updateFromTimer = 5U
 };
 #line 71
 typedef int /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$__nesc_sillytask_updateFromTimer[/*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$updateFromTimer];
 #line 53
-enum /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$__nesc_unnamed4354 {
+enum /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$__nesc_unnamed4353 {
 
   VirtualizeTimerC$0$NUM_TIMERS = 11U, 
   VirtualizeTimerC$0$END_OF_LIST = 255
@@ -5995,7 +6023,7 @@ enum /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$__nesc_unnamed4354 {
 
 
 #line 59
-typedef struct /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$__nesc_unnamed4355 {
+typedef struct /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$__nesc_unnamed4354 {
 
   uint32_t t0;
   uint32_t dt;
@@ -6101,7 +6129,7 @@ static inline void /*NodeC.AMSenderC.SenderC.AMQueueEntryP*/AMQueueEntryP$0$Send
 # 80 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/AMSend.nc"
 static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$AMSend$send(
 # 48 "/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc"
-am_id_t arg_0x40d240a0, 
+am_id_t arg_0x40d4d0a0, 
 # 80 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/AMSend.nc"
 am_addr_t addr, 
 #line 71
@@ -6118,7 +6146,7 @@ uint8_t len);
 # 100 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc"
 static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$sendDone(
 # 46 "/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc"
-uint8_t arg_0x40d266a8, 
+uint8_t arg_0x40d4e6a8, 
 # 96 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc"
 message_t * msg, 
 
@@ -6148,14 +6176,14 @@ static am_id_t /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$AMPacket$type(
 #line 143
 message_t * amsg);
 # 126 "/home/adrian/local/tinyos-2.1.1/tos/system/AMQueueImplP.nc"
-enum /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$__nesc_unnamed4356 {
+enum /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$__nesc_unnamed4355 {
 #line 126
   AMQueueImplP$0$CancelTask = 6U
 };
 #line 126
 typedef int /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$__nesc_sillytask_CancelTask[/*AMQueueP.AMQueueImplP*/AMQueueImplP$0$CancelTask];
 #line 169
-enum /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$__nesc_unnamed4357 {
+enum /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$__nesc_unnamed4356 {
 #line 169
   AMQueueImplP$0$errorTask = 7U
 };
@@ -6163,7 +6191,7 @@ enum /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$__nesc_unnamed4357 {
 typedef int /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$__nesc_sillytask_errorTask[/*AMQueueP.AMQueueImplP*/AMQueueImplP$0$errorTask];
 #line 57
 #line 55
-typedef struct /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$__nesc_unnamed4358 {
+typedef struct /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$__nesc_unnamed4357 {
   message_t * msg;
 } /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$queue_entry_t;
 
@@ -6201,9 +6229,9 @@ static void TCPManagerC$closing$startOneShot(uint32_t dt);
 # 4 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/node.nc"
 static void TCPManagerC$Node$tcpPack(transport payload, TCPSocketAL sckt);
 # 2 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/chatClient.nc"
-static void TCPManagerC$ALClient$init(TCPManagerC$ALClient$val_t *arg_0x40abf538);
+static void TCPManagerC$ALClient$init(TCPManagerC$ALClient$val_t *arg_0x40abfa80, void *arg_0x40abfbf8);
 # 3 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/chatServer.nc"
-static void TCPManagerC$ALServer$init(TCPManagerC$ALServer$val_t *arg_0x40ad17f0);
+static void TCPManagerC$ALServer$init(TCPManagerC$ALServer$val_t *arg_0x40acd010);
 static uint16_t TCPManagerC$ALServer$Buffer(uint8_t port, uint8_t data, uint8_t requestedAction);
 # 64 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 static void TCPManagerC$pckResend$startPeriodic(uint32_t dt);
@@ -6264,7 +6292,7 @@ static inline void TCPManagerC$TCPManager$setUpServer(uint8_t srcPort);
 
 
 
-static void TCPManagerC$TCPManager$setUpClient(uint8_t srcPort, uint8_t destPort, uint8_t destID);
+static inline void TCPManagerC$TCPManager$setUpClient(uint8_t srcPort, uint8_t destPort, uint8_t destID);
 
 
 
@@ -6274,17 +6302,10 @@ static void TCPManagerC$TCPManager$setUpClient(uint8_t srcPort, uint8_t destPort
 
 
 
-
+static inline void TCPManagerC$TCPManager$setUpChatClient(uint8_t srcPort, uint8_t destPort, uint8_t destID, void *name);
+#line 73
 static inline void TCPManagerC$TCPManager$handlePacket(void *msg);
-#line 202
-static inline void TCPManagerC$TCPManager$freeSocket(TCPSocketAL *input);
-
-
-
-
-
-
-
+#line 221
 static inline void TCPManagerC$TCPManager$forcePortState(uint8_t port, uint8_t state);
 
 
@@ -6300,7 +6321,7 @@ static inline TCPSocketAL TCPManagerC$TCPManager$getCopySocket(uint8_t port);
 
 
 static __nesc_nxbase_nx_uint16_t TCPManagerC$TCPManager$window(uint8_t port, uint8_t type);
-#line 237
+#line 249
 static inline void TCPManagerC$closing$fired(void );
 
 
@@ -6308,6 +6329,14 @@ static inline void TCPManagerC$closing$fired(void );
 
 
 static inline void TCPManagerC$pckResend$fired(void );
+
+
+
+
+
+
+
+static inline void TCPManagerC$TCPManager$turnOffTimer(void );
 # 5 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPManager.nc"
 static TCPSocketC$tcpLayer$val_t *TCPSocketC$tcpLayer$socket(void );
 
@@ -6319,8 +6348,9 @@ static TCPSocketAL *TCPSocketC$tcpLayer$getSocket(uint8_t arg_0x40a90da0);
 
 
 
+
 static TCPSocketAL TCPSocketC$tcpLayer$getCopySocket(uint8_t port);
-#line 13
+#line 14
 static __nesc_nxbase_nx_uint16_t TCPSocketC$tcpLayer$increaseSEQ(uint8_t port);
 static __nesc_nxbase_nx_uint16_t TCPSocketC$tcpLayer$window(uint8_t port, uint8_t type);
 # 4 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/node.nc"
@@ -6371,9 +6401,7 @@ static inline uint8_t TCPSocketC$TCPSocket$listen(uint8_t port, uint8_t backlog)
 #line 132
 static inline uint8_t TCPSocketC$TCPSocket$accept(uint8_t srcPort, uint8_t newPort);
 #line 174
-static inline uint8_t TCPSocketC$TCPSocket$connect(uint16_t destAddr, uint8_t destPort, uint8_t port);
-#line 197
-static inline uint8_t TCPSocketC$TCPSocket$close(uint8_t port);
+static uint8_t TCPSocketC$TCPSocket$connect(uint16_t destAddr, uint8_t destPort, uint8_t port);
 #line 213
 static inline uint8_t TCPSocketC$TCPSocket$release(uint8_t port);
 
@@ -6397,9 +6425,9 @@ static inline void TCPSocketC$addtosendbuffer(transport me);
 
 
 static inline int16_t TCPSocketC$TCPSocket$write(uint8_t port, uint8_t *writeBuffer, uint16_t pos, uint16_t len);
-#line 296
+#line 283
 static inline void TCPSocketC$TCPSocket$resetBuffer(void );
-#line 313
+#line 300
 static inline bool TCPSocketC$TCPSocket$isConnected(uint8_t port);
 
 
@@ -6434,7 +6462,7 @@ static inline bool TCPSocketC$TCPSocket$isConnectPending(uint8_t port);
 
 
 static void TCPSocketC$TCPSocket$copy(TCPSocketAL *input, TCPSocketAL *output);
-#line 359
+#line 346
 static inline void TCPSocketC$resendPacket$fired(void );
 
 
@@ -6448,7 +6476,7 @@ static inline void TCPSocketC$TCPSocket$startBufferTimmer(uint8_t start);
 
 
 static inline void TCPSocketC$resendBuffer$fired(void );
-#line 385
+#line 372
 static bool TCPSocketC$TCPSocket$TimerStop(uint8_t num);
 # 52 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Random.nc"
 static uint16_t chatClientC$Random$rand16(void );
@@ -6476,33 +6504,25 @@ static uint8_t chatClientC$TCPSocket$release(uint8_t port);
 static bool chatClientC$TCPSocket$isClosed(uint8_t port);
 #line 19
 static int16_t chatClientC$TCPSocket$write(uint8_t port, uint8_t *writeBuffer, uint16_t pos, uint16_t len);
-#line 13
-static uint8_t chatClientC$TCPSocket$close(uint8_t port);
-
-
-
-
-
-
 
 
 
 static bool chatClientC$TCPSocket$isConnected(uint8_t port);
-# 31 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatClientC.nc"
+# 29 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatClientC.nc"
 clientAL chatClientC$mClient[1000];
-static inline void chatClientC$chatClient$init(TCPSocketAL *socket);
+char *chatClientC$msg[1000];
+pack chatClientC$buffer[1000];
+bool chatClientC$firstTime[1000];
+
+static void chatClientC$chatClient$init(TCPSocketAL *socket, void *name);
+#line 79
+static inline void chatClientC$clearBuffer(void );
 
 
-
-
-
-
-
-
+static inline void chatClientC$chatClient$msgCommand(uint8_t *_msg);
+#line 100
 static inline void chatClientC$ClientTimer$fired(void );
-# 136 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
-static uint32_t chatServerC$ServerTimer$getNow(void );
-#line 64
+# 64 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 static void chatServerC$ServerTimer$startPeriodic(uint32_t dt);
 #line 78
 static void chatServerC$ServerTimer$stop(void );
@@ -6510,10 +6530,9 @@ static void chatServerC$ServerTimer$stop(void );
 static uint16_t chatServerC$Random$rand16(void );
 # 5 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPManager.nc"
 static chatServerC$TCPManager$val_t *chatServerC$TCPManager$socket(void );
-static void chatServerC$TCPManager$freeSocket(chatServerC$TCPManager$val_t *arg_0x40a91568);
-
-
-
+#line 17
+static void chatServerC$TCPManager$turnOffTimer(void );
+#line 10
 static TCPSocketAL *chatServerC$TCPManager$getSocket(uint8_t arg_0x40a90da0);
 # 64 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 static void chatServerC$WorkerTimer$startPeriodic(uint32_t dt);
@@ -6536,10 +6555,11 @@ static bool chatServerC$TCPSocket$isClosed(uint8_t port);
 static void chatServerC$TCPSocket$copy(chatServerC$TCPSocket$val_t *input, chatServerC$TCPSocket$val_t *output);
 #line 9
 static uint8_t chatServerC$TCPSocket$accept(uint8_t srcPort, uint8_t newPort);
-# 30 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatServerC.nc"
+# 31 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatServerC.nc"
 serverAL chatServerC$mServer[1000];
 serverWorkerList chatServerC$workers[1000];
-
+userList chatServerC$list[1000][20];
+uint8_t chatServerC$listIndex[1000];
 static inline void chatServerC$chatServer$init(TCPSocketAL *socket);
 
 
@@ -6548,10 +6568,11 @@ static inline void chatServerC$chatServer$init(TCPSocketAL *socket);
 
 
 
+
 static inline void chatServerC$ServerTimer$fired(void );
-#line 75
+#line 78
 static inline void chatServerC$WorkerTimer$fired(void );
-#line 88
+#line 91
 static inline void chatServerC$serverWorker$init(serverWorkerAL *worker, TCPSocketAL *inputSocket);
 
 
@@ -6562,9 +6583,26 @@ static inline void chatServerC$serverWorker$init(serverWorkerAL *worker, TCPSock
 
 
 static inline serverWorkerAL *chatServerC$chatServer$GrabWorker(uint8_t port);
-#line 110
+#line 114
+static void chatServerC$clearBuffer(serverWorkerAL *worker);
+
+
+
+
+static inline void chatServerC$printUser(void );
+
+
+
+
+
+
+
+
+
+static inline void chatServerC$printBuffer(serverWorkerAL *worker);
+#line 142
 static inline uint16_t chatServerC$chatServer$Buffer(uint8_t port, uint8_t data, uint8_t requestedAction);
-#line 133
+#line 165
 static inline void chatServerC$serverWorker$execute(serverWorkerAL *worker);
 # 78 "/home/adrian/local/tinyos-2.1.1/tos/lib/tossim/heap.c"
 static inline void init_heap(heap_t *heap)
@@ -7004,9 +7042,9 @@ static inline uint8_t serverWorkerListSize(serverWorkerList *cur)
   return cur->numValues;
 }
 
-# 110 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatServerC.nc"
+# 142 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatServerC.nc"
 static inline uint16_t chatServerC$chatServer$Buffer(uint8_t port, uint8_t data, uint8_t requestedAction)
-#line 110
+#line 142
 {
   uint16_t i;
   serverWorkerAL *currentWorker;
@@ -7022,7 +7060,7 @@ static inline uint16_t chatServerC$chatServer$Buffer(uint8_t port, uint8_t data,
               currentWorker->amountToRead++;
             }
           if (requestedAction == 1) {
-              sim_log_debug(318U, "serverAL", "Open spots: %d\n", SERVER_WORKER_BUFFER_SIZE - currentWorker->amountToRead);
+              sim_log_debug(325U, "serverAL", "Open spots: %d\n", SERVER_WORKER_BUFFER_SIZE - currentWorker->amountToRead);
               return SERVER_WORKER_BUFFER_SIZE - currentWorker->amountToRead;
             }
         }
@@ -7137,9 +7175,9 @@ inline static void TCPSocketC$resendBuffer$startOneShot(uint32_t dt){
 #line 73
 }
 #line 73
-# 366 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+# 353 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static inline void TCPSocketC$TCPSocket$startBufferTimmer(uint8_t start)
-#line 366
+#line 353
 {
 
   TCPSocketC$startHere[sim_node()] = start;
@@ -7153,9 +7191,9 @@ inline static void TCPManagerC$TCPSocket$startBufferTimmer(uint8_t start){
 #line 31
 }
 #line 31
-# 296 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+# 283 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static inline void TCPSocketC$TCPSocket$resetBuffer(void )
-#line 296
+#line 283
 {
 
   TCPSocketC$bufferCount[sim_node()] = 0;
@@ -7170,9 +7208,9 @@ inline static void TCPManagerC$TCPSocket$resetBuffer(void ){
 #line 30
 }
 #line 30
-# 210 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
+# 221 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
 static inline void TCPManagerC$TCPManager$forcePortState(uint8_t port, uint8_t state)
-#line 210
+#line 221
 {
   TCPManagerC$activeSockets[sim_node()][port].currentState = state;
 }
@@ -7206,9 +7244,9 @@ inline static void TCPManagerC$TCPSocket$addToQueue(pack *pckt){
 #line 27
 }
 #line 27
-# 62 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
+# 73 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
 static inline void TCPManagerC$TCPManager$handlePacket(void *msg)
-#line 62
+#line 73
 {
   unsigned short __nesc_temp55;
   unsigned char *__nesc_temp54;
@@ -7216,7 +7254,7 @@ static inline void TCPManagerC$TCPManager$handlePacket(void *msg)
   unsigned char *__nesc_temp52;
   unsigned short __nesc_temp51;
   unsigned char *__nesc_temp50;
-#line 64
+#line 75
   pack *myMsg = (pack *)msg;
   transport *pckt = & myMsg->payload;
   transport responsePckt;
@@ -7243,7 +7281,7 @@ static inline void TCPManagerC$TCPManager$handlePacket(void *msg)
               }
           }
         else 
-#line 88
+#line 99
           {
             sim_log_debug(277U, "Project3", "Port is closed.\n");
 
@@ -7266,7 +7304,7 @@ static inline void TCPManagerC$TCPManager$handlePacket(void *msg)
             TCPManagerC$TCPManager$forcePortState(__nesc_ntoh_uint8(pckt->destPort.nxdata), ESTABLISHED);
           }
         else {
-#line 109
+#line 120
           if (sckt.currentState == ESTABLISHED) {
 
 
@@ -7280,12 +7318,12 @@ static inline void TCPManagerC$TCPManager$handlePacket(void *msg)
                   if (TCPManagerC$activeSockets[sim_node()][__nesc_ntoh_uint8(pckt->destPort.nxdata)].cdwin > TCPManagerC$activeSockets[sim_node()][__nesc_ntoh_uint8(pckt->destPort.nxdata)].adwin) {
                     TCPManagerC$activeSockets[sim_node()][__nesc_ntoh_uint8(pckt->destPort.nxdata)].cdwin = TCPManagerC$activeSockets[sim_node()][__nesc_ntoh_uint8(pckt->destPort.nxdata)].adwin;
                     }
-#line 121
+#line 132
                   TCPManagerC$activeSockets[sim_node()][__nesc_ntoh_uint8(pckt->destPort.nxdata)].adwin = __nesc_ntoh_uint16(pckt->window.nxdata);
                   (__nesc_temp50 = TCPManagerC$activeSockets[sim_node()][__nesc_ntoh_uint8(pckt->destPort.nxdata)].highestSeqSeen.nxdata, __nesc_hton_uint16(__nesc_temp50, (__nesc_temp51 = __nesc_ntoh_uint16(__nesc_temp50)) + 1), __nesc_temp51);
                 }
               else {
-#line 124
+#line 135
                 if (__nesc_ntoh_uint16(TCPManagerC$activeSockets[sim_node()][__nesc_ntoh_uint8(pckt->destPort.nxdata)].highestSeqSeen.nxdata) + 1 == __nesc_ntoh_uint16(pckt->seq.nxdata)) 
                   {
                     if (__nesc_ntoh_uint16(TCPManagerC$activeSockets[sim_node()][__nesc_ntoh_uint8(pckt->destPort.nxdata)].highestSeqSent.nxdata) == __nesc_ntoh_uint16(pckt->seq.nxdata)) {
@@ -7302,13 +7340,13 @@ static inline void TCPManagerC$TCPManager$handlePacket(void *msg)
                 }
             }
           else 
-#line 138
+#line 149
             {
               createTransport(&responsePckt, sckt.srcPort, sckt.destPort, TRANSPORT_FIN, 0, 0, (void *)0, 0);
               TCPManagerC$Node$tcpPack(responsePckt, sckt);
             }
           }
-#line 142
+#line 153
       break;
       case TRANSPORT_FIN: 
         if (sckt.currentState == ESTABLISHED) {
@@ -7374,17 +7412,67 @@ inline static void Node$tcpLayer$handlePacket(void *arg_0x40a91a40){
 #line 7
 }
 #line 7
-
-
-
-
-
-inline static void Node$tcpLayer$setUpClient(uint8_t srcPort, uint8_t destPort, uint8_t destID){
-#line 12
-  TCPManagerC$TCPManager$setUpClient(srcPort, destPort, destID);
-#line 12
+# 2 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/chatClient.nc"
+inline static void TCPManagerC$ALClient$init(TCPManagerC$ALClient$val_t *arg_0x40abfa80, void *arg_0x40abfbf8){
+#line 2
+  chatClientC$chatClient$init(arg_0x40abfa80, arg_0x40abfbf8);
+#line 2
 }
-#line 12
+#line 2
+# 11 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc"
+inline static uint8_t TCPManagerC$TCPSocket$connect(uint16_t destAddr, uint8_t destPort, uint8_t port){
+#line 11
+  unsigned char __nesc_result;
+#line 11
+
+#line 11
+  __nesc_result = TCPSocketC$TCPSocket$connect(destAddr, destPort, port);
+#line 11
+
+#line 11
+  return __nesc_result;
+#line 11
+}
+#line 11
+#line 5
+inline static uint8_t TCPManagerC$TCPSocket$bind(TCPManagerC$TCPSocket$val_t *input, uint8_t localPort, uint16_t address){
+#line 5
+  unsigned char __nesc_result;
+#line 5
+
+#line 5
+  __nesc_result = TCPSocketC$TCPSocket$bind(input, localPort, address);
+#line 5
+
+#line 5
+  return __nesc_result;
+#line 5
+}
+#line 5
+# 61 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
+static inline void TCPManagerC$TCPManager$setUpChatClient(uint8_t srcPort, uint8_t destPort, uint8_t destID, void *name)
+#line 61
+{
+  TCPSocketAL *mSocket;
+  pack *myMsg = (pack *)name;
+
+#line 64
+  mSocket = TCPManagerC$TCPManager$socket();
+
+
+  TCPManagerC$TCPSocket$bind(mSocket, srcPort, TOS_NODE_ID);
+  TCPManagerC$TCPSocket$connect(destID, destPort, srcPort);
+
+  TCPManagerC$ALClient$init(&TCPManagerC$activeSockets[sim_node()][srcPort], name);
+}
+
+# 13 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPManager.nc"
+inline static void Node$tcpLayer$setUpChatClient(uint8_t srcPort, uint8_t destPort, uint8_t destID, void *arg_0x40ab17e0){
+#line 13
+  TCPManagerC$TCPManager$setUpChatClient(srcPort, destPort, destID, arg_0x40ab17e0);
+#line 13
+}
+#line 13
 # 27 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
 static inline void TCPManagerC$TCPManager$init(void )
 #line 27
@@ -7405,6 +7493,57 @@ static inline uint16_t RandomMlcgC$Random$rand16(void )
   return (uint16_t )RandomMlcgC$Random$rand32();
 }
 
+# 52 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Random.nc"
+inline static uint16_t chatClientC$Random$rand16(void ){
+#line 52
+  unsigned short __nesc_result;
+#line 52
+
+#line 52
+  __nesc_result = RandomMlcgC$Random$rand16();
+#line 52
+
+#line 52
+  return __nesc_result;
+#line 52
+}
+#line 52
+# 64 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
+inline static void chatClientC$ClientTimer$startPeriodic(uint32_t dt){
+#line 64
+  /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$startPeriodic(10U, dt);
+#line 64
+}
+#line 64
+# 82 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatClientC.nc"
+static inline void chatClientC$chatClient$msgCommand(uint8_t *_msg)
+#line 82
+{
+  uint8_t charBuffer;
+  int i = 0;
+
+  sim_log_debug(304U, "Project4", "what am i going to send %s\n", _msg);
+
+  charBuffer = _msg[i];
+
+  while (charBuffer != 0) {
+
+      chatClientC$mClient[sim_node()].buffer[i] = charBuffer;
+      chatClientC$mClient[sim_node()].amount++;
+      i++;
+      charBuffer = _msg[i];
+    }
+  sim_log_debug(305U, "Project4", "new amount: %d\n", chatClientC$mClient[sim_node()].amount);
+  chatClientC$ClientTimer$startPeriodic(CLIENT_TIMER_PERIOD + (uint16_t )(chatClientC$Random$rand16() % 200));
+}
+
+# 3 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/chatClient.nc"
+inline static void Node$ALClient$msgCommand(uint8_t *arg_0x40abc130){
+#line 3
+  chatClientC$chatClient$msgCommand(arg_0x40abc130);
+#line 3
+}
+#line 3
 # 52 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Random.nc"
 inline static uint16_t chatServerC$Random$rand16(void ){
 #line 52
@@ -7433,27 +7572,28 @@ inline static void chatServerC$ServerTimer$startPeriodic(uint32_t dt){
 #line 64
 }
 #line 64
-# 33 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatServerC.nc"
+# 35 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatServerC.nc"
 static inline void chatServerC$chatServer$init(TCPSocketAL *socket)
-#line 33
+#line 35
 {
   chatServerC$mServer[sim_node()].socket = socket;
   chatServerC$mServer[sim_node()].numofWorkers = 0;
+  chatServerC$listIndex[sim_node()] = 0;
 
   chatServerC$ServerTimer$startPeriodic(SERVER_TIMER_PERIOD + (uint16_t )(chatServerC$Random$rand16() % 200));
   chatServerC$WorkerTimer$startPeriodic(WORKER_TIMER_PERIOD + (uint16_t )(chatServerC$Random$rand16() % 200));
 }
 
 # 3 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/chatServer.nc"
-inline static void TCPManagerC$ALServer$init(TCPManagerC$ALServer$val_t *arg_0x40ad17f0){
+inline static void TCPManagerC$ALServer$init(TCPManagerC$ALServer$val_t *arg_0x40acd010){
 #line 3
-  chatServerC$chatServer$init(arg_0x40ad17f0);
+  chatServerC$chatServer$init(arg_0x40acd010);
 #line 3
 }
 #line 3
-# 218 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
+# 229 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
 static inline TCPSocketAL *TCPManagerC$TCPManager$getSocket(uint8_t port)
-#line 218
+#line 229
 {
   return &TCPManagerC$activeSockets[sim_node()][port];
 }
@@ -7507,21 +7647,6 @@ inline static uint8_t TCPManagerC$TCPSocket$listen(uint8_t port, uint8_t backlog
 #line 8
 }
 #line 8
-#line 5
-inline static uint8_t TCPManagerC$TCPSocket$bind(TCPManagerC$TCPSocket$val_t *input, uint8_t localPort, uint16_t address){
-#line 5
-  unsigned char __nesc_result;
-#line 5
-
-#line 5
-  __nesc_result = TCPSocketC$TCPSocket$bind(input, localPort, address);
-#line 5
-
-#line 5
-  return __nesc_result;
-#line 5
-}
-#line 5
 # 40 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
 static inline void TCPManagerC$TCPManager$setUpServer(uint8_t srcPort)
 #line 40
@@ -7544,6 +7669,27 @@ inline static void Node$tcpLayer$setUpServer(uint8_t srcPort){
 #line 11
 }
 #line 11
+# 51 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
+static inline void TCPManagerC$TCPManager$setUpClient(uint8_t srcPort, uint8_t destPort, uint8_t destID)
+#line 51
+{
+  TCPSocketAL *mSocket;
+
+  mSocket = TCPManagerC$TCPManager$socket();
+
+
+  TCPManagerC$TCPSocket$bind(mSocket, srcPort, TOS_NODE_ID);
+  TCPManagerC$TCPSocket$connect(destID, destPort, srcPort);
+  TCPManagerC$ALClient$init(&TCPManagerC$activeSockets[sim_node()][srcPort], (void *)0);
+}
+
+# 12 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPManager.nc"
+inline static void Node$tcpLayer$setUpClient(uint8_t srcPort, uint8_t destPort, uint8_t destID){
+#line 12
+  TCPManagerC$TCPManager$setUpClient(srcPort, destPort, destID);
+#line 12
+}
+#line 12
 # 52 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Random.nc"
 inline static uint16_t Node$Random$rand16(void ){
 #line 52
@@ -7946,8 +8092,9 @@ static inline message_t *Node$Receive$receive(message_t *msg, void *payload, uin
 #line 457
               uint16_t destPort;
               uint8_t *userName;
+              pack test;
 
-#line 459
+#line 460
               case PROTOCOL_PING: 
                 Node$dijkstra();
               Node$printRecieveLsp();
@@ -7984,11 +8131,11 @@ static inline message_t *Node$Receive$receive(message_t *msg, void *payload, uin
               case PROTOCOL_CMD: 
                 switch (getCMD((uint8_t *)& myMsg->payload, sizeof  myMsg->payload)) {
                     uint32_t temp = 0;
-#line 494
+#line 495
                     uint32_t i = 0;
                     char *pch;
 
-#line 496
+#line 497
                     case CMD_PING: 
                       memcpy(&createMsg, myMsg->payload + PING_CMD_LENGTH, sizeof  myMsg->payload - PING_CMD_LENGTH);
                     memcpy(&dest, myMsg->payload + PING_CMD_LENGTH - 2, sizeof(uint8_t ));
@@ -8011,18 +8158,18 @@ static inline message_t *Node$Receive$receive(message_t *msg, void *payload, uin
                           srcPort = atoi(pch);
                           }
                         else {
-#line 516
+#line 517
                           if (i == 3) {
                             destPort = atoi(pch);
                             }
                           else {
-#line 518
+#line 519
                             if (i == 4) {
                               dest = atoi(pch);
                               }
                             }
                           }
-#line 520
+#line 521
                         pch = strtok((void *)0, " ");
                         i++;
                       }
@@ -8040,7 +8187,7 @@ static inline message_t *Node$Receive$receive(message_t *msg, void *payload, uin
                         if (i == 2) {
                           srcPort = atoi(pch);
                           }
-#line 536
+#line 537
                         pch = strtok((void *)0, " ");
                         i++;
                       }
@@ -8052,15 +8199,22 @@ static inline message_t *Node$Receive$receive(message_t *msg, void *payload, uin
                       Node$isActive[sim_node()] = FALSE;
                     break;
                     case CMD_MSG: 
-                      break;
+                      sim_log_debug(237U, "Project4", "msg command received\n");
+                    pch = strtok(myMsg->payload, " ");
+
+                    pch = strtok((void *)0, "");
+
+                    Node$ALClient$msgCommand(pch);
+                    break;
                     case CMD_HELLO: 
-                      sim_log_debug(237U, "Project4", "Hello command received\n");
+                      test = *myMsg;
+                    sim_log_debug(238U, "Project4", "Hello command received\n");
                     pch = strtok(myMsg->payload, " ");
                     i = 0;
                     while (pch != (void *)0) {
 
                         if (i == 2) {
-                            sim_log_debug_clear(238U, "Project4", "Welcome user %s.\nConnecting you to server now.\n", pch);
+
                             userName = pch;
                           }
                         else {
@@ -8069,13 +8223,13 @@ static inline message_t *Node$Receive$receive(message_t *msg, void *payload, uin
                             srcPort = atoi(pch);
                             }
                           }
-#line 563
+#line 571
                         pch = strtok((void *)0, " ");
                         i++;
                       }
 
                     Node$tcpLayer$init();
-                    Node$tcpLayer$setUpClient(srcPort, 41, 1);
+                    Node$tcpLayer$setUpChatClient(srcPort, 41, 1, &test);
                     break;
                     case CMD_ERROR: 
                       break;
@@ -8351,130 +8505,6 @@ inline static void TCPManagerC$TCPSocket$init(TCPManagerC$TCPSocket$val_t *input
 #line 3
 }
 #line 3
-# 64 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
-inline static void TCPSocketC$resendPacket$startPeriodic(uint32_t dt){
-#line 64
-  /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$startPeriodic(8U, dt);
-#line 64
-}
-#line 64
-# 4 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/node.nc"
-inline static void TCPSocketC$Node$tcpPack(transport payload, TCPSocketAL sckt){
-#line 4
-  Node$node$tcpPack(payload, sckt);
-#line 4
-}
-#line 4
-# 221 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
-static inline TCPSocketAL TCPManagerC$TCPManager$getCopySocket(uint8_t port)
-#line 221
-{
-  return TCPManagerC$activeSockets[sim_node()][port];
-}
-
-# 15 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPManager.nc"
-inline static TCPSocketAL TCPSocketC$tcpLayer$getCopySocket(uint8_t port){
-#line 15
-  struct TCPSocketAL __nesc_result;
-#line 15
-
-#line 15
-  __nesc_result = TCPManagerC$TCPManager$getCopySocket(port);
-#line 15
-
-#line 15
-  return __nesc_result;
-#line 15
-}
-#line 15
-# 174 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
-static inline uint8_t TCPSocketC$TCPSocket$connect(uint16_t destAddr, uint8_t destPort, uint8_t port)
-#line 174
-{
-  unsigned short __nesc_temp59;
-  unsigned char *__nesc_temp58;
-#line 176
-  TCPSocketAL *input;
-
-#line 177
-  sim_log_debug(296U, "Project3", "Atempting to connect from port %d to destID %d on port %d.\n", port, destAddr, destPort);
-  input = TCPSocketC$tcpLayer$getSocket(port);
-  if (destPort < 0 || destPort > TRANSPORT_MAX_PORT) {
-    return -1;
-    }
-#line 181
-  if (input->currentState == CLOSED) {
-
-      input->destID = destAddr;
-      input->destPort = destPort;
-      input->currentState = SYN_SENT;
-
-      createTransport(&TCPSocketC$pcktt[sim_node()], input->srcPort, destPort, TRANSPORT_SYN, (__nesc_temp58 = input->highestSeqSent.nxdata, __nesc_hton_uint16(__nesc_temp58, (__nesc_temp59 = __nesc_ntoh_uint16(__nesc_temp58)) + 1), __nesc_temp59), 0, (void *)0, 0);
-      TCPSocketC$retramsit[sim_node()] = TCPSocketC$pcktt[sim_node()];
-      TCPSocketC$retramsitSock[sim_node()] = TCPSocketC$tcpLayer$getCopySocket(port);
-      TCPSocketC$Node$tcpPack(TCPSocketC$pcktt[sim_node()], *input);
-      TCPSocketC$resendPacket$startPeriodic(1500);
-      return 0;
-    }
-  return -1;
-}
-
-# 11 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc"
-inline static uint8_t TCPManagerC$TCPSocket$connect(uint16_t destAddr, uint8_t destPort, uint8_t port){
-#line 11
-  unsigned char __nesc_result;
-#line 11
-
-#line 11
-  __nesc_result = TCPSocketC$TCPSocket$connect(destAddr, destPort, port);
-#line 11
-
-#line 11
-  return __nesc_result;
-#line 11
-}
-#line 11
-# 52 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Random.nc"
-inline static uint16_t chatClientC$Random$rand16(void ){
-#line 52
-  unsigned short __nesc_result;
-#line 52
-
-#line 52
-  __nesc_result = RandomMlcgC$Random$rand16();
-#line 52
-
-#line 52
-  return __nesc_result;
-#line 52
-}
-#line 52
-# 64 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
-inline static void chatClientC$ClientTimer$startPeriodic(uint32_t dt){
-#line 64
-  /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$startPeriodic(10U, dt);
-#line 64
-}
-#line 64
-# 32 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatClientC.nc"
-static inline void chatClientC$chatClient$init(TCPSocketAL *socket)
-#line 32
-{
-  chatClientC$mClient[sim_node()].socket = socket;
-  chatClientC$mClient[sim_node()].startTime = 0;
-  chatClientC$mClient[sim_node()].position = 0;
-  chatClientC$mClient[sim_node()].amount = BYTES_TO_SEND;
-
-  chatClientC$ClientTimer$startPeriodic(CLIENT_TIMER_PERIOD + (uint16_t )(chatClientC$Random$rand16() % 200));
-}
-
-# 2 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/chatClient.nc"
-inline static void TCPManagerC$ALClient$init(TCPManagerC$ALClient$val_t *arg_0x40abf538){
-#line 2
-  chatClientC$chatClient$init(arg_0x40abf538);
-#line 2
-}
-#line 2
 # 78 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
 inline static void TCPSocketC$resendBuffer$stop(void ){
 #line 78
@@ -8804,26 +8834,26 @@ inline static void * Node$Packet$getPayload(message_t * msg, uint8_t len){
 #line 126
 }
 #line 126
-# 620 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
+# 628 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 static inline error_t Node$send(uint16_t src, uint16_t dest, pack *message)
-#line 620
+#line 628
 {
   unsigned char __nesc_temp49;
   unsigned char *__nesc_temp48;
 
-#line 621
+#line 629
   if (!Node$busy[sim_node()] && Node$isActive[sim_node()]) {
       pack *msg = (pack *)Node$Packet$getPayload(&Node$pkt[sim_node()], sizeof(pack ));
 
-#line 623
+#line 631
       *msg = *message;
 
       if (__nesc_ntoh_uint8(msg->TTL.nxdata) > 0) {
-#line 625
+#line 633
         (__nesc_temp48 = msg->TTL.nxdata, __nesc_hton_uint8(__nesc_temp48, (__nesc_temp49 = __nesc_ntoh_uint8(__nesc_temp48)) - 1), __nesc_temp49);
         }
       else {
-#line 626
+#line 634
         return FAIL;
         }
       if (Node$AMSend$send(dest, &Node$pkt[sim_node()], sizeof(pack )) == SUCCESS) {
@@ -8832,13 +8862,13 @@ static inline error_t Node$send(uint16_t src, uint16_t dest, pack *message)
           return SUCCESS;
         }
       else {
-#line 632
+#line 640
         if (Node$AMSend$send(AM_BROADCAST_ADDR, &Node$pkt[sim_node()], sizeof(pack )) == SUCCESS) {
             Node$busy[sim_node()] = TRUE;
             return SUCCESS;
           }
         else 
-#line 635
+#line 643
           {
             sim_log_debug(241U, "genDebug", "The radio is busy, or something\n");
             return FAIL;
@@ -8846,7 +8876,7 @@ static inline error_t Node$send(uint16_t src, uint16_t dest, pack *message)
         }
     }
   else 
-#line 639
+#line 647
     {
       return EBUSY;
     }
@@ -8870,14 +8900,14 @@ static inline sendInfo sendBufferPopFront(sendBuffer *buffer)
   return returnVal;
 }
 
-# 596 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
+# 604 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 static inline void Node$sendBufferTask$runTask(void )
-#line 596
+#line 604
 {
   if (Node$packBuffer[sim_node()].size != 0 && !Node$busy[sim_node()]) {
       sendInfo info;
 
-#line 599
+#line 607
       info = sendBufferPopFront(&Node$packBuffer[sim_node()]);
       Node$send(info.src, info.dest, & info.packet);
     }
@@ -9088,9 +9118,9 @@ static inline void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$default$sendDone
 }
 
 # 100 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/Send.nc"
-inline static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$sendDone(uint8_t arg_0x40d266a8, message_t * msg, error_t error){
+inline static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$sendDone(uint8_t arg_0x40d4e6a8, message_t * msg, error_t error){
 #line 100
-  switch (arg_0x40d266a8) {
+  switch (arg_0x40d4e6a8) {
 #line 100
     case 0U:
 #line 100
@@ -9100,7 +9130,7 @@ inline static void /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$sendDone(uint8_t
 #line 100
     default:
 #line 100
-      /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$default$sendDone(arg_0x40d266a8, msg, error);
+      /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$Send$default$sendDone(arg_0x40d4e6a8, msg, error);
 #line 100
       break;
 #line 100
@@ -9222,13 +9252,13 @@ inline static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$errorTask$postTask
 }
 #line 67
 # 80 "/home/adrian/local/tinyos-2.1.1/tos/interfaces/AMSend.nc"
-inline static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$AMSend$send(am_id_t arg_0x40d240a0, am_addr_t addr, message_t * msg, uint8_t len){
+inline static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP$0$AMSend$send(am_id_t arg_0x40d4d0a0, am_addr_t addr, message_t * msg, uint8_t len){
 #line 80
   unsigned char __nesc_result;
 #line 80
 
 #line 80
-  __nesc_result = TossimActiveMessageC$AMSend$send(arg_0x40d240a0, addr, msg, len);
+  __nesc_result = TossimActiveMessageC$AMSend$send(arg_0x40d4d0a0, addr, msg, len);
 #line 80
 
 #line 80
@@ -10182,9 +10212,9 @@ static inline void Node$neighborMap$fired(void )
   Node$neighborMap$startPeriodic(332422 + (uint16_t )(Node$Random$rand16() % 200));
 }
 
-#line 657
+#line 665
 static inline void Node$sendDelay$fired(void )
-#line 657
+#line 665
 {
 
   Node$sendBufferTask$postTask();
@@ -10266,9 +10296,9 @@ inline static chatServerC$TCPManager$val_t *chatServerC$TCPManager$socket(void )
 #line 5
 }
 #line 5
-# 88 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatServerC.nc"
+# 91 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatServerC.nc"
 static inline void chatServerC$serverWorker$init(serverWorkerAL *worker, TCPSocketAL *inputSocket)
-#line 88
+#line 91
 {
   worker->position = 0;
   worker->socket = chatServerC$TCPManager$socket();
@@ -10276,7 +10306,7 @@ static inline void chatServerC$serverWorker$init(serverWorkerAL *worker, TCPSock
   chatServerC$TCPSocket$copy(inputSocket, worker->socket);
 
 
-  sim_log_debug(317U, "serverAL", "serverAL - Worker Intilized\n");
+  sim_log_debug(318U, "serverAL", "serverAL - Worker Intilized\n");
 }
 
 # 10 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPManager.nc"
@@ -10294,24 +10324,57 @@ inline static TCPSocketAL *chatServerC$TCPManager$getSocket(uint8_t arg_0x40a90d
 #line 10
 }
 #line 10
-
-
-
-
-inline static __nesc_nxbase_nx_uint16_t TCPSocketC$tcpLayer$window(uint8_t port, uint8_t type){
-#line 14
-  unsigned short __nesc_result;
-#line 14
-
-#line 14
-  __nesc_result = TCPManagerC$TCPManager$window(port, type);
-#line 14
-
-#line 14
-  return __nesc_result;
-#line 14
+# 64 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
+inline static void TCPSocketC$resendPacket$startPeriodic(uint32_t dt){
+#line 64
+  /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$startPeriodic(8U, dt);
+#line 64
 }
-#line 14
+#line 64
+# 232 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
+static inline TCPSocketAL TCPManagerC$TCPManager$getCopySocket(uint8_t port)
+#line 232
+{
+  return TCPManagerC$activeSockets[sim_node()][port];
+}
+
+# 16 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPManager.nc"
+inline static TCPSocketAL TCPSocketC$tcpLayer$getCopySocket(uint8_t port){
+#line 16
+  struct TCPSocketAL __nesc_result;
+#line 16
+
+#line 16
+  __nesc_result = TCPManagerC$TCPManager$getCopySocket(port);
+#line 16
+
+#line 16
+  return __nesc_result;
+#line 16
+}
+#line 16
+# 4 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/node.nc"
+inline static void TCPSocketC$Node$tcpPack(transport payload, TCPSocketAL sckt){
+#line 4
+  Node$node$tcpPack(payload, sckt);
+#line 4
+}
+#line 4
+# 15 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPManager.nc"
+inline static __nesc_nxbase_nx_uint16_t TCPSocketC$tcpLayer$window(uint8_t port, uint8_t type){
+#line 15
+  unsigned short __nesc_result;
+#line 15
+
+#line 15
+  __nesc_result = TCPManagerC$TCPManager$window(port, type);
+#line 15
+
+#line 15
+  return __nesc_result;
+#line 15
+}
+#line 15
 # 37 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
 static inline void TCPManagerC$TCPManager$AddSocket(TCPSocketAL *sckt, uint8_t port)
 #line 37
@@ -10410,11 +10473,11 @@ static inline uint8_t TCPSocketC$TCPSocket$accept(uint8_t srcPort, uint8_t newPo
       TCPSocketC$resendPacket$startPeriodic(1000);
       return 0;
     }
-  if (TCPSocketC$maxListen[sim_node()] > 30) {
-      input = TCPSocketC$tcpLayer$getSocket(srcPort);
-      input->currentState = CLOSED;
-      sim_log_debug(295U, "Project3", "Time out. Will now closed.\n");
-    }
+
+
+
+
+
   return -1;
 }
 
@@ -10448,28 +10511,28 @@ inline static bool chatServerC$TCPSocket$isClosed(uint8_t port){
 #line 25
 }
 #line 25
-# 41 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatServerC.nc"
+# 44 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatServerC.nc"
 static inline void chatServerC$ServerTimer$fired(void )
-#line 41
+#line 44
 {
   if (!chatServerC$TCPSocket$isClosed(chatServerC$mServer[sim_node()].socket->srcPort)) {
       TCPSocketAL connectedSock;
       TCPSocketAL *test;
       uint8_t newPort;
 
-#line 46
-      sim_log_debug(314U, "serverAL", "serverAL - Trying to accept.\n");
+#line 49
+      sim_log_debug(315U, "serverAL", "serverAL - Trying to accept.\n");
 
 
       newPort = chatServerC$Random$rand16() % 255;
       if (chatServerC$TCPSocket$accept(chatServerC$mServer[sim_node()].socket->srcPort, newPort) == TCP_ERRMSG_SUCCESS) {
           serverWorkerAL newWorker;
 
-#line 52
+#line 55
           test = chatServerC$TCPManager$getSocket(newPort);
           connectedSock = *test;
 
-          sim_log_debug(315U, "serverAL", "serverAL - Connection Accepted.\n");
+          sim_log_debug(316U, "serverAL", "serverAL - Connection Accepted.\n");
 
 
           chatServerC$serverWorker$init(&newWorker, &connectedSock);
@@ -10481,10 +10544,10 @@ static inline void chatServerC$ServerTimer$fired(void )
         }
     }
   else 
-#line 65
+#line 68
     {
 
-      sim_log_debug(316U, "serverAL", "serverAL - Server Shutdown\n");
+      sim_log_debug(317U, "serverAL", "serverAL - Server Shutdown\n");
 
       chatServerC$TCPSocket$release(chatServerC$mServer[sim_node()].socket->srcPort);
       chatServerC$WorkerTimer$stop();
@@ -10492,42 +10555,64 @@ static inline void chatServerC$ServerTimer$fired(void )
     }
 }
 
-# 202 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
-static inline void TCPManagerC$TCPManager$freeSocket(TCPSocketAL *input)
-#line 202
+# 263 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
+static inline void TCPManagerC$TCPManager$turnOffTimer(void )
+#line 263
 {
+  TCPManagerC$pckResend$stop();
 }
 
-# 6 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPManager.nc"
-inline static void chatServerC$TCPManager$freeSocket(chatServerC$TCPManager$val_t *arg_0x40a91568){
-#line 6
-  TCPManagerC$TCPManager$freeSocket(arg_0x40a91568);
-#line 6
+# 17 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPManager.nc"
+inline static void chatServerC$TCPManager$turnOffTimer(void ){
+#line 17
+  TCPManagerC$TCPManager$turnOffTimer();
+#line 17
 }
-#line 6
-# 136 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
-inline static uint32_t chatServerC$ServerTimer$getNow(void ){
-#line 136
-  unsigned int __nesc_result;
-#line 136
+#line 17
+# 119 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatServerC.nc"
+static inline void chatServerC$printUser(void )
+#line 119
+{
+  int i = 0;
+  char *temp;
 
-#line 136
-  __nesc_result = /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$getNow(4U);
-#line 136
-
-#line 136
-  return __nesc_result;
-#line 136
+#line 122
+  sim_log_debug_clear(319U, "Project4", "-----------------------------------------------------------\n");
+  sim_log_debug_clear(320U, "Project4", "\t\t\tPrinting UserList\n");
+  for (i; i < 20; i++) {
+      if (chatServerC$list[sim_node()][i].name[0] != 0) {
+        sim_log_debug_clear(321U, "Project4", "%s, size: %d\n", chatServerC$list[sim_node()][i].name, strlen(chatServerC$list[sim_node()][i].name));
+        }
+    }
 }
-#line 136
-# 97 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatServerC.nc"
+
+#line 129
+static inline void chatServerC$printBuffer(serverWorkerAL *worker)
+#line 129
+{
+  int i = 0;
+  char temp;
+
+#line 132
+  temp = worker->buffer[i];
+  sim_log_debug_clear(322U, "Project4", "--------Printing Server Buffer-------\n");
+  while (temp != 0) {
+      sim_log_debug_clear(323U, "Project4", "%c", temp);
+      i++;
+      temp = worker->buffer[i];
+    }
+
+  sim_log_debug_clear(324U, "Project4", "\n");
+}
+
+#line 100
 static inline serverWorkerAL *chatServerC$chatServer$GrabWorker(uint8_t port)
-#line 97
+#line 100
 {
   uint16_t i;
   serverWorkerAL *currentWorker;
 
-#line 100
+#line 103
   for (i = 0; i < serverWorkerListSize(&chatServerC$workers[sim_node()]); i++) {
       currentWorker = serverWorkerListGet(&chatServerC$workers[sim_node()], i);
 
@@ -10568,10 +10653,10 @@ static inline int16_t TCPSocketC$TCPSocket$read(uint8_t port, uint8_t *readBuffe
   currentWorker = TCPSocketC$ALServer$GrabWorker(port);
   input = TCPSocketC$tcpLayer$getSocket(port);
 
-  sim_log_debug(297U, "Project3", "Server worker Buffer amount: %d, currentLength: %d, What is left: %d\n", currentWorker->amountToRead, pos, len + pos);
+  sim_log_debug(296U, "Project3", "Server worker Buffer amount: %d, currentLength: %d, What is left: %d\n", currentWorker->amountToRead, pos, len + pos);
   if (input->currentState == ESTABLISHED) {
       for (i = pos; i < currentWorker->amountToRead; i++) {
-          sim_log_debug(298U, "Project3", "Data being Read: %d\n", readBuffer[i]);
+          sim_log_debug(297U, "Project3", "Data being Read: %d\n", readBuffer[i]);
           read++;
           TCPSocketC$tcpLayer$window(port, 0);
         }
@@ -10595,73 +10680,79 @@ inline static int16_t chatServerC$TCPSocket$read(uint8_t port, uint8_t *readBuff
 #line 17
 }
 #line 17
-# 133 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatServerC.nc"
+# 165 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatServerC.nc"
 static inline void chatServerC$serverWorker$execute(serverWorkerAL *worker)
-#line 133
+#line 165
 {
   if (!chatServerC$TCPSocket$isClosed(worker->socket->srcPort)) {
       uint16_t bufferIndex;
-#line 135
+#line 167
       uint16_t length;
-#line 135
+#line 167
       uint16_t count;
 
       bufferIndex = worker->position % SERVER_WORKER_BUFFER_SIZE + worker->position / SERVER_WORKER_BUFFER_SIZE + 1;
 
       length = SERVER_WORKER_BUFFER_SIZE - bufferIndex;
-      sim_log_debug(319U, "serverAL", "Trying to read\n");
+
       count = chatServerC$TCPSocket$read(worker->socket->srcPort, worker->buffer, worker->position % SERVER_WORKER_BUFFER_SIZE, length);
-
-      if (count == -1) {
-
-          sim_log_debug(320U, "serverAL", "serverAL - Releasing socket\n");
-          sim_log_debug(321U, "serverAL", "Position: %lu\n", worker->position);
-          chatServerC$TCPSocket$release(worker->socket->srcPort);
-
-          serverWorkerListRemoveValue(&chatServerC$workers[sim_node()], *worker);
-          return;
-        }
-
+#line 185
       if (count > 0) {
           uint16_t i;
+#line 186
+          uint16_t j;
+          char *pch;
 
-#line 155
-          for (i = 0; i < count; i++) {
-              if (worker->buffer[(i + worker->position) % SERVER_WORKER_BUFFER_SIZE] != (0x00FF & (i + bufferIndex))) {
-                  sim_log_debug(322U, "serverAL", "Releasing socket\n");
-                  sim_log_debug(323U, "serverAL", "Buffer Index: %lu Position: %lu\n", i + bufferIndex, worker->position);
-                  chatServerC$TCPSocket$release(worker->socket->srcPort);
-                  serverWorkerListRemoveValue(&chatServerC$workers[sim_node()], *worker);
+#line 188
+          worker->position += count;
+          for (i = 0; i < worker->position; i++) {
 
-                  return;
+              if (worker->buffer[i % SERVER_WORKER_BUFFER_SIZE] == '\r') {
+                  if (worker->buffer[i % SERVER_WORKER_BUFFER_SIZE + 1] == '\n') {
+                      sim_log_debug(326U, "Project4", "Found the end of the command. I should see what the command was. Position: %d\n", i + 1);
+                      chatServerC$printBuffer(worker);
+                      if (worker->buffer[0] == 'h' && worker->buffer[1] == 'e' && worker->buffer[2] == 'l' && worker->buffer[3] == 'l' && worker->buffer[4] == 'o') {
+                          sim_log_debug(327U, "Project4", "It is a hello packet\n");
+
+                          pch = strtok(worker->buffer, " ");
+                          j = 0;
+                          while (pch != (void *)0) {
+
+                              if (j == 1) {
+                                  strncpy(chatServerC$list[sim_node()][chatServerC$listIndex[sim_node()] % 20].name, pch, strlen(pch));
+                                  strncpy(worker->name, pch, strlen(pch));
+
+
+                                  chatServerC$listIndex[sim_node()]++;
+                                }
+
+                              pch = strtok((void *)0, " ");
+                              j++;
+                            }
+                          chatServerC$printUser();
+                          chatServerC$clearBuffer(worker);
+                          chatServerC$TCPManager$turnOffTimer();
+                        }
+
+                      if (worker->buffer[0] == 'm' && worker->buffer[1] == 's' && worker->buffer[2] == 'g') {
+                          sim_log_debug(328U, "Project4", "It is a msg packet\n");
+                          pch = strtok(worker->buffer, " ");
+                          pch = strtok((void *)0, "");
+                          sim_log_debug(329U, "Project4", "User %s have sent a message '%s' to everyone.", worker->name, pch);
+                          chatServerC$clearBuffer(worker);
+                          chatServerC$TCPManager$turnOffTimer();
+                        }
+                    }
                 }
             }
-
-          worker->position += count;
           return;
         }
-    }
-  else 
-#line 169
-    {
-      uint32_t closeTime;
-
-#line 171
-      closeTime = chatServerC$ServerTimer$getNow();
-
-      sim_log_debug(324U, "serverAL", "Connection Closed:\n");
-      sim_log_debug(325U, "serverAL", "Data Read: %d\n", worker->position);
-      sim_log_debug(326U, "serverAL", "Close Time: %d\n", closeTime);
-      chatServerC$TCPManager$freeSocket(worker->socket);
-      serverWorkerListRemoveValue(&chatServerC$workers[sim_node()], *worker);
-#line 177
-      return;
     }
 }
 
-#line 75
+#line 78
 static inline void chatServerC$WorkerTimer$fired(void )
-#line 75
+#line 78
 {
   uint16_t i;
   serverWorkerAL *currentWorker;
@@ -10673,49 +10764,49 @@ static inline void chatServerC$WorkerTimer$fired(void )
     }
 }
 
-# 237 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
+# 249 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
 static inline void TCPManagerC$closing$fired(void )
-#line 237
+#line 249
 {
   TCPManagerC$pckResend$stop();
   sim_log_debug(287U, "Project3", "Port %d is now closed.", TCPManagerC$socketClosed[sim_node()]);
   TCPManagerC$activeSockets[sim_node()][TCPManagerC$socketClosed[sim_node()]].currentState = CLOSED;
 }
 
-# 371 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+# 358 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static inline void TCPSocketC$resendBuffer$fired(void )
-#line 371
+#line 358
 {
   int i = 0;
 
-#line 373
-  sim_log_debug(303U, "Project3", "Resending Data.\n");
+#line 360
+  sim_log_debug(302U, "Project3", "Resending Data.\n");
 
 
   for (i = 0; i < TCPSocketC$buffMax[sim_node()]; i++) {
 
       if (__nesc_ntoh_uint8(TCPSocketC$buffer[sim_node()][i].payload[0].nxdata) >= TCPSocketC$startHere[sim_node()]) {
-          sim_log_debug_clear(304U, "Project3", "Packet that was lost:\n");
+          sim_log_debug_clear(303U, "Project3", "Packet that was lost:\n");
           printTransport(&TCPSocketC$buffer[sim_node()][i]);
           TCPSocketC$Node$tcpPack(TCPSocketC$buffer[sim_node()][i], TCPSocketC$bufferSock[sim_node()]);
         }
     }
 }
 
-#line 359
+#line 346
 static inline void TCPSocketC$resendPacket$fired(void )
-#line 359
+#line 346
 {
 
-  sim_log_debug(301U, "Project3", "A packet must have been lost. Resending.\n");
-  sim_log_debug_clear(302U, "Project3", "Packet that was lost:\n");
+  sim_log_debug(300U, "Project3", "A packet must have been lost. Resending.\n");
+  sim_log_debug_clear(301U, "Project3", "Packet that was lost:\n");
   printTransport(&TCPSocketC$retramsit[sim_node()]);
   TCPSocketC$Node$tcpPack(TCPSocketC$retramsit[sim_node()], TCPSocketC$retramsitSock[sim_node()]);
 }
 
-# 243 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
+# 255 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
 static inline void TCPManagerC$pckResend$fired(void )
-#line 243
+#line 255
 {
 
   sim_log_debug(288U, "Project3", "TCPManager -- Seems like a packet was lost. Resending.\n");
@@ -10776,18 +10867,18 @@ inline static bool chatClientC$TCPSocket$isClosed(uint8_t port){
 #line 25
 }
 #line 25
-# 321 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+# 308 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static inline bool TCPSocketC$TCPSocket$isClosing(uint8_t port)
-#line 321
+#line 308
 {
   TCPSocketAL *input;
 
-#line 323
+#line 310
   input = TCPSocketC$tcpLayer$getSocket(port);
   if (input->currentState == 5) {
     return TRUE;
     }
-#line 326
+#line 313
   return FALSE;
 }
 
@@ -10817,33 +10908,33 @@ static inline void TCPSocketC$addtosendbuffer(transport me)
   TCPSocketC$bufferCount[sim_node()]++;
 }
 
-# 213 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
+# 224 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
 static inline __nesc_nxbase_nx_uint16_t TCPManagerC$TCPManager$increaseSEQ(uint8_t port)
-#line 213
+#line 224
 {
   unsigned short __nesc_temp57;
   unsigned char *__nesc_temp56;
 
-#line 214
+#line 225
   (__nesc_temp56 = TCPManagerC$activeSockets[sim_node()][port].highestSeqSent.nxdata, __nesc_hton_uint16(__nesc_temp56, (__nesc_temp57 = __nesc_ntoh_uint16(__nesc_temp56)) + 1), __nesc_temp57);
   return __nesc_ntoh_uint16(TCPManagerC$activeSockets[sim_node()][port].highestSeqSent.nxdata) - 1;
 }
 
-# 13 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPManager.nc"
+# 14 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPManager.nc"
 inline static __nesc_nxbase_nx_uint16_t TCPSocketC$tcpLayer$increaseSEQ(uint8_t port){
-#line 13
+#line 14
   unsigned short __nesc_result;
-#line 13
+#line 14
 
-#line 13
+#line 14
   __nesc_result = TCPManagerC$TCPManager$increaseSEQ(port);
-#line 13
+#line 14
 
-#line 13
+#line 14
   return __nesc_result;
-#line 13
+#line 14
 }
-#line 13
+#line 14
 # 250 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static inline int16_t TCPSocketC$TCPSocket$write(uint8_t port, uint8_t *writeBuffer, uint16_t pos, uint16_t len)
 #line 250
@@ -10863,40 +10954,27 @@ static inline int16_t TCPSocketC$TCPSocket$write(uint8_t port, uint8_t *writeBuf
 
   TCPSocketC$bufferSock[sim_node()] = *input;
   numPackets = (len - pos) / 13 + 1;
-
-
   if (input->currentState == ESTABLISHED && TCPSocketC$allowed[sim_node()]) {
       TCPSocketC$bufferSock[sim_node()] = *input;
       __nesc_hton_uint16(input->highestSeqSeen.nxdata, __nesc_ntoh_uint16(input->highestSeqSent.nxdata));
 
       for (i = pos; i < pos + len && wrote < input->cdwin; i++) {
 
-
-
-
-
-          sim_log_debug(299U, "Project3", "Data being sent: %d\n", writeBuffer[i]);
+          sim_log_debug(298U, "Project3", "Data being sent: %d\n", writeBuffer[i]);
           TCPSocketC$trans[sim_node()] = writeBuffer[i];
-
-
           createTransport(&TCPSocketC$pcktt[sim_node()], input->srcPort, input->destPort, TRANSPORT_DATA, input->cdwin, __nesc_ntoh_uint16(input->highestSeqSent.nxdata), &TCPSocketC$trans[sim_node()], sizeof TCPSocketC$trans[sim_node()]);
           nextSeq = TCPSocketC$tcpLayer$increaseSEQ(input->srcPort);
-
-
-
           TCPSocketC$addtosendbuffer(TCPSocketC$pcktt[sim_node()]);
           TCPSocketC$Node$tcpPack(TCPSocketC$pcktt[sim_node()], *input);
           wrote++;
           TCPSocketC$buffMax[sim_node()]++;
         }
-
-
       TCPSocketC$allowed[sim_node()] = FALSE;
     }
   else {
-    sim_log_debug(300U, "Project3", "No data will be sent\n");
+    sim_log_debug(299U, "Project3", "No data will be sent\n");
     }
-#line 292
+#line 279
   return wrote;
 }
 
@@ -10915,56 +10993,25 @@ inline static int16_t chatClientC$TCPSocket$write(uint8_t port, uint8_t *writeBu
 #line 19
 }
 #line 19
-# 197 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
-static inline uint8_t TCPSocketC$TCPSocket$close(uint8_t port)
-#line 197
+# 79 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatClientC.nc"
+static inline void chatClientC$clearBuffer(void )
+#line 79
 {
-  unsigned short __nesc_temp61;
-  unsigned char *__nesc_temp60;
-#line 199
-  TCPSocketAL *input;
-
-#line 200
-  input = TCPSocketC$tcpLayer$getSocket(port);
-  createTransport(&TCPSocketC$pcktt[sim_node()], input->srcPort, input->destPort, TRANSPORT_FIN, (__nesc_temp60 = input->highestSeqSent.nxdata, __nesc_hton_uint16(__nesc_temp60, (__nesc_temp61 = __nesc_ntoh_uint16(__nesc_temp60)) + 1), __nesc_temp61), 0, (void *)0, 0);
-  TCPSocketC$retramsit[sim_node()] = TCPSocketC$pcktt[sim_node()];
-  TCPSocketC$retramsitSock[sim_node()] = *input;
-  TCPSocketC$Node$tcpPack(TCPSocketC$pcktt[sim_node()], *input);
-  input->currentState = CLOSING;
-
-  TCPSocketC$resendPacket$startPeriodic(933);
-
-
-  return 0;
+  memset(chatClientC$mClient[sim_node()].buffer, 0, CLIENTAL_BUFFER_SIZE);
 }
 
-# 13 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Interfaces/TCPSocket.nc"
-inline static uint8_t chatClientC$TCPSocket$close(uint8_t port){
-#line 13
-  unsigned char __nesc_result;
-#line 13
-
-#line 13
-  __nesc_result = TCPSocketC$TCPSocket$close(port);
-#line 13
-
-#line 13
-  return __nesc_result;
-#line 13
-}
-#line 13
-# 313 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+# 300 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static inline bool TCPSocketC$TCPSocket$isConnected(uint8_t port)
-#line 313
+#line 300
 {
   TCPSocketAL *input;
 
-#line 315
+#line 302
   input = TCPSocketC$tcpLayer$getSocket(port);
   if (input->currentState == 3) {
     return TRUE;
     }
-#line 318
+#line 305
   return FALSE;
 }
 
@@ -10983,18 +11030,18 @@ inline static bool chatClientC$TCPSocket$isConnected(uint8_t port){
 #line 23
 }
 #line 23
-# 337 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+# 324 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static inline bool TCPSocketC$TCPSocket$isConnectPending(uint8_t port)
-#line 337
+#line 324
 {
   TCPSocketAL *input;
 
-#line 339
+#line 326
   input = TCPSocketC$tcpLayer$getSocket(port);
   if (input->currentState == 2) {
     return TRUE;
     }
-#line 342
+#line 329
   return FALSE;
 }
 
@@ -11013,9 +11060,9 @@ inline static bool chatClientC$TCPSocket$isConnectPending(uint8_t port){
 #line 22
 }
 #line 22
-# 41 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatClientC.nc"
+# 100 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatClientC.nc"
 static inline void chatClientC$ClientTimer$fired(void )
-#line 41
+#line 100
 {
   TCPSocketAL connectedSock;
   TCPSocketAL *test;
@@ -11024,63 +11071,55 @@ static inline void chatClientC$ClientTimer$fired(void )
 
 
   if (chatClientC$TCPSocket$isConnectPending(chatClientC$mClient[sim_node()].socket->srcPort)) {
-      sim_log_debug(305U, "clientAL", "clientAL - Connection Pending...\n");
+      sim_log_debug(306U, "clientAL", "clientAL - Connection Pending...\n");
     }
   else {
-#line 50
+#line 109
     if (chatClientC$TCPSocket$isConnected(chatClientC$mClient[sim_node()].socket->srcPort)) {
         uint16_t bufferIndex;
-#line 51
+#line 110
         uint16_t len;
-#line 51
+#line 110
         uint16_t count;
+#line 110
+        uint16_t k;
 
         if (chatClientC$mClient[sim_node()].startTime == 0) {
             chatClientC$mClient[sim_node()].startTime = chatClientC$ClientTimer$getNow();
-            sim_log_debug(306U, "clientAL", "clientAL - Connection established at time: %lu\n Bytes to be send: %lu\n", chatClientC$mClient[sim_node()].startTime, chatClientC$mClient[sim_node()].amount);
+            sim_log_debug_clear(307U, "clientAL", "clientAL - Connection established at time: %lu\n", chatClientC$mClient[sim_node()].startTime);
+            sim_log_debug_clear(308U, "Project4", "******************************************************************************\n");
+            sim_log_debug_clear(309U, "Project4", "**\tWelcome user %s.\n**\tConnecting you to server now.\n", chatClientC$mClient[sim_node()].name);
+            sim_log_debug_clear(310U, "Project4", "******************************************************************************\n");
+            for (k = 0; k < chatClientC$mClient[sim_node()].amount; k++) {
+
+                chatClientC$mClient[sim_node()].buffer[k] = chatClientC$msg[sim_node()][k];
+              }
+            bufferIndex = chatClientC$mClient[sim_node()].amount;
           }
 
         if (chatClientC$mClient[sim_node()].amount == 0) {
 
             uint32_t closeTime;
 
-#line 61
+#line 128
             closeTime = chatClientC$ClientTimer$getNow();
+            chatClientC$clearBuffer();
+            chatClientC$mClient[sim_node()].position = 0;
+            sim_log_debug(311U, "clientAL", "clientAL - Sending Completed at time: %lu\n", closeTime);
+            sim_log_debug(312U, "clientAL", "Waiting for input...\n");
+            chatClientC$ClientTimer$stop();
 
-            sim_log_debug(307U, "clientAL", "clientAL - Sending Completed at time: %lu\n", closeTime);
-            sim_log_debug(308U, "clientAL", "Connection Closing...\n");
-
-            chatClientC$TCPSocket$close(chatClientC$mClient[sim_node()].socket->srcPort);
             return;
           }
 
         bufferIndex = chatClientC$mClient[sim_node()].position % CLIENTAL_BUFFER_SIZE;
-
-        if (bufferIndex == 0) {
-            uint16_t i;
-#line 73
-            uint16_t offset;
-
-            sim_log_debug(309U, "clientAL", "clientAL - Creating additional data.\n");
-
-            offset = chatClientC$mClient[sim_node()].position / 255 + 1;
-            for (i = 0; i < CLIENTAL_BUFFER_SIZE; i++) {
-                chatClientC$mClient[sim_node()].buffer[i] = (uint8_t )((chatClientC$mClient[sim_node()].position + i + offset) & 0x00FF);
-              }
-          }
-
-
-
-
+#line 155
         if (CLIENTAL_BUFFER_SIZE - bufferIndex < chatClientC$mClient[sim_node()].amount) {
             len = CLIENTAL_BUFFER_SIZE - bufferIndex;
-
-            sim_log_debug(310U, "clientAL", "buffer-index was least\n");
           }
         else 
-#line 90
           {
-            sim_log_debug(311U, "clientAL", "amount was least\n");
+
             len = chatClientC$mClient[sim_node()].amount;
           }
 
@@ -11091,7 +11130,7 @@ static inline void chatClientC$ClientTimer$fired(void )
             uint32_t endTime;
 
             endTime = chatClientC$ClientTimer$getNow();
-            sim_log_debug(312U, "clientAL", "clientAL - Sending aborted at time %lu\n Position: %lu\n", endTime, chatClientC$mClient[sim_node()].position);
+            sim_log_debug(313U, "clientAL", "clientAL - Sending aborted at time %lu\n Position: %lu\n", endTime, chatClientC$mClient[sim_node()].position);
             chatClientC$TCPSocket$release(chatClientC$mClient[sim_node()].socket);
 
             chatClientC$ClientTimer$stop();
@@ -11102,14 +11141,14 @@ static inline void chatClientC$ClientTimer$fired(void )
         chatClientC$mClient[sim_node()].position += count;
       }
     else {
-#line 111
+#line 180
       if (chatClientC$TCPSocket$isClosing(chatClientC$mClient[sim_node()].socket->srcPort)) {
         }
       else {
         if (chatClientC$TCPSocket$isClosed(chatClientC$mClient[sim_node()].socket->srcPort)) {
             uint32_t endTime = chatClientC$ClientTimer$getNow();
 
-            sim_log_debug(313U, "clientAL", "clientAL - Conection Closed at time: %lu \n Bytes sent: %lu\n Time Elapsed: %lu\n Bytes per Second %lu\n", endTime, chatClientC$mClient[sim_node()].position, endTime - chatClientC$mClient[sim_node()].startTime, chatClientC$mClient[sim_node()].position * 1000 / (endTime - chatClientC$mClient[sim_node()].startTime));
+            sim_log_debug(314U, "clientAL", "clientAL - Conection Closed at time: %lu \n Bytes sent: %lu\n Time Elapsed: %lu\n Bytes per Second %lu\n", endTime, chatClientC$mClient[sim_node()].position, endTime - chatClientC$mClient[sim_node()].startTime, chatClientC$mClient[sim_node()].position * 1000 / (endTime - chatClientC$mClient[sim_node()].startTime));
 
 
             chatClientC$TCPSocket$release(chatClientC$mClient[sim_node()].socket);
@@ -11128,9 +11167,9 @@ static inline void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$d
 }
 
 # 83 "/home/adrian/local/tinyos-2.1.1/tos/lib/timer/Timer.nc"
-inline static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$fired(uint8_t arg_0x40cbd3a8){
+inline static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$fired(uint8_t arg_0x40cb83a8){
 #line 83
-  switch (arg_0x40cbd3a8) {
+  switch (arg_0x40cb83a8) {
 #line 83
     case 0U:
 #line 83
@@ -11200,7 +11239,7 @@ inline static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$f
 #line 83
     default:
 #line 83
-      /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$default$fired(arg_0x40cbd3a8);
+      /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$default$fired(arg_0x40cb83a8);
 #line 83
       break;
 #line 83
@@ -11208,16 +11247,6 @@ inline static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$f
 #line 83
 }
 #line 83
-# 48 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverWorkerList.h"
-static inline void serverWorkerListRemoveKey(serverWorkerList *list, uint8_t i)
-#line 48
-{
-  for (i = 0; i < list->numValues - 1; i++) {
-      list->values[i] = list->values[i + 1];
-    }
-  list->numValues--;
-}
-
 # 54 "/home/adrian/local/tinyos-2.1.1/tos/chips/atm128/timer/HplAtm128Compare.nc"
 inline static void /*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128AlarmAsyncP$0$Compare$set(/*AlarmCounterMilliP.Atm128AlarmAsyncC.Atm128AlarmAsyncP*/Atm128AlarmAsyncP$0$Compare$size_type t){
 #line 54
@@ -13538,9 +13567,9 @@ static bool arrListPushBack(arrlist *cur, dataType newVal)
     }
 }
 
-# 646 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
+# 654 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 static void Node$makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t protocol, uint16_t seq, uint8_t *payload, uint8_t length)
-#line 646
+#line 654
 {
   __nesc_hton_uint16(Package->src.nxdata, src);
   __nesc_hton_uint16(Package->dest.nxdata, dest);
@@ -13929,21 +13958,7 @@ static hashType iteratorNext(iterator *it)
   return it->values[0];
 }
 
-# 51 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
-static void TCPManagerC$TCPManager$setUpClient(uint8_t srcPort, uint8_t destPort, uint8_t destID)
-#line 51
-{
-  TCPSocketAL *mSocket;
-
-  mSocket = TCPManagerC$TCPManager$socket();
-
-
-  TCPManagerC$TCPSocket$bind(mSocket, srcPort, TOS_NODE_ID);
-  TCPManagerC$TCPSocket$connect(destID, destPort, srcPort);
-  TCPManagerC$ALClient$init(&TCPManagerC$activeSockets[sim_node()][srcPort]);
-}
-
-#line 29
+# 29 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
 static TCPSocketAL *TCPManagerC$TCPManager$socket(void )
 #line 29
 {
@@ -13970,6 +13985,38 @@ static uint8_t TCPSocketC$TCPSocket$bind(TCPSocketAL *input, uint8_t localPort, 
   TCPSocketC$tcpLayer$AddSocket(input, localPort);
 
   return 0;
+}
+
+#line 174
+static uint8_t TCPSocketC$TCPSocket$connect(uint16_t destAddr, uint8_t destPort, uint8_t port)
+#line 174
+{
+  unsigned short __nesc_temp59;
+  unsigned char *__nesc_temp58;
+#line 176
+  TCPSocketAL *input;
+
+#line 177
+  sim_log_debug(295U, "Project3", "Atempting to connect from port %d to destID %d on port %d.\n", port, destAddr, destPort);
+  input = TCPSocketC$tcpLayer$getSocket(port);
+  if (destPort < 0 || destPort > TRANSPORT_MAX_PORT) {
+    return -1;
+    }
+#line 181
+  if (input->currentState == CLOSED) {
+
+      input->destID = destAddr;
+      input->destPort = destPort;
+      input->currentState = SYN_SENT;
+
+      createTransport(&TCPSocketC$pcktt[sim_node()], input->srcPort, destPort, TRANSPORT_SYN, (__nesc_temp58 = input->highestSeqSent.nxdata, __nesc_hton_uint16(__nesc_temp58, (__nesc_temp59 = __nesc_ntoh_uint16(__nesc_temp58)) + 1), __nesc_temp59), 0, (void *)0, 0);
+      TCPSocketC$retramsit[sim_node()] = TCPSocketC$pcktt[sim_node()];
+      TCPSocketC$retramsitSock[sim_node()] = TCPSocketC$tcpLayer$getCopySocket(port);
+      TCPSocketC$Node$tcpPack(TCPSocketC$pcktt[sim_node()], *input);
+      TCPSocketC$resendPacket$startPeriodic(1500);
+      return 0;
+    }
+  return -1;
 }
 
 # 7 "/home/adrian/workspace/Network-TinyOS/pro1/src/transport.c"
@@ -14001,9 +14048,9 @@ static void createTransport(transport *output, uint8_t srcPort, uint8_t destPort
     }
 }
 
-# 662 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
+# 670 "/home/adrian/workspace/Network-TinyOS/pro1/src/Node.nc"
 static void Node$node$tcpPack(transport payload, TCPSocketAL sckt)
-#line 662
+#line 670
 {
   Node$dijkstra();
 
@@ -14022,15 +14069,64 @@ static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$Timer$startPer
   /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$startTimer(num, /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$TimerFrom$getNow(), dt, FALSE);
 }
 
-# 385 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+# 34 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatClientC.nc"
+static void chatClientC$chatClient$init(TCPSocketAL *socket, void *name)
+#line 34
+{
+  char *pch;
+  int i = 0;
+  uint8_t charBuffer;
+  pack *myMsg = (pack *)name;
+
+#line 39
+  chatClientC$buffer[sim_node()] = *myMsg;
+  chatClientC$mClient[sim_node()].socket = socket;
+  chatClientC$mClient[sim_node()].startTime = 0;
+  chatClientC$mClient[sim_node()].position = 0;
+  chatClientC$mClient[sim_node()].amount = 0;
+  chatClientC$firstTime[sim_node()] = TRUE;
+  chatClientC$mClient[sim_node()].payload = *myMsg;
+
+
+  pch = strtok(chatClientC$buffer[sim_node()].payload, " ");
+  i = 0;
+  while (pch != (void *)0) {
+
+      if (i == 2) {
+
+          chatClientC$mClient[sim_node()].name = pch;
+        }
+
+      pch = strtok((void *)0, " ");
+      i++;
+    }
+  pch = strtok(chatClientC$mClient[sim_node()].payload.payload, " ");
+  chatClientC$msg[sim_node()] = strtok((void *)0, "");
+
+  i = 0;
+  charBuffer = chatClientC$msg[sim_node()][i];
+
+  while (charBuffer != 0) {
+
+
+      chatClientC$mClient[sim_node()].amount++;
+      i++;
+      charBuffer = chatClientC$msg[sim_node()][i];
+    }
+
+
+  chatClientC$ClientTimer$startPeriodic(CLIENT_TIMER_PERIOD + (uint16_t )(chatClientC$Random$rand16() % 200));
+}
+
+# 372 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static bool TCPSocketC$TCPSocket$TimerStop(uint8_t num)
-#line 385
+#line 372
 {
   if (num == 1) {
       TCPSocketC$resendBuffer$stop();
     }
   else {
-#line 389
+#line 376
     if (num == 2) {
         TCPSocketC$resendPacket$stop();
       }
@@ -14322,18 +14418,18 @@ static void /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$fireTimers(uin
   /*HilTimerMilliC.VirtualizeTimerC*/VirtualizeTimerC$0$updateFromTimer$postTask();
 }
 
-# 329 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+# 316 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static bool TCPSocketC$TCPSocket$isClosed(uint8_t port)
-#line 329
+#line 316
 {
   TCPSocketAL *input;
 
-#line 331
+#line 318
   input = TCPSocketC$tcpLayer$getSocket(port);
   if (input->currentState == 0) {
     return TRUE;
     }
-#line 334
+#line 321
   return FALSE;
 }
 
@@ -14370,52 +14466,45 @@ static void printTransport(transport *input)
   sim_log_debug_clear(81U, "transport", "\n");
 }
 
-# 224 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
+# 235 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPManagerC.nc"
 static __nesc_nxbase_nx_uint16_t TCPManagerC$TCPManager$window(uint8_t port, uint8_t type)
-#line 224
+#line 235
 {
   if (type == 0) {
     TCPManagerC$activeSockets[sim_node()][port].adwin++;
     }
-#line 227
+#line 238
   if (type == 1) {
     TCPManagerC$activeSockets[sim_node()][port].adwin--;
     }
-#line 229
+#line 240
   if (type == 2) {
     TCPManagerC$activeSockets[sim_node()][port].cdwin++;
     }
-#line 231
+#line 242
   if (type == 3) {
     TCPManagerC$activeSockets[sim_node()][port].cdwin--;
     }
-#line 233
+#line 244
   if (type == 4) {
     TCPManagerC$activeSockets[sim_node()][port].adwin = SERVER_WORKER_BUFFER_SIZE;
     }
-#line 235
+#line 246
   return 0;
 }
 
-# 55 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/serverWorkerList.h"
-static bool serverWorkerListRemoveValue(serverWorkerList *list, workerType newVal)
-#line 55
+# 114 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/chatServerC.nc"
+static void chatServerC$clearBuffer(serverWorkerAL *worker)
+#line 114
 {
-  uint8_t i = 0;
-
-  for (i = 0; i < list->numValues; i++) {
-      if (list->values[i].socket->destPort == newVal.socket->destPort && 
-      list->values[i].socket->srcPort == newVal.socket->srcPort) {
-          serverWorkerListRemoveKey(list, i);
-          return TRUE;
-        }
-    }
-  return FALSE;
+  memset(worker->buffer, 0, SERVER_WORKER_BUFFER_SIZE);
+  worker->amountToRead = 0;
+  worker->position = 0;
 }
 
-# 346 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
+# 333 "/home/adrian/workspace/Network-TinyOS/pro1/src/lib/Modules/TCPSocketC.nc"
 static void TCPSocketC$TCPSocket$copy(TCPSocketAL *input, TCPSocketAL *output)
-#line 346
+#line 333
 {
 
 
@@ -15539,6 +15628,24 @@ static int __nesc_nido_resolve(int __nesc_mote,
     *size = sizeof(chatClientC$mClient[__nesc_mote]);
     return 0;
   }
+  if (!strcmp(varname, "chatClientC$msg"))
+  {
+    *addr = (uintptr_t)&chatClientC$msg[__nesc_mote];
+    *size = sizeof(chatClientC$msg[__nesc_mote]);
+    return 0;
+  }
+  if (!strcmp(varname, "chatClientC$buffer"))
+  {
+    *addr = (uintptr_t)&chatClientC$buffer[__nesc_mote];
+    *size = sizeof(chatClientC$buffer[__nesc_mote]);
+    return 0;
+  }
+  if (!strcmp(varname, "chatClientC$firstTime"))
+  {
+    *addr = (uintptr_t)&chatClientC$firstTime[__nesc_mote];
+    *size = sizeof(chatClientC$firstTime[__nesc_mote]);
+    return 0;
+  }
 
   /* Module chatServerC */
   if (!strcmp(varname, "chatServerC$mServer"))
@@ -15551,6 +15658,18 @@ static int __nesc_nido_resolve(int __nesc_mote,
   {
     *addr = (uintptr_t)&chatServerC$workers[__nesc_mote];
     *size = sizeof(chatServerC$workers[__nesc_mote]);
+    return 0;
+  }
+  if (!strcmp(varname, "chatServerC$list"))
+  {
+    *addr = (uintptr_t)&chatServerC$list[__nesc_mote];
+    *size = sizeof(chatServerC$list[__nesc_mote]);
+    return 0;
+  }
+  if (!strcmp(varname, "chatServerC$listIndex"))
+  {
+    *addr = (uintptr_t)&chatServerC$listIndex[__nesc_mote];
+    *size = sizeof(chatServerC$listIndex[__nesc_mote]);
     return 0;
   }
 
@@ -15812,9 +15931,14 @@ static void __nesc_nido_initialise(int __nesc_mote)
 
   /* Module chatClientC */
   memset((void *)&chatClientC$mClient[__nesc_mote], 0, sizeof chatClientC$mClient[__nesc_mote]);
+  memset((void *)&chatClientC$msg[__nesc_mote], 0, sizeof chatClientC$msg[__nesc_mote]);
+  memset((void *)&chatClientC$buffer[__nesc_mote], 0, sizeof chatClientC$buffer[__nesc_mote]);
+  memset((void *)&chatClientC$firstTime[__nesc_mote], 0, sizeof chatClientC$firstTime[__nesc_mote]);
 
   /* Module chatServerC */
   memset((void *)&chatServerC$mServer[__nesc_mote], 0, sizeof chatServerC$mServer[__nesc_mote]);
   memset((void *)&chatServerC$workers[__nesc_mote], 0, sizeof chatServerC$workers[__nesc_mote]);
+  memset((void *)&chatServerC$list[__nesc_mote], 0, sizeof chatServerC$list[__nesc_mote]);
+  memset((void *)&chatServerC$listIndex[__nesc_mote], 0, sizeof chatServerC$listIndex[__nesc_mote]);
 
 }

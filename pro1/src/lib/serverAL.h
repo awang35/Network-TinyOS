@@ -32,8 +32,13 @@ typedef struct serverWorkerAL{
 	uint8_t buffer[SERVER_WORKER_BUFFER_SIZE];
 	uint8_t id;
 	uint16_t amountToRead;
+	uint8_t name[10];
 }serverWorkerAL;
 
+typedef struct userList{
+	uint8_t name[10];
+	
+}userList;
 
 enum{
 	SERVER_TIMER_PERIOD=500, //500 ms

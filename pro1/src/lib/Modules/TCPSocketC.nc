@@ -163,11 +163,11 @@ implementation{
 			call resendPacket.startPeriodic(1000);
 			return 0;
 		}
-		if (maxListen>30){
-			input = call tcpLayer.getSocket(srcPort);
-			input->currentState = CLOSED;
-			dbg("Project3", "Time out. Will now closed.\n");
-		}
+//		if (maxListen>30){
+//			input = call tcpLayer.getSocket(srcPort);
+//			input->currentState = CLOSED;
+//			dbg("Project3", "Time out. Will now closed.\n");
+//		}
 		return -1;
 	}
 	
@@ -257,34 +257,21 @@ implementation{
 		//allowed = allowedToSend();
 		bufferSock = *input;
 		numPackets = ((len - pos)/13)+1;
-		//input->cdwin = 10;
-		//dbg("Project3", "ADWIN: %d, CDWIN: %d, ALLOWED: %d\n",input->adwin, input->cdwin,allowed);
 		if(input->currentState == ESTABLISHED && allowed) {//&& (wrote > input->cdwin)){
 			bufferSock = *input;
 			input->highestSeqSeen =input->highestSeqSent;
 			//dbg("Project3","pos: %d,len: %d, wrote: %d, cdwin: %d\n",pos,len,wrote,input->cdwin);
 			for(i = pos;i<(pos+len)&&(wrote<(input->cdwin));i++ ){
-				//TODO cdwin was here
-				//if(wrote > ((input->cdwin)-1))
-				//if(wrote > 10)
-				//	break;
-				//dbg("Project3", "ADWIN: %d, CDWIN: %d\n",input->adwin, input->cdwin);
+	
 				dbg("Project3", "Data being sent: %d\n",writeBuffer[i]);
 				trans = writeBuffer[i];
-				//(wrote < input->cdwin)
-				//dbg("Project3", "Seq: %d\n",input->highestSeqSent);
 				createTransport(&pcktt,input->srcPort,input->destPort,TRANSPORT_DATA,input->cdwin,input->highestSeqSent,&trans,sizeof(trans));	
 				nextSeq = call tcpLayer.increaseSEQ(input->srcPort);
-				//call tcpLayer.window(input->srcPort,0);
-				//dbg("Project3", "Packet Seq: %d\n",pckt.seq);
-				//dbg("Project3", "Data being sent: %d\n",writeBuffer[i]);
 				addtosendbuffer(pcktt);
 				call Node.tcpPack(pcktt,*input);
 				wrote++;
 				buffMax++;
-				//dbg("Project3", "WROTE HAS CHANGE TO: %d\n",wrote);
 			}
-			//TODO allow will always be true
 			allowed = FALSE;	
 		}
 		else 

@@ -42,8 +42,8 @@ t.addChannel("cmdDebug", sys.stdout);
 #t.addChannel("Project1N", sys.stdout);
 #t.addChannel("Project2", sys.stdout);
 #t.addChannel("disAlg", sys.stdout);
-t.addChannel("Project3", sys.stdout);
-t.addChannel("transport", sys.stdout);
+#t.addChannel("Project3", sys.stdout);
+#t.addChannel("transport", sys.stdout);
 t.addChannel("clientAL", sys.stdout);
 t.addChannel("serverAL", sys.stdout);
 t.addChannel("Project4", sys.stdout);
@@ -103,13 +103,17 @@ if(flooding == 1):
     runTime(800)
     #sendCMD("1 1 cmd ping 2 hi")
     sendCMD("1 1 cmd server 41")
-    sendCMD("2 2 cmd hello abc 5\r\n")
+    sendCMD("2 2 cmd hello iAm 45\r\n")
+    runTime(10)
+    sendCMD("3 3 cmd hello james 3\r\n")
+    sendCMD("4 4 cmd hello bond 30\r\n")
+    sendCMD("2 2 cmd msg hasCAT?\r\n")
     #sendCMD("3 3 cmd client 3 5 2")
     #sendCMD("1 1 cmd client 3 5 2")
    
     
     
-    #runTime(200)
+    runTime(80)
     
    
     #sendCMD("5 1 Hi again!")

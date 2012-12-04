@@ -456,6 +456,7 @@ implementation{
 					uint8_t zero = 1;
 					uint16_t dest,srcPort,destPort;
 					uint8_t *userName;
+					pack test;
 					case PROTOCOL_PING:
 					dijkstra();
 					printRecieveLsp();
@@ -544,15 +545,22 @@ implementation{
 							isActive = FALSE;
 							break;
 						case CMD_MSG:
+							dbg("Project4", "msg command received\n");
+							pch = strtok (myMsg->payload," ");
+							//pch = strtok (NULL," ");
+							pch = strtok (NULL,"");
+							//dbg_clear("Project4", "command msg: %s\n",pch);
+							call ALClient.msgCommand(pch);
 							break;
 						case CMD_HELLO:
+						test = *myMsg;
 							dbg("Project4", "Hello command received\n");
 							pch = strtok (myMsg->payload," ");
 							i=0;
 							while (pch != NULL){
 								//dbg("Project3", "%s\n",pch);
 								if(i == 2){
-									dbg_clear("Project4", "Welcome user %s.\nConnecting you to server now.\n",pch);
+									//dbg_clear("Project4", "Welcome user %s.\nConnecting you to server now.\n",pch);
 									userName = pch;
 									//srcPort = atoi(pch);
 									}
@@ -563,9 +571,9 @@ implementation{
 								pch = strtok (NULL, " ");
 								i++;
 							}
-							//dbg("Project4", "%s wants to connect from port: %d\n", userName,srcPort);
+							//dbg("Project4", "payload %s\n", test.payload);
 							call tcpLayer.init();
-							call  tcpLayer.setUpClient(srcPort,41,1);
+							call  tcpLayer.setUpChatClient(srcPort,41,1,&test);
 							break;
 						case CMD_ERROR:
 							break;

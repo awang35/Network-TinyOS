@@ -56,7 +56,18 @@ implementation{
 		//dbg("Project3","Retrieve a new socket. ID: %d,State: %d\n",mSocket->uniqueID,mSocket->currentState);
 		call TCPSocket.bind(mSocket, srcPort, TOS_NODE_ID);
 		call TCPSocket.connect(destID,destPort,srcPort);
-		call ALClient.init(&activeSockets[srcPort]);
+		call ALClient.init(&activeSockets[srcPort],NULL);
+	}
+	command void TCPManager.setUpChatClient(uint8_t srcPort, uint8_t destPort, uint8_t destID,void *name){
+		TCPSocketAL *mSocket;
+		pack* myMsg=(pack*) name;
+		mSocket = call TCPManager.socket();
+		//id = mSocket;
+		//dbg("Project3","Retrieve a new socket. ID: %d,State: %d\n",mSocket->uniqueID,mSocket->currentState);
+		call TCPSocket.bind(mSocket, srcPort, TOS_NODE_ID);
+		call TCPSocket.connect(destID,destPort,srcPort);
+		//dbg("Project4", "intializing client. Test payload: %s\n",myMsg->payload);
+		call ALClient.init(&activeSockets[srcPort],name);
 	}
 	
 	command void TCPManager.handlePacket(void *msg){
@@ -234,6 +245,7 @@ implementation{
 			activeSockets[port].adwin = SERVER_WORKER_BUFFER_SIZE;
 		return 0;	
 	}
+
 	event void closing.fired(){
 		call pckResend.stop();
 		dbg("Project3", "Port %d is now closed.",socketClosed);
@@ -246,5 +258,9 @@ implementation{
 		dbg_clear("Project3", "Packet that was lost:\n");
 		printTransport(&resendMe);
 		call Node.tcpPack(resendMe ,activeSockets[resendPort]);
+	}
+
+	command void TCPManager.turnOffTimer(){
+		call pckResend.stop();
 	}
 }
