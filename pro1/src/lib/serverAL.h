@@ -17,7 +17,8 @@ typedef struct serverAL{
 }serverAL;
 
 enum{
-	SERVER_WORKER_BUFFER_SIZE = 128 // 128 bytes
+	SERVER_WORKER_BUFFER_SIZE = 128, // 128 bytes
+	SERVER_WORKER_SEND_SIZE = 50
 };
 
 typedef struct buffer{
@@ -30,14 +31,18 @@ typedef struct serverWorkerAL{
 	TCPSocketAL *socket;
 	uint16_t position;
 	uint8_t buffer[SERVER_WORKER_BUFFER_SIZE];
+	uint8_t sendBuffer[SERVER_WORKER_SEND_SIZE];
 	uint8_t id;
 	uint16_t amountToRead;
+	uint16_t amountToWrite;
+	uint16_t writePosition;
 	uint8_t name[10];
+	bool needWrite;
 }serverWorkerAL;
 
 typedef struct userList{
 	uint8_t name[10];
-	
+
 }userList;
 
 enum{

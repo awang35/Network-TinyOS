@@ -24,6 +24,7 @@ enum TCPSOCKET_STATE{
 typedef struct TCPSocketAL {
 	/*Insert Variables Here */
 	uint8_t uniqueID;
+	uint8_t type;
 	uint8_t currentState;
 	uint8_t destPort;
 	uint8_t destID;
@@ -35,6 +36,7 @@ typedef struct TCPSocketAL {
 	uint16_t cdwin;
 	uint16_t adwin;
 	uint8_t workerID;
+	
 } TCPSocketAL;
 
 typedef struct incomingConnect{

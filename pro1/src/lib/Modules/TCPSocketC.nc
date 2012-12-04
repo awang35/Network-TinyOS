@@ -259,6 +259,11 @@ implementation{
 		numPackets = ((len - pos)/13)+1;
 		if(input->currentState == ESTABLISHED && allowed) {//&& (wrote > input->cdwin)){
 			bufferSock = *input;
+			if(input->highestSeqSent==0){
+				dbg("Project4", "first time sending something. Try to resync.\n");
+				dbg("Project4", "highest seq seen: %d\n",input->highestSeqSeen);
+				input->highestSeqSent = input->highestSeqSeen+2;
+			}
 			input->highestSeqSeen =input->highestSeqSent;
 			//dbg("Project3","pos: %d,len: %d, wrote: %d, cdwin: %d\n",pos,len,wrote,input->cdwin);
 			for(i = pos;i<(pos+len)&&(wrote<(input->cdwin));i++ ){

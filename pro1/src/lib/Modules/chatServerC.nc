@@ -31,6 +31,7 @@ implementation{
 	serverAL mServer;	
 	serverWorkerList workers;
 	userList list[20];
+	//uint8_t sendBuffer[50];
 	uint8_t listIndex;
 	command void chatServer.init(TCPSocketAL *socket){
 		mServer.socket = socket;
@@ -46,7 +47,7 @@ implementation{
 			TCPSocketAL connectedSock;
 			TCPSocketAL *test;
 			uint8_t newPort;
-			dbg("serverAL", "serverAL - Trying to accept.\n");
+			dbg("serverAL", "serverAL - Looking for new connection.\n");
 			//Attempt to Establish a Connection
 	
 			newPort = call Random.rand16()%255;
@@ -92,6 +93,11 @@ implementation{
 		worker->position = 0;
 		worker->socket = call TCPManager.socket();
 		worker->amountToRead = 0;
+		worker->amountToWrite = 0;
+		worker->writePosition = 0;
+		worker->needWrite = FALSE;
+		memset (worker->sendBuffer,0,50);
+		memset (worker->buffer,0,SERVER_WORKER_BUFFER_SIZE);
 		call TCPSocket.copy(inputSocket, worker->socket);
 	
 		//worker->socket->addr, worker->socket->destAddr);		
@@ -115,6 +121,8 @@ implementation{
 		memset (worker->buffer,0,SERVER_WORKER_BUFFER_SIZE);
 		worker->amountToRead = 0;
 		worker->position =0;
+	
+		call TCPManager.turnOffTimer();
 	}
 	void printUser(){
 		int i = 0;
@@ -164,23 +172,13 @@ implementation{
 	}
 	command void serverWorker.execute(serverWorkerAL *worker){
 		if(!call TCPSocket.isClosed( (worker->socket->srcPort) ) ){
-			uint16_t bufferIndex, length, count;
+			uint16_t bufferIndex, length, count, writeIndex,len;
 	
 			bufferIndex = (worker->position) % SERVER_WORKER_BUFFER_SIZE + (worker->position/ SERVER_WORKER_BUFFER_SIZE) + 1;
 	
 			length = SERVER_WORKER_BUFFER_SIZE - bufferIndex;			//Amount left on the worker buffer
 			//dbg("serverAL", "Trying to read\n");
 			count = call TCPSocket.read( (worker->socket->srcPort), worker->buffer, worker->position% SERVER_WORKER_BUFFER_SIZE, length);
-	
-			//			if(count == -1){
-			//				// Socket unable to read, release socket
-			//				dbg("serverAL", "serverAL - Releasing socket\n");
-			//				dbg("serverAL", "Position: %lu\n", worker->position);
-			//				call TCPSocket.release( (worker->socket->srcPort) );
-			//	
-			//				serverWorkerListRemoveValue(&workers, *worker);
-			//				return;
-			//			}
 	
 			if(count > 0 ){
 				uint16_t i,j;
@@ -190,7 +188,7 @@ implementation{
 					//	dbg("Project4","I just read in: %d,%c", worker->buffer[ (i)%SERVER_WORKER_BUFFER_SIZE], worker->buffer[ (i)%SERVER_WORKER_BUFFER_SIZE]);
 					if( worker->buffer[ (i)%SERVER_WORKER_BUFFER_SIZE] == '\r'){
 						if( worker->buffer[ (i)%SERVER_WORKER_BUFFER_SIZE+1] == '\n'){
-							dbg("Project4","Found the end of the command. I should see what the command was. Position: %d\n",i+1);
+							dbg("Project4","Recieved a command. I should see what the command was. Position: %d\n",i+1);
 							printBuffer(worker);
 							if(worker->buffer[0]=='h'&&worker->buffer[1]=='e'&&worker->buffer[2]=='l'&&worker->buffer[3]=='l'&&worker->buffer[4]=='o'){
 								dbg("Project4","It is a hello packet\n");
@@ -207,23 +205,66 @@ implementation{
 								}
 								printUser();
 								clearBuffer(worker);
-								call TCPManager.turnOffTimer();
-	
 							}
 							if(worker->buffer[0]=='m'&&worker->buffer[1]=='s'&&worker->buffer[2]=='g'){
+								uint8_t i = 0;	
 								dbg("Project4","It is a msg packet\n");
 								pch = strtok (worker->buffer," ");
 								pch = strtok (NULL, "");
-								dbg("Project4", "User %s have sent a message '%s' to everyone.",worker->name,pch);
+	
+								//intialize the sendBuffer with msg
+								worker->sendBuffer[0]= 'm';worker->sendBuffer[1]= 's';worker->sendBuffer[2]= 'g';worker->sendBuffer[3]= ' ';
+								//append the username
+								memcpy((worker->sendBuffer)+4,worker->name,strlen(worker->name));
+								worker->sendBuffer[strlen(worker->sendBuffer)] =' ';
+								dbg("Project4", "SendBuffer: %s,size: %d\n", worker->sendBuffer,strlen(worker->sendBuffer));
+								dbg("Project4", "User %s have sent a message '%s' to everyone.\n",worker->name,pch);
+								memcpy((worker->sendBuffer)+strlen(worker->sendBuffer),pch,strlen(pch));
+								dbg("Project4", "SendBuffer: %s,size: %d\n", worker->sendBuffer,strlen(worker->sendBuffer));
+								worker->needWrite = TRUE;
+								worker->amountToWrite = strlen(worker->sendBuffer);
+		
 								clearBuffer(worker);
-								call TCPManager.turnOffTimer();
 							}
+							
 						}
 					}
 				}
-				return;
-	
+
 			}
+			if(worker->needWrite){
+				uint32_t closeTime;
+				uint16_t counts,l;
+				serverWorkerAL *currentWorker;
+				closeTime = call WorkerTimer.getNow();
+				dbg("Project4", "Need to write\n");
+				if(worker->amountToWrite == 0){
+					worker->needWrite = FALSE;
+					memset (worker->sendBuffer,0,SERVER_WORKER_SEND_SIZE);
+					worker->writePosition = 0;
+					dbg("serverAL", "serverAL - Sending Completed at time: %lu\n",closeTime);
+					return;
+				}
+				writeIndex = worker->writePosition%SERVER_WORKER_SEND_SIZE;
+				if(SERVER_WORKER_SEND_SIZE - writeIndex < worker->amountToWrite){
+					len = SERVER_WORKER_SEND_SIZE - bufferIndex;
+					//len = CLIENTAL_BUFFER_SIZE;
+					dbg("serverAL", "buffer-index was least\n");
+				}else{
+					//dbg("clientAL", "amount was least\n");
+					len = worker->amountToWrite;
+				}
+				counts = call TCPSocket.write((worker->socket->srcPort), worker->sendBuffer, writeIndex, len);
+//				for(l=0; l<serverWorkerListSize(&workers); l++){
+//					currentWorker = serverWorkerListGet(&workers, l);
+//					dbg("serverAL", "Sending MSG to: %s\n",currentWorker->name);
+//					counts = call TCPSocket.write((currentWorker->socket->srcPort), worker->sendBuffer, writeIndex, len);
+//				}
+				
+				worker->amountToWrite -=counts;
+				worker->writePosition +=counts;
+			}	
+	
 		}//else{
 		//			uint32_t closeTime;
 		//			closeTime = call ServerTimer.getNow();

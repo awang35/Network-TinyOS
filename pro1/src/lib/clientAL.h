@@ -26,6 +26,10 @@ typedef struct clientAL{
 	pack payload;
 	uint16_t position;
 	uint8_t buffer[CLIENTAL_BUFFER_SIZE];
+	uint8_t readBuffer[CLIENTAL_BUFFER_SIZE];
+	uint16_t readPosition;
+	uint16_t amountToRead;
+	bool needRead;
 }clientAL;
 
 #endif /* CLIENT_H */

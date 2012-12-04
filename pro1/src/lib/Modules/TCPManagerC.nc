@@ -39,8 +39,9 @@ implementation{
 	}
 	command void TCPManager.setUpServer(uint8_t srcPort){
 		TCPSocketAL *mSocket;
-
+		
 		mSocket = call TCPManager.socket();
+		mSocket->type = 0;
 		//id = mSocket;
 		//dbg("Project3","Retrieve a new socket. ID: %d,State: %d\n",mSocket->uniqueID,mSocket->currentState);
 		//dbg("Project3", "SocketInfo: ID: %d,srcID: %d, destID: %d, srcPort: %d, destPort: %d, state: %d\n",mSocket->uniqueID,mSocket->srcID,mSocket->destID,mSocket->srcPort,mSocket->destPort, mSocket->currentState);
@@ -52,6 +53,7 @@ implementation{
 		TCPSocketAL *mSocket;
 
 		mSocket = call TCPManager.socket();
+		mSocket->type = 1;
 		//id = mSocket;
 		//dbg("Project3","Retrieve a new socket. ID: %d,State: %d\n",mSocket->uniqueID,mSocket->currentState);
 		call TCPSocket.bind(mSocket, srcPort, TOS_NODE_ID);
@@ -79,7 +81,7 @@ implementation{
 		TCPSocketAL sckt;
 		//dbg("Project3","Checking TCP packet. srcID: %d, destID: %d,srcPort: %d, destPort: %d\n",myMsg->src, myMsg->dest, pckt->srcPort,pckt->destPort);
 		//dbg("Project3","Recieved a TCP packet\n");
-		//printTransport(pckt);
+		printTransport(pckt);
 
 		sckt = activeSockets[pckt->destPort];
 		switch(pckt->type){
@@ -189,7 +191,10 @@ implementation{
 				//dbg("Project3", "Data recieved in order.\n");
 				activeSockets[pckt->destPort].highestSeqSeen++;
 				//dbg("Project3", "DATA RECIEVED. HIGHEST SEQ SEEN: %d. THIS PCKT SEQ IS: %d, DATA: %d \n",sckt.highestSeqSeen,pckt->seq, pckt->payload[0]);
-				call ALServer.Buffer(pckt->destPort,pckt->payload[0],0);
+				//if(activeSockets[pckt->destPort].type == 1)
+					call ALClient.addData(pckt->payload[0]);
+	//			else
+					call ALServer.Buffer(pckt->destPort,pckt->payload[0],0);
 				if(sckt.currentState == ESTABLISHED){
 					activeSockets[pckt->destPort].adwin--;
 					createTransport(&responsePckt, sckt.srcPort, sckt.destPort, TRANSPORT_ACK, sckt.adwin, (pckt->seq)+1, NULL, 0);
